@@ -1,0 +1,31 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+
+# Database backups must be stored separately and encrypted before upload.
+backups/
+*.sql
+*.dump
+*.dump.gz
+*.dump.enc
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+staticfiles/
+media/
+
+# Node
+node_modules/
+.next/
+coverage/
+npm-debug.log*
+
+# Editors
+.idea/
+.vscode/

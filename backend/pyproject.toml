@@ -1,0 +1,26 @@
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+python_files = ["test_*.py", "*_test.py"]
+addopts = "--strict-markers --reuse-db"
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+exclude = ["**/migrations/*.py"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.mypy]
+python_version = "3.13"
+plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
+strict = true
+exclude = ["migrations"]
+
+[[tool.mypy.overrides]]
+module = "environ"
+ignore_missing_imports = true
+disable_error_code = ["import-untyped"]
+
+[tool.django-stubs]
+django_settings_module = "config.settings.test"

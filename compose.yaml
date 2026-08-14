@@ -1,0 +1,99 @@
+name: bakeops
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: BO-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-bakeops}
+      POSTGRES_USER: ${POSTGRES_USER:-bakeops}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-bakeops_dev_password}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - bakeops
+
+  backend:
+    build:
+      context: ./backend
+      target: development
+    container_name: BO-backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-bakeops}:${POSTGRES_PASSWORD:-bakeops_dev_password}@postgres:5432/${POSTGRES_DB:-bakeops}
+      DJANGO_SETTINGS_MODULE: config.settings.local
+    command: >-
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./backend:/app
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health/', timeout=2)\""]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    networks:
+      - bakeops
+
+  frontend:
+    build:
+      context: ./frontend
+      target: development
+    container_name: BO-frontend
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      INTERNAL_API_BASE_URL: http://backend:8000/api/v1
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-/api/v1}
+      WATCHPACK_POLLING: "true"
+    command: npm run dev -- --hostname 0.0.0.0
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+      - frontend_next:/app/.next
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000').then(response => process.exit(response.ok ? 0 : 1)).catch(() => process.exit(1))"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    networks:
+      - bakeops
+
+volumes:
+  postgres_data:
+    name: BO-postgres-data
+  frontend_node_modules:
+    name: BO-frontend-node-modules
+  frontend_next:
+    name: BO-frontend-next
+
+networks:
+  bakeops:
+    name: BO-network
