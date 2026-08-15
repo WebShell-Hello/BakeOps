@@ -104,7 +104,7 @@ export function DashboardPage() {
 
         {error && <div className="mb-5 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">{locale === "zh-CN" ? "仪表盘数据暂时无法加载，请刷新重试。" : "Dashboard data is unavailable. Please refresh and try again."}</div>}
 
-        <section aria-label={text.coreMetrics} className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+        <section aria-label={text.coreMetrics} className="grid auto-rows-fr gap-4 sm:grid-cols-2 xl:grid-cols-5">
           {metricDefinitions.map((metric) => {
             const dailyCost = metrics?.daily_estimated_cost;
             const completionRate = metrics?.today_planned_production ? (metrics.today_actual_production / metrics.today_planned_production * 100).toFixed(1) : "0.0";

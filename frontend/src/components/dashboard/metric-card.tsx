@@ -23,32 +23,37 @@ export function MetricCard({ label, icon: Icon, tone, value, description }: Metr
   const compactValue = value.replace(/\s/g, "");
   const valueSize =
     compactValue.length > 15
-      ? "text-sm"
+      ? "text-xs"
       : compactValue.length > 12
-        ? "text-base"
+        ? "text-sm"
         : compactValue.length > 9
-          ? "text-xl"
+          ? "text-lg"
           : compactValue.length > 7
-            ? "text-2xl"
-            : "text-3xl";
+            ? "text-xl"
+            : "text-2xl";
 
   return (
-    <Card className="min-h-40 p-5 transition-colors hover:border-[var(--primary)]/40 xl:p-6">
-      <div className="flex items-start gap-4">
-        <span className={cn("grid size-11 shrink-0 place-items-center rounded-full", toneStyles[tone])}>
-          <Icon className="size-5" strokeWidth={2} />
+    <Card className="flex h-full min-h-36 flex-col p-4 transition-colors hover:border-[var(--primary)]/40 xl:p-5">
+      <div className="flex min-h-10 items-center gap-2.5">
+        <span className={cn("grid size-9 shrink-0 place-items-center rounded-full", toneStyles[tone])}>
+          <Icon className="size-4" strokeWidth={2} />
         </span>
-        <div className="min-w-0 pt-0.5">
-          <p className="text-sm text-[var(--muted)]">{label}</p>
-          <p
-            className={cn("mt-2 max-w-full whitespace-nowrap font-semibold leading-none tracking-tight tabular-nums", valueSize)}
-            title={value}
-          >
-            {value}
-          </p>
-          <p className="mt-3 text-xs text-[var(--muted)]">{description}</p>
-        </div>
+        <p className="line-clamp-2 min-w-0 text-xs font-medium leading-4 text-[var(--muted)]">
+          {label}
+        </p>
       </div>
+      <p
+        className={cn(
+          "mt-3 flex h-8 w-full items-center whitespace-nowrap font-semibold leading-none tabular-nums",
+          valueSize,
+        )}
+        title={value}
+      >
+        {value}
+      </p>
+      <p className="mt-2 line-clamp-2 text-[11px] leading-4 text-[var(--muted)]">
+        {description}
+      </p>
     </Card>
   );
 }
