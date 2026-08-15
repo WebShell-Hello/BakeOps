@@ -282,8 +282,8 @@ function AboutProjectDialog({
         <div className="space-y-6 px-5 py-5 text-sm leading-7 sm:px-6 sm:py-6">
           <p>
             {isEnglish
-              ? "This restaurant operations monitoring system is designed for BingBing to practise operations management."
-              : "本餐饮运营监控系统，用于BingBing练习运营管理。"}
+              ? "This restaurant operations monitoring system is designed for practising operations management."
+              : "本餐饮运营监控系统，用于练习运营管理。"}
           </p>
 
           <section className="space-y-2">
