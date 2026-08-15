@@ -155,6 +155,10 @@ def test_material_cost_splices_past_actual_today_remaining_and_future_plans(
         reverse("monthly-cost-batch-update"),
         {"month": today.strftime("%Y-%m")},
     )
+    details = admin_client.get(
+        reverse("cost-material-details"),
+        {"month": today.strftime("%Y-%m")},
+    )
     materials = next(item for item in items.data if item["category"] == CostItem.Category.MATERIALS)
 
     assert overview.status_code == 200
@@ -164,6 +168,10 @@ def test_material_cost_splices_past_actual_today_remaining_and_future_plans(
     assert materials["source"] == "PRODUCTION"
     assert materials["is_read_only"] is True
     assert materials["calculation_complete"] is True
+    assert details.status_code == 200
+    assert details.data["total"] == "57.00"
+    assert len(details.data["items"]) == 3
+    assert details.data["items"][1]["remaining_planned_quantity"] == 6
 
 
 @pytest.mark.django_db

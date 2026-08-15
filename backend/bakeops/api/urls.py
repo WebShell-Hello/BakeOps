@@ -1,9 +1,10 @@
 from django.urls import include, path
 
-from bakeops.api.views import HealthCheckApi
+from bakeops.api.views import DashboardOverviewApi, HealthCheckApi
 
 urlpatterns = [
     path("health/", HealthCheckApi.as_view(), name="health"),
+    path("dashboard/overview/", DashboardOverviewApi.as_view(), name="dashboard-overview"),
     path("access/", include("bakeops.access.urls")),
     path("costs/", include("bakeops.costs.urls")),
     path("navigation/", include("bakeops.navigation.urls")),

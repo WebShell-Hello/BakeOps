@@ -177,12 +177,12 @@ const copy = {
   },
 } as const;
 
-export function ProductManagementPage() {
+export function ProductManagementPage({ initialSearch = "" }: { initialSearch?: string }) {
   const { locale } = useAppPreferences();
   const { showSuccess } = useToast();
   const text = copy[locale];
   const [products, setProducts] = useState<BakeryProduct[]>([]);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialSearch);
   const [expandedIds, setExpandedIds] = useState<string[]>([]);
   const [productEditor, setProductEditor] = useState<ProductEditor>(undefined);
   const [productForm, setProductForm] =

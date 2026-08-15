@@ -64,7 +64,10 @@ def reorder_navigation_items(
     if menu.revision != expected_revision:
         raise NavigationRevisionConflictError
 
-    existing_items = list(NavigationItem.objects.select_for_update().filter(menu=menu, is_active=True))
+    all_items = list(NavigationItem.objects.select_for_update().filter(menu=menu))
+    existing_items = [item for item in all_items if item.is_active]
+    inactive_items = [item for item in all_items if not item.is_active]
+    inactive_original_positions = {item.id: item.position for item in inactive_items}
     existing_by_id = {item.id: item for item in existing_items}
     requested = list(requested_items)
     requested_ids = [item["id"] for item in requested]
@@ -91,15 +94,28 @@ def reorder_navigation_items(
         positions_by_parent[parent_id].add(position)
 
     temporary_start = 1_000_000
-    for index, item in enumerate(existing_items):
+    for index, item in enumerate(all_items):
         item.position = temporary_start + index
         item.save(update_fields=("position", "updated_at"))
 
+    occupied_by_parent: dict[UUID | None, set[int]] = defaultdict(set)
     for requested_item in requested:
         item = existing_by_id[requested_item["id"]]
         item.parent_id = requested_item["parent_id"]
         item.position = requested_item["position"]
         item.save(update_fields=("parent", "position", "updated_at"))
+        occupied_by_parent[item.parent_id].add(item.position)
+
+    inactive_by_parent: dict[UUID | None, list[NavigationItem]] = defaultdict(list)
+    for item in inactive_items:
+        inactive_by_parent[item.parent_id].append(item)
+    for parent_id, siblings in inactive_by_parent.items():
+        siblings.sort(key=lambda item: (inactive_original_positions[item.id], item.created_at))
+        next_position = max(occupied_by_parent[parent_id], default=-1) + 1
+        for item in siblings:
+            item.position = next_position
+            item.save(update_fields=("position", "updated_at"))
+            next_position += 1
 
     menu.revision += 1
     menu.save(update_fields=("revision", "updated_at"))

@@ -6,6 +6,10 @@
   --card: #ffffff;
   --sidebar: #fbfbfd;
   --topbar: rgba(250, 250, 252, 0.92);
+  --sidebar-image: none;
+  --topbar-image: none;
+  --page-image: none;
+  --brand-texture-size: auto;
   --surface-muted: #f5f5f7;
   --border: #d2d2d7;
   --muted: #6e6e73;
@@ -69,37 +73,41 @@
 }
 
 :root[data-theme="bakery"] {
-  --background: #f6eddc;
-  --foreground: #3d2b1f;
-  --card: #fffaf0;
-  --sidebar: #d8ad72;
-  --topbar: rgba(252, 245, 230, 0.94);
-  --surface-muted: #efe1c8;
-  --border: #d9c19d;
-  --muted: #796550;
-  --nav-foreground: #4f3827;
-  --primary: #a65f2e;
-  --primary-hover: #8d4c22;
-  --primary-foreground: #fffaf0;
-  --primary-soft: rgba(255, 249, 235, 0.58);
-  --primary-border: rgba(166, 95, 46, 0.48);
-  --primary-ring: rgba(166, 95, 46, 0.28);
-  --primary-shadow: rgba(120, 68, 32, 0.24);
-  --body-glow: rgba(194, 128, 63, 0.12);
-  --chart-grid: rgba(178, 139, 92, 0.28);
-  --success-soft: #e8f1df;
-  --danger-soft: #f8e3db;
-  --tone-blue-bg: #e8eef0;
-  --tone-blue-fg: #456f7d;
-  --tone-green-bg: #e6eedf;
-  --tone-green-fg: #4f7650;
-  --tone-amber-bg: #f5e5c7;
-  --tone-amber-fg: #a55f22;
-  --tone-violet-bg: #eee4ea;
-  --tone-violet-fg: #805c75;
-  --tone-rose-bg: #f6e1dc;
-  --tone-rose-fg: #a94f45;
-  --auth-panel: #a65f2e;
+  --background: #64beeb;
+  --foreground: #0a2535;
+  --card: #fffef7;
+  --sidebar: #fff200;
+  --topbar: rgba(255, 242, 0, 0.92);
+  --sidebar-image: url("/brand/bitemeloud-coral-mosaic.jpg");
+  --topbar-image: url("/brand/bitemeloud-yellow-mosaic.jpg");
+  --page-image: url("/brand/bitemeloud-blue-mosaic.jpg");
+  --brand-texture-size: 112px 112px;
+  --surface-muted: #f4efcf;
+  --border: #d9d29c;
+  --muted: #536673;
+  --nav-foreground: #0a2535;
+  --primary: #0a2535;
+  --primary-hover: #143d52;
+  --primary-foreground: #fff200;
+  --primary-soft: rgba(100, 190, 235, 0.28);
+  --primary-border: rgba(10, 37, 53, 0.38);
+  --primary-ring: rgba(100, 190, 235, 0.5);
+  --primary-shadow: rgba(10, 37, 53, 0.22);
+  --body-glow: rgba(254, 104, 68, 0.13);
+  --chart-grid: rgba(10, 37, 53, 0.16);
+  --success-soft: #e5f6e9;
+  --danger-soft: #ffe6df;
+  --tone-blue-bg: #dff3fc;
+  --tone-blue-fg: #155b7c;
+  --tone-green-bg: #e5f6e9;
+  --tone-green-fg: #246c3a;
+  --tone-amber-bg: #fff4bd;
+  --tone-amber-fg: #795d00;
+  --tone-violet-bg: #eee7fa;
+  --tone-violet-fg: #68478b;
+  --tone-rose-bg: #ffe3dc;
+  --tone-rose-fg: #b4371d;
+  --auth-panel: #0a2535;
 }
 
 :root[data-theme="pink"] {
@@ -189,9 +197,12 @@ body {
   margin: 0;
   min-height: 100%;
   overflow-x: hidden;
-  background:
+  background-color: var(--background);
+  background-image:
     radial-gradient(circle at 100% 0%, var(--body-glow), transparent 26rem),
-    var(--background);
+    var(--page-image);
+  background-repeat: no-repeat, repeat;
+  background-size: auto, var(--brand-texture-size);
   color: var(--foreground);
   font-family:
     -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC",
@@ -226,6 +237,10 @@ button {
 .viewport-shell {
   min-height: 100vh;
   min-height: 100svh;
+  background-color: var(--background);
+  background-image: var(--page-image);
+  background-repeat: repeat;
+  background-size: var(--brand-texture-size);
 }
 
 .mobile-sidebar-layer {
@@ -235,8 +250,19 @@ button {
 
 .app-sidebar {
   height: 100%;
+  background-color: var(--sidebar);
+  background-image: var(--sidebar-image);
+  background-repeat: repeat;
+  background-size: var(--brand-texture-size);
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.app-topbar {
+  background-color: var(--topbar);
+  background-image: var(--topbar-image);
+  background-repeat: repeat;
+  background-size: var(--brand-texture-size);
 }
 
 .sidebar-scroll {

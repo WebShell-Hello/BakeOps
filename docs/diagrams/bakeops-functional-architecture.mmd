@@ -1,0 +1,45 @@
+flowchart LR
+    U[门店老板 / 主管 / 员工] --> FE[Next.js 管理后台]
+    FE --> AUTH[邮箱登录与权限]
+    FE --> API[Django REST API]
+    API --> DB[(PostgreSQL)]
+
+    subgraph Master[基础资料]
+      P[产品与配方]
+      I[食材与库存单位]
+      S[供应商管理]
+      E[员工档案]
+    end
+    subgraph Operations[运营执行]
+      PL[生产计划]
+      R[采购入库 / 进货记录]
+      SH[员工排班]
+      EV[活动管理]
+      SO[实际销售记录]
+    end
+    subgraph Analysis[经营分析]
+      SA[销售分析]
+      CM[成本管理]
+      PA[盈利与产品表现]
+    end
+
+    API --> Master
+    API --> Operations
+    API --> Analysis
+    P --> PL
+    P --> SO
+    S --> R
+    I --> P
+    I --> R
+    PL -->|产品计划| DEMAND[食材需求计算]
+    P -->|配方 BOM| DEMAND
+    DEMAND --> INV[库存覆盖与采购预警]
+    R --> INV
+    SH -->|时薪 x 出勤时长| CM
+    SO --> SA
+    PL -->|实际制作| CM
+    R -->|采购单价与入库数量| CM
+    SA --> PA
+    CM --> PA
+    EV -.->|准备建议| PL
+    EV -.->|库存建议| INV

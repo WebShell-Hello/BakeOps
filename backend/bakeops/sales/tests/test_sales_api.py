@@ -8,6 +8,7 @@ from rest_framework.test import APIClient
 
 from bakeops.products.models import Product
 from bakeops.sales.models import SalesOrder, SalesOrderLine
+from bakeops.sales.views import six_month_window_start
 from bakeops.users.models import User
 
 
@@ -76,8 +77,8 @@ def test_sales_analysis_rejects_future_and_invalid_ranges(admin_client: APIClien
         {"start": today.isoformat(), "end": today.isoformat(), "grain": "quarter"},
     )
 
-    assert future_response.status_code == 400
-    assert today.isoformat() in future_response.data["detail"]
+    assert future_response.status_code == 200
+    assert future_response.data["range"]["end"] == future.isoformat()
     assert invalid_grain.status_code == 400
 
 
@@ -99,3 +100,7 @@ def test_sales_line_constraints_keep_discounts_and_refunds_bounded() -> None:
     )
 
     assert line.net_sales_amount == Decimal("2.75")
+
+
+def test_sales_default_window_starts_at_the_first_day_of_the_sixth_month() -> None:
+    assert six_month_window_start(datetime(2026, 8, 14).date()).isoformat() == "2026-03-01"

@@ -48,7 +48,7 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
       <div className="mb-8">
         <p className="mb-2 text-sm font-medium text-[var(--primary)]">{isEnglish ? "Welcome back" : "欢迎回来"}</p>
         <h1 className="text-3xl font-semibold tracking-[-0.04em]">{isEnglish ? "Sign in to BakeOps" : "登录 BakeOps"}</h1>
-        <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{isEnglish ? "Enter your system account to continue." : "使用你的系统账户进入冰冰点心屋运营后台。"}</p>
+        <p className="mt-3 text-sm leading-6 text-[var(--muted)]">{isEnglish ? "Enter your system account to continue." : "使用你的系统账户进入来咬我啊运营后台。"}</p>
       </div>
 
       <form className="space-y-5" onSubmit={handleSubmit}>

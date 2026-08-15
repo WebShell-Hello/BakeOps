@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Bell,
   Check,
   CircleHelp,
   Languages,
@@ -9,23 +8,27 @@ import {
   Mail,
   Menu,
   Palette,
-  Search,
   X,
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { UserMenu } from "@/components/auth/user-menu";
+import { TopbarGlobalSearch } from "@/components/dashboard/topbar-global-search";
+import { TopbarNotifications } from "@/components/dashboard/topbar-notifications";
 import { useAppPreferences } from "@/components/providers/app-preferences-provider";
 import { Button } from "@/components/ui/button";
+import type { NavigationTreeItem } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
 type AppTopbarProps = {
   desktopSidebarPinned: boolean;
+  navigationItems: NavigationTreeItem[];
   onOpenMobileSidebar: () => void;
 };
 
 export function AppTopbar({
   desktopSidebarPinned,
+  navigationItems,
   onOpenMobileSidebar,
 }: AppTopbarProps) {
   const { locale, theme, setTheme, toggleLocale } = useAppPreferences();
@@ -35,10 +38,15 @@ export function AppTopbar({
   const isEnglish = locale === "en-GB";
   const themeMenuLabel = isEnglish ? "Choose colour theme" : "选择颜色风格";
   const themeOptions = [
-    { id: "light", zh: "浅色", en: "Light", colour: "#0071e3" },
-    { id: "dark", zh: "深色", en: "Dark", colour: "#35393f" },
-    { id: "bakery", zh: "面包暖", en: "Bakery", colour: "#d8ad72" },
-    { id: "pink", zh: "公主粉", en: "Princess Pink", colour: "#d97b99" },
+    { id: "light", zh: "浅色", en: "Light", swatch: "#0071e3" },
+    { id: "dark", zh: "深色", en: "Dark", swatch: "#35393f" },
+    {
+      id: "bakery",
+      zh: "来咬我啊",
+      en: "bitemeloud",
+      swatch: "conic-gradient(#fff200 0 25%, #fe6844 25% 50%, #64beeb 50% 75%, #0a2535 75%)",
+    },
+    { id: "pink", zh: "公主粉", en: "Princess Pink", swatch: "#d97b99" },
   ] as const;
 
   useEffect(() => {
@@ -65,7 +73,7 @@ export function AppTopbar({
       <header
         data-app-topbar
         className={cn(
-          "app-topbar safari-backdrop fixed top-0 right-0 left-0 z-20 flex items-center border-b border-[var(--border)] bg-[var(--topbar)] px-4 transition-[left] duration-200 ease-out sm:px-6",
+          "app-topbar safari-backdrop fixed top-0 right-0 left-0 z-20 flex items-center border-b border-[var(--border)] px-4 transition-[left] duration-200 ease-out sm:px-6",
           desktopSidebarPinned ? "lg:left-[236px]" : "lg:left-[76px]",
         )}
       >
@@ -82,31 +90,11 @@ export function AppTopbar({
           </Button>
 
           <p className="truncate text-sm font-semibold sm:text-[15px]">
-            {isEnglish ? "Bing's Backery" : "冰冰点心屋"}
+            {isEnglish ? "Bite Me Loud" : "来咬我啊"}
           </p>
         </div>
 
-        <button
-          type="button"
-          aria-label={isEnglish ? "Global search" : "全局搜索"}
-          aria-disabled="true"
-          title={
-            isEnglish
-              ? "Global search will be enabled with future features"
-              : "全局搜索将在后续功能中启用"
-          }
-          className="mx-5 hidden h-9 w-full max-w-sm items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface-muted)] px-3 text-left text-sm text-[var(--muted)] transition-colors hover:border-[var(--primary-border)] md:flex"
-        >
-          <Search className="size-4 shrink-0" />
-          <span className="min-w-0 flex-1 truncate">
-            {isEnglish
-              ? "Search features, products or orders..."
-              : "搜索功能、产品或订单..."}
-          </span>
-          <kbd className="rounded-md border border-[var(--border)] bg-[var(--card)] px-1.5 py-0.5 text-[10px] text-[var(--muted)]">
-            ⌘ K
-          </kbd>
-        </button>
+        <TopbarGlobalSearch locale={locale} navigationItems={navigationItems} />
 
         <div className="flex shrink-0 items-center gap-1 sm:gap-2">
           <div ref={themeMenuRef} className="relative">
@@ -146,7 +134,7 @@ export function AppTopbar({
                   >
                     <span
                       className="size-4 rounded-full border border-black/10 shadow-sm"
-                      style={{ backgroundColor: option.colour }}
+                      style={{ background: option.swatch }}
                     />
                     <span className="flex-1">
                       {isEnglish ? option.en : option.zh}
@@ -182,19 +170,7 @@ export function AppTopbar({
           >
             <CircleHelp className="size-[18px]" />
           </Button>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className="size-9"
-            aria-label={isEnglish ? "Notifications" : "通知"}
-            title={isEnglish ? "Notifications" : "通知"}
-          >
-            <span className="relative">
-              <Bell className="size-[18px]" />
-              <span className="absolute -top-0.5 -right-0.5 size-1.5 rounded-full bg-[var(--primary)]" />
-            </span>
-          </Button>
+          <TopbarNotifications locale={locale} />
           <UserMenu placement="topbar" />
         </div>
       </header>

@@ -63,7 +63,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
 
   return (
     <DashboardNavigationContext.Provider value={navigationContext}>
-    <div className="viewport-shell bg-[var(--background)]">
+    <div className="viewport-shell">
       <AppSidebar
         mode={sidebarMode}
         expanded={desktopSidebarExpanded}
@@ -113,6 +113,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
 
       <AppTopbar
         desktopSidebarPinned={sidebarMode === "pinned"}
+        navigationItems={navigationTree?.items ?? []}
         onOpenMobileSidebar={() => setMobileSidebarOpen(true)}
       />
 

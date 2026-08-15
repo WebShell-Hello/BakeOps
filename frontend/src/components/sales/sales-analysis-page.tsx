@@ -1,12 +1,10 @@
 "use client";
 
 import {
-  endOfMonth,
+  differenceInCalendarDays,
   format,
   parseISO,
   startOfMonth,
-  subDays,
-  subMonths,
 } from "date-fns";
 import { enGB, zhCN } from "date-fns/locale";
 import {
@@ -16,7 +14,6 @@ import {
   List,
   PoundSterling,
   ReceiptText,
-  RefreshCw,
   RotateCcw,
   ShoppingBag,
   WalletCards,
@@ -41,13 +38,18 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { DataPagination, useDataPagination } from "@/components/ui/data-pagination";
 import {
+  PeriodRangeToolbar,
+  periodRange,
+  shiftPeriodCursor,
+  type PeriodUnit,
+} from "@/components/ui/period-range-toolbar";
+import {
   getSalesAnalysis,
   type SalesAnalysis,
   type SalesAnalysisGrain,
 } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
-type RangePreset = "currentMonth" | "previousMonth" | "recent90" | "custom";
 type TrendMode = "chart" | "list";
 
 const copy = {
@@ -64,10 +66,6 @@ const copy = {
     day: "日",
     week: "周",
     month: "月",
-    currentMonth: "本月",
-    previousMonth: "上月",
-    recent90: "最近90天",
-    custom: "自定义",
     startDate: "开始日期",
     endDate: "结束日期",
     refresh: "刷新数据",
@@ -94,6 +92,7 @@ const copy = {
     empty: "当前日期范围没有销售数据",
     loadError: "销售分析加载失败",
     netSalesLabel: "净销售收入",
+    periodSummary: "汇总",
   },
   "en-GB": {
     title: "Sales Analysis",
@@ -108,10 +107,6 @@ const copy = {
     day: "Day",
     week: "Week",
     month: "Month",
-    currentMonth: "This month",
-    previousMonth: "Last month",
-    recent90: "Last 90 days",
-    custom: "Custom",
     startDate: "Start date",
     endDate: "End date",
     refresh: "Refresh data",
@@ -138,6 +133,7 @@ const copy = {
     empty: "No sales data in this date range",
     loadError: "Unable to load sales analysis",
     netSalesLabel: "Net sales",
+    periodSummary: "summary",
   },
 } as const;
 
@@ -146,11 +142,13 @@ export function SalesAnalysisPage() {
   const text = copy[locale];
   const dateLocale = locale === "en-GB" ? enGB : zhCN;
   const [today] = useState(() => new Date());
-  const [grain, setGrain] = useState<SalesAnalysisGrain>("day");
   const [trendMode, setTrendMode] = useState<TrendMode>("chart");
-  const [preset, setPreset] = useState<RangePreset>("currentMonth");
+  const [periodUnit, setPeriodUnit] = useState<PeriodUnit>("month");
+  const [periodCursor, setPeriodCursor] = useState(() => today);
+  const [customRange, setCustomRange] = useState(false);
   const [startDate, setStartDate] = useState(() => dateKey(startOfMonth(today)));
   const [endDate, setEndDate] = useState(() => dateKey(today));
+  const grain = automaticSalesGrain(periodUnit, customRange, startDate, endDate);
   const [analysis, setAnalysis] = useState<SalesAnalysis | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -187,6 +185,20 @@ export function SalesAnalysisPage() {
     label: `${String(item.hour).padStart(2, "0")}:00`,
   }));
   const kpis = analysis?.kpis;
+
+  function applyPeriod(unit: PeriodUnit, cursor: Date) {
+    const [rangeStart, rangeEnd] = periodRange(unit, cursor);
+    const visibleEnd = rangeStart <= today && rangeEnd > today ? today : rangeEnd;
+    setPeriodUnit(unit);
+    setPeriodCursor(cursor);
+    setCustomRange(false);
+    setStartDate(dateKey(rangeStart));
+    setEndDate(dateKey(visibleEnd));
+  }
+
+  function shiftPeriod(offset: -1 | 1) {
+    applyPeriod(periodUnit, shiftPeriodCursor(periodUnit, periodCursor, offset));
+  }
   const metrics = [
     { label: text.netSales, value: money(kpis?.net_sales, locale), icon: PoundSterling, tone: "bg-emerald-50 text-emerald-700" },
     { label: text.salesQuantity, value: `${number(kpis?.sales_quantity ?? 0, locale)} ${text.units}`, icon: ShoppingBag, tone: "bg-blue-50 text-blue-700" },
@@ -196,34 +208,30 @@ export function SalesAnalysisPage() {
     { label: text.refunds, value: money(kpis?.refund_amount, locale), icon: RotateCcw, tone: "bg-rose-50 text-rose-700" },
   ];
 
-  function selectPreset(nextPreset: RangePreset) {
-    setPreset(nextPreset);
-    if (nextPreset === "currentMonth") {
-      setStartDate(dateKey(startOfMonth(today)));
-      setEndDate(dateKey(today));
-    } else if (nextPreset === "previousMonth") {
-      const previous = subMonths(today, 1);
-      setStartDate(dateKey(startOfMonth(previous)));
-      setEndDate(dateKey(endOfMonth(previous)));
-    } else if (nextPreset === "recent90") {
-      setStartDate(dateKey(subDays(today, 89)));
-      setEndDate(dateKey(today));
-    }
-  }
-
   return (
     <DashboardShell>
       <main className="mx-auto w-full max-w-[1560px] p-4 sm:p-6 xl:p-9">
-        <header className="mb-5 flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+        <header className="mb-5">
           <div>
             <PageBreadcrumb fallback={{ zh: text.title, en: text.title }} />
             <p className="mt-1.5 text-sm text-[var(--muted)]">{text.description}</p>
           </div>
-          <Button type="button" variant="outline" disabled={loading} onClick={() => void load()}>
-            <RefreshCw className={cn("size-4", loading && "animate-spin")} />
-            {text.refresh}
-          </Button>
         </header>
+
+        <div className="mb-5 flex flex-wrap items-center justify-end gap-2 border-b border-[var(--border)] pb-4">
+          <PeriodRangeToolbar
+            locale={locale}
+            unit={periodUnit}
+            startDate={startDate}
+            endDate={endDate}
+            loading={loading}
+            onUnitChange={(unit) => applyPeriod(unit, today)}
+            onShift={shiftPeriod}
+            onStartDateChange={(value) => { setCustomRange(true); setStartDate(value); }}
+            onEndDateChange={(value) => { setCustomRange(true); setEndDate(value); }}
+            onRefresh={() => void load()}
+          />
+        </div>
 
         <section className="mb-5 grid grid-cols-2 gap-3 lg:grid-cols-3 2xl:grid-cols-6" aria-label={text.title}>
           {metrics.map(({ label, value, icon: Icon, tone }) => (
@@ -239,37 +247,6 @@ export function SalesAnalysisPage() {
           ))}
         </section>
 
-        <Card className="mb-5 p-4">
-          <div className="flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between">
-            <div className="flex flex-wrap gap-2">
-              {(["day", "week", "month"] as SalesAnalysisGrain[]).map((value) => (
-                <Button key={value} type="button" variant={grain === value ? "default" : "outline"} onClick={() => setGrain(value)}>
-                  {text[value]}
-                </Button>
-              ))}
-            </div>
-            <div className="flex flex-wrap items-end gap-2">
-              {(["currentMonth", "previousMonth", "recent90", "custom"] as RangePreset[]).map((value) => (
-                <Button key={value} type="button" variant={preset === value ? "default" : "outline"} onClick={() => selectPreset(value)}>
-                  {text[value]}
-                </Button>
-              ))}
-              {preset === "custom" ? (
-                <>
-                  <label className="space-y-1 text-xs text-[var(--muted)]">
-                    <span className="block">{text.startDate}</span>
-                    <input type="date" max={dateKey(today)} value={startDate} className="h-10 rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 text-sm text-[var(--foreground)]" onChange={(event) => setStartDate(event.target.value)} />
-                  </label>
-                  <label className="space-y-1 text-xs text-[var(--muted)]">
-                    <span className="block">{text.endDate}</span>
-                    <input type="date" min={startDate} max={dateKey(today)} value={endDate} className="h-10 rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 text-sm text-[var(--foreground)]" onChange={(event) => setEndDate(event.target.value)} />
-                  </label>
-                </>
-              ) : null}
-            </div>
-          </div>
-        </Card>
-
         {error ? <div className="mb-5 rounded-lg border border-rose-300 bg-rose-50 px-4 py-3 text-sm text-rose-700">{error}</div> : null}
 
         <section className="mb-5 grid gap-5 xl:grid-cols-[minmax(0,1.7fr)_minmax(360px,1fr)]">
@@ -280,7 +257,6 @@ export function SalesAnalysisPage() {
               <div className="flex rounded-lg border border-[var(--border)] bg-[var(--surface-muted)] p-0.5">
                 <Button
                   type="button"
-                  size="sm"
                   variant={trendMode === "chart" ? "default" : "ghost"}
                   className="h-8 rounded-md px-2.5"
                   aria-pressed={trendMode === "chart"}
@@ -291,7 +267,6 @@ export function SalesAnalysisPage() {
                 </Button>
                 <Button
                   type="button"
-                  size="sm"
                   variant={trendMode === "list" ? "default" : "ghost"}
                   className="h-8 rounded-md px-2.5"
                   aria-pressed={trendMode === "list"}
@@ -468,6 +443,22 @@ function EmptyChart({ text }: { text: string }) {
 
 function dateKey(value: Date) {
   return format(value, "yyyy-MM-dd");
+}
+
+function automaticSalesGrain(
+  unit: PeriodUnit,
+  customRange: boolean,
+  startDate: string,
+  endDate: string,
+): SalesAnalysisGrain {
+  if (!customRange) return unit === "year" ? "month" : "day";
+  const days = differenceInCalendarDays(
+    new Date(`${endDate}T12:00:00`),
+    new Date(`${startDate}T12:00:00`),
+  ) + 1;
+  if (days <= 45) return "day";
+  if (days <= 180) return "week";
+  return "month";
 }
 
 function formatSalesDate(value: string, locale: "zh-CN" | "en-GB") {

@@ -1,0 +1,22 @@
+BakeOps Docker environment snapshot
+Generated: 2026-08-15 (Europe/London)
+
+Docker Engine
+- Client: 29.7.2
+- Server: 29.7.2
+- Docker Compose: v5.3.1
+- Platform: Apple Silicon / linux arm64 containers
+
+Running services
+- BO-frontend: bakeops-frontend:latest, image f7a4c6ef78f6, 333 MB, host port 3100 -> container 3000
+- BO-backend: bakeops-backend:latest, image 875b9ad0c2de, 200 MB, host port 8000 -> container 8000
+- BO-postgres: postgres:17-alpine, image 742f40ea20b9, 115 MB, host port 5432 -> container 5432
+
+Recovery model
+- compose.yaml, backend/Dockerfile, frontend/Dockerfile and dependency lock files are the source of truth.
+- Local backend and frontend images are rebuilt with: docker compose build
+- Services are recreated with: docker compose up -d
+- The demo database is restored after PostgreSQL is healthy with:
+  docker compose exec -T postgres psql -U bakeops -d bakeops < backups/demo/bakeops-demo.sql
+
+Container image tar archives are intentionally not committed. They are large, architecture-specific build artifacts and can be reproduced from the versioned Dockerfiles.

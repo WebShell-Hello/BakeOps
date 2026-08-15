@@ -74,6 +74,14 @@ const copy = {
   },
 } as const;
 
+function metricValueClass(value: string | number) {
+  const length = String(value).length;
+  if (length > 18) return "text-base";
+  if (length > 14) return "text-lg";
+  if (length > 10) return "text-xl";
+  return "text-2xl";
+}
+
 export function InventoryReceiptsPage() {
   const { locale } = useAppPreferences();
   const text = copy[locale];
@@ -155,7 +163,12 @@ export function InventoryReceiptsPage() {
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className="text-xs text-[var(--muted)] sm:text-sm">{label}</p>
-                  <p className="mt-2 truncate text-2xl font-semibold sm:text-3xl">{loading ? "—" : value}</p>
+                  <p
+                    className={cn("mt-2 break-words font-semibold tabular-nums leading-tight", metricValueClass(value))}
+                    title={String(value)}
+                  >
+                    {loading ? "—" : value}
+                  </p>
                 </div>
                 <span className={cn("grid size-9 shrink-0 place-items-center rounded-full", tone)}>
                   <Icon className="size-[18px]" />
@@ -168,9 +181,9 @@ export function InventoryReceiptsPage() {
         {error ? <div className="mb-4 rounded-lg border border-rose-300 bg-rose-50 px-4 py-3 text-sm text-rose-700">{error}</div> : null}
 
         <Card className="overflow-hidden">
-          <div className="grid gap-3 border-b border-[var(--border)] p-4 lg:grid-cols-[minmax(240px,1fr)_180px_180px_auto]">
-            <label className="relative">
-              <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-[var(--muted)]" />
+          <div className="grid items-center gap-3 border-b border-[var(--border)] p-4 lg:grid-cols-[minmax(240px,1fr)_180px_180px_auto]">
+            <label className="relative block h-10">
+              <Search className="pointer-events-none absolute inset-y-0 left-3 my-auto size-4 text-[var(--muted)]" />
               <input
                 type="search"
                 value={query}
@@ -182,15 +195,13 @@ export function InventoryReceiptsPage() {
                 }}
               />
             </label>
-            <label className="grid grid-cols-[auto_1fr] items-center gap-2 text-sm text-[var(--muted)] lg:grid-cols-1 lg:gap-1">
-              <span>{text.startDate}</span>
-              <input type="date" value={startDate} className="h-10 min-w-0 rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 text-sm text-[var(--foreground)]" onChange={(event) => setStartDate(event.target.value)} />
+            <label className="block h-10">
+              <input aria-label={text.startDate} type="date" value={startDate} className="h-10 w-full min-w-0 rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 text-sm text-[var(--foreground)]" onChange={(event) => setStartDate(event.target.value)} />
             </label>
-            <label className="grid grid-cols-[auto_1fr] items-center gap-2 text-sm text-[var(--muted)] lg:grid-cols-1 lg:gap-1">
-              <span>{text.endDate}</span>
-              <input type="date" value={endDate} className="h-10 min-w-0 rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 text-sm text-[var(--foreground)]" onChange={(event) => setEndDate(event.target.value)} />
+            <label className="block h-10">
+              <input aria-label={text.endDate} type="date" value={endDate} className="h-10 w-full min-w-0 rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 text-sm text-[var(--foreground)]" onChange={(event) => setEndDate(event.target.value)} />
             </label>
-            <Button type="button" variant="outline" className="self-end" onClick={clearFilters}>{text.clear}</Button>
+            <Button type="button" variant="outline" onClick={clearFilters}>{text.clear}</Button>
           </div>
 
           <div className="overflow-x-auto">

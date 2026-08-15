@@ -11,10 +11,11 @@ from django.utils import timezone
 from bakeops.inventory.models import InventoryItem, InventoryReceipt, ProductionPlan
 from bakeops.inventory.services import convert_quantity, display_unit_for
 from bakeops.products.models import Ingredient, Recipe, RecipeIngredient
-from bakeops.suppliers.models import SupplierIngredient
+from bakeops.suppliers.models import Supplier, SupplierIngredient
 
 RECEIPT_PREFIX = "DEMO-HIST-GRN-"
 RECEIPT_INTERVAL_DAYS = 14
+RECEIPT_LOOKAHEAD_DAYS = RECEIPT_INTERVAL_DAYS - 1
 WASTE_FACTOR = Decimal("1.10")
 PRICE_FACTORS = (Decimal("0.98"), Decimal("1.01"), Decimal("1.03"), Decimal("0.99"), Decimal("1.02"))
 DISPLAY_QUANTUM = Decimal("0.001")
@@ -66,6 +67,44 @@ def build_recipe_map() -> dict[Any, Recipe]:
         "sections__items__ingredient"
     )
     return {recipe.product_id: recipe for recipe in recipes}
+
+
+def ensure_supplier_terms(ingredients: list[Ingredient]) -> tuple[dict[Any, SupplierIngredient], list[str]]:
+    terms: dict[Any, SupplierIngredient] = {}
+    supplier_terms = SupplierIngredient.objects.filter(
+            ingredient_id__in=[ingredient.id for ingredient in ingredients],
+            is_active=True,
+        ).select_related("ingredient", "supplier").order_by("ingredient_id", "-is_preferred", "unit_price")
+    for term in supplier_terms:
+        terms.setdefault(term.ingredient_id, term)
+    missing = [ingredient for ingredient in ingredients if ingredient.id not in terms]
+    if not missing:
+        return terms, []
+
+    fallback_supplier = Supplier.objects.order_by("code").first()
+    if fallback_supplier is None:
+        return terms, [ingredient.name for ingredient in missing]
+
+    for index, ingredient in enumerate(missing):
+        display_unit = display_unit_for(ingredient.base_unit)
+        unit_price = Decimal("0.25") if display_unit in {"each", "pcs"} else Decimal("2.50")
+        term, _ = SupplierIngredient.objects.update_or_create(
+            supplier=fallback_supplier,
+            ingredient=ingredient,
+            defaults={
+                "unit_price": unit_price,
+                "currency": "GBP",
+                "price_unit": display_unit,
+                "minimum_order_quantity": Decimal("5"),
+                "minimum_order_unit": display_unit,
+                "lead_time_days": 3 + index % 5,
+                "notes": "为补齐历史成本计算而生成的模拟供应条款",
+                "is_active": True,
+                "is_preferred": False,
+            },
+        )
+        terms[ingredient.id] = term
+    return terms, []
 
 
 def build_daily_demand(
@@ -212,12 +251,13 @@ class Command(BaseCommand):
     def handle(self, *args: Any, **options: Any) -> None:
         today = timezone.localdate()
         history_start = today - timedelta(days=364)
+        demand_end = today + timedelta(days=RECEIPT_LOOKAHEAD_DAYS)
         # Refresh only deterministic demo records; user-entered plans and receipts are preserved.
         call_command("seed_demo_production_history")
         call_command("seed_demo_suppliers")
 
         plan_queryset = (
-            ProductionPlan.objects.filter(planned_date__gte=history_start)
+            ProductionPlan.objects.filter(planned_date__range=(history_start, demand_end))
             .exclude(status=ProductionPlan.Status.CANCELLED)
             .select_related("product")
         )
@@ -225,30 +265,26 @@ class Command(BaseCommand):
         recipe_map = build_recipe_map()
         daily_demand = build_daily_demand(plans, recipe_map, today)
         actual_daily_demand = build_daily_demand(plans, recipe_map, today, actual_only=True)
-        terms: dict[Any, SupplierIngredient] = {}
-        supplier_terms = (
-            SupplierIngredient.objects.filter(
-                ingredient_id__in=daily_demand.keys(),
-                is_active=True,
-            )
-            .select_related("ingredient", "supplier")
-            .order_by("ingredient_id", "-is_preferred", "unit_price", "supplier__name")
-        )
-        for term in supplier_terms:
-            terms.setdefault(term.ingredient_id, term)
+        ingredients = list(Ingredient.objects.filter(id__in=daily_demand.keys()).order_by("name"))
+        terms, unpriced_ingredients = ensure_supplier_terms(ingredients)
 
         InventoryReceipt.objects.filter(reference__startswith=RECEIPT_PREFIX).delete()
+        ProductionPlan.objects.filter(
+            reference__startswith="HIST-",
+            planned_date__range=(history_start, today),
+        ).update(
+            actual_unit_material_cost=None,
+            actual_cost_captured_at=None,
+        )
         created = 0
-        skipped = 0
+        skipped_ingredients: list[str] = []
         receipts_by_ingredient: dict[Any, list[tuple[date, Decimal, Decimal]]] = defaultdict(list)
-        ingredients = Ingredient.objects.filter(id__in=daily_demand.keys()).order_by("name")
-
         for ingredient_index, ingredient in enumerate(ingredients):
             ingredient_days = daily_demand[ingredient.id]
             active_days = sorted(day for day, quantity in ingredient_days.items() if quantity > 0)
             term = terms.get(ingredient.id)
             if not active_days or term is None:
-                skipped += 1
+                skipped_ingredients.append(ingredient.name)
                 continue
 
             display_unit = display_unit_for(ingredient.base_unit)
@@ -290,7 +326,7 @@ class Command(BaseCommand):
                         unit_price=unit_price,
                         currency="GBP",
                         price_unit=display_unit,
-                        notes="基于实际制作/生产计划反推消耗，含约10%剥皮、去水等损耗",
+                        notes="按历史实际制作和当前/近期计划反推两周需求，含约10%处理损耗",
                         received_at=received_at,
                     )
                     receipts_by_ingredient[ingredient.id].append((receipt_date, base_quantity, purchase_value))
@@ -327,7 +363,15 @@ class Command(BaseCommand):
 
         self.stdout.write(
             self.style.SUCCESS(
-                f"Seeded {created} fortnightly receipts from {history_start.isoformat()} to {today.isoformat()}; "
-                f"{skipped} ingredients skipped and {snapshots} production cost snapshots backfilled."
+                f"Seeded {created} fortnightly receipts from {history_start.isoformat()} to {today.isoformat()} "
+                f"with demand through {demand_end.isoformat()}; "
+                f"{len(skipped_ingredients)} ingredients skipped and {snapshots} production cost snapshots backfilled."
             )
         )
+        if unpriced_ingredients or skipped_ingredients:
+            self.stdout.write(
+                self.style.WARNING(
+                    "Ingredients needing attention: "
+                    + ", ".join(sorted(set(unpriced_ingredients + skipped_ingredients)))
+                )
+            )

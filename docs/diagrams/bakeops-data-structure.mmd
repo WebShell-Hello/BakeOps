@@ -1,0 +1,78 @@
+erDiagram
+    USER ||--o| USER_PREFERENCE : has
+    USER }o--o{ ROLE : receives
+    ROLE }o--o{ NAVIGATION_ITEM : grants
+    PRODUCT ||--o{ RECIPE : has
+    RECIPE ||--o{ RECIPE_SECTION : contains
+    RECIPE_SECTION ||--o{ RECIPE_INGREDIENT : contains
+    INGREDIENT ||--o{ RECIPE_INGREDIENT : used_by
+    INGREDIENT ||--o| INVENTORY_ITEM : stocked_as
+    SUPPLIER ||--o{ SUPPLIER_INGREDIENT : offers
+    INGREDIENT ||--o{ SUPPLIER_INGREDIENT : offered_by
+    INGREDIENT ||--o{ INVENTORY_RECEIPT : received
+    SUPPLIER ||--o{ INVENTORY_RECEIPT : supplies
+    PRODUCT ||--o{ PRODUCTION_PLAN : planned
+    EMPLOYEE ||--o{ SCHEDULE_ENTRY : scheduled
+    PRODUCT ||--o{ SALES_ORDER_LINE : sold
+    SALES_ORDER ||--o{ SALES_ORDER_LINE : contains
+    COST_ITEM ||--o{ MONTHLY_COST : records
+    COST_MONTH ||--o{ MONTHLY_COST : groups
+    EMPLOYEE ||--o{ SCHEDULE_ENTRY : earns
+    BUSINESS_EVENT ||--o{ EVENT_CHECKLIST : has
+
+    PRODUCT {
+      uuid id PK
+      string code UK
+      string name_zh
+      string name_en
+      string sale_status
+    }
+    RECIPE {
+      uuid id PK
+      uuid product_id FK
+      int yield_quantity
+      string yield_unit
+      bool is_active
+    }
+    INGREDIENT {
+      uuid id PK
+      string name UK
+      string base_unit
+      bool is_active
+    }
+    INVENTORY_ITEM {
+      uuid id PK
+      uuid ingredient_id FK
+      decimal quantity
+      decimal inventory_value
+      int safety_buffer_days
+    }
+    PRODUCTION_PLAN {
+      uuid id PK
+      uuid product_id FK
+      date planned_date
+      int quantity
+      int actual_quantity
+      decimal actual_unit_material_cost
+    }
+    INVENTORY_RECEIPT {
+      uuid id PK
+      uuid ingredient_id FK
+      uuid supplier_id FK
+      decimal quantity
+      decimal unit_price
+      datetime received_at
+    }
+    SALES_ORDER {
+      uuid id PK
+      string reference UK
+      datetime sold_at
+    }
+    SALES_ORDER_LINE {
+      uuid id PK
+      uuid order_id FK
+      uuid product_id FK
+      int quantity
+      decimal paid_amount
+      decimal refund_amount
+    }

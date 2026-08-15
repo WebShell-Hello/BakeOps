@@ -2,13 +2,10 @@
 
 import {
   addDays,
-  addWeeks,
-  endOfWeek,
   format,
   isAfter,
   isEqual,
   parseISO,
-  startOfWeek,
   subDays,
   subWeeks,
 } from "date-fns";
@@ -16,8 +13,6 @@ import { enGB, zhCN } from "date-fns/locale";
 import {
   CalendarDays,
   CheckCircle2,
-  ChevronLeft,
-  ChevronRight,
   ClipboardList,
   Clock3,
   Copy,
@@ -36,6 +31,12 @@ import { useToast } from "@/components/providers/toast-provider";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
+  PeriodRangeToolbar,
+  periodRange,
+  shiftPeriodCursor,
+  type PeriodUnit,
+} from "@/components/ui/period-range-toolbar";
+import {
   createProductionPlans,
   deleteProductionPlan,
   getBusinessDayStatus,
@@ -48,7 +49,6 @@ import {
 } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
-type RangeMode = "day" | "week" | "future14";
 type PlanRow = { key: string; productId: string; quantity: string };
 type EditForm = { plannedQuantity: string; actualQuantity: string; notes: string };
 
@@ -191,8 +191,11 @@ export function ProductionPlanningPage() {
   const { showInfo, showSuccess } = useToast();
   const text = copy[locale];
   const dateLocale = locale === "en-GB" ? enGB : zhCN;
-  const [mode, setMode] = useState<RangeMode>("week");
-  const [anchorDate, setAnchorDate] = useState(() => new Date());
+  const [today] = useState(() => new Date());
+  const [periodUnit, setPeriodUnit] = useState<PeriodUnit>("week");
+  const [periodCursor, setPeriodCursor] = useState(() => today);
+  const [rangeStart, setRangeStart] = useState(() => dateKey(periodRange("week", today)[0]));
+  const [rangeEnd, setRangeEnd] = useState(() => dateKey(periodRange("week", today)[1]));
   const [overview, setOverview] = useState<ProductionPlanOverview | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -205,10 +208,6 @@ export function ProductionPlanningPage() {
   const [overrideClosure, setOverrideClosure] = useState(false);
   const [editing, setEditing] = useState<ProductionPlan | null>(null);
   const [editForm, setEditForm] = useState<EditForm>({ plannedQuantity: "", actualQuantity: "", notes: "" });
-
-  const range = useMemo(() => getRange(mode, anchorDate), [anchorDate, mode]);
-  const rangeStart = dateKey(range.start);
-  const rangeEnd = dateKey(range.end);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -247,19 +246,16 @@ export function ProductionPlanningPage() {
   }, [overview?.plans]);
   const products = overview?.product_options ?? [];
 
-  function changeMode(nextMode: RangeMode) {
-    setMode(nextMode);
-    setAnchorDate(new Date());
+  function applyPeriod(unit: PeriodUnit, cursor: Date) {
+    const [start, end] = periodRange(unit, cursor);
+    setPeriodUnit(unit);
+    setPeriodCursor(cursor);
+    setRangeStart(dateKey(start));
+    setRangeEnd(dateKey(end));
   }
 
-  function moveRange(direction: -1 | 1) {
-    setAnchorDate((current) =>
-      mode === "day"
-        ? addDays(current, direction)
-        : mode === "week"
-          ? addWeeks(current, direction)
-          : addDays(current, direction * 14),
-    );
+  function shiftPeriod(offset: -1 | 1) {
+    applyPeriod(periodUnit, shiftPeriodCursor(periodUnit, periodCursor, offset));
   }
 
   function openCreate(date = new Date()) {
@@ -400,33 +396,19 @@ export function ProductionPlanningPage() {
             </button>
           ) : null}
 
-          <div className="flex flex-col gap-3 border-b border-[var(--border)] p-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex min-w-0 items-center gap-2">
-              <Button variant="outline" size="icon" aria-label={text.previous} onClick={() => moveRange(-1)}>
-                <ChevronLeft className="size-4" />
-              </Button>
-              <h2 className="min-w-0 flex-1 text-center text-base font-semibold sm:min-w-64 sm:flex-none sm:text-lg">
-                {rangeTitle(range.start, range.end, dateLocale)}
-              </h2>
-              <Button variant="outline" size="icon" aria-label={text.next} onClick={() => moveRange(1)}>
-                <ChevronRight className="size-4" />
-              </Button>
-            </div>
-            <div className="inline-flex w-full rounded-lg border border-[var(--border)] bg-[var(--surface-muted)] p-1 sm:w-fit">
-              {(["day", "week", "future14"] as RangeMode[]).map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  className={cn(
-                    "min-w-0 flex-1 rounded-md px-3 py-1.5 text-sm transition-colors sm:flex-none",
-                    mode === item ? "bg-[var(--card)] font-medium shadow-sm" : "text-[var(--muted)] hover:text-[var(--foreground)]",
-                  )}
-                  onClick={() => changeMode(item)}
-                >
-                  {item === "day" ? text.today : item === "week" ? text.thisWeek : text.future14}
-                </button>
-              ))}
-            </div>
+          <div className="flex flex-wrap items-center justify-end gap-2 border-b border-[var(--border)] p-4">
+            <PeriodRangeToolbar
+              locale={locale}
+              unit={periodUnit}
+              startDate={rangeStart}
+              endDate={rangeEnd}
+              loading={loading}
+              onUnitChange={(unit) => applyPeriod(unit, today)}
+              onShift={shiftPeriod}
+              onStartDateChange={setRangeStart}
+              onEndDateChange={setRangeEnd}
+              onRefresh={() => void load()}
+            />
           </div>
 
           <div className="relative min-h-72">
@@ -627,17 +609,6 @@ function DialogFooter({ cancel, submit, saving, onCancel }: { cancel: string; su
 
 function Field({ label, hint, children }: { label: string; hint?: string; children: ReactNode }) {
   return <label className="block space-y-1.5"><span className="flex items-center justify-between gap-3 text-sm font-medium"><span>{label}</span>{hint ? <span className="text-xs font-normal text-[var(--muted)]">{hint}</span> : null}</span>{children}</label>;
-}
-
-function getRange(mode: RangeMode, anchor: Date) {
-  if (mode === "day") return { start: anchor, end: anchor };
-  if (mode === "week") return { start: startOfWeek(anchor, { weekStartsOn: 1 }), end: endOfWeek(anchor, { weekStartsOn: 1 }) };
-  return { start: anchor, end: addDays(anchor, 13) };
-}
-
-function rangeTitle(start: Date, end: Date, locale: typeof zhCN) {
-  if (isEqual(start, end)) return format(start, "PPP", { locale });
-  return `${format(start, "yyyy/MM/dd")} - ${format(end, "yyyy/MM/dd")}`;
 }
 
 function relativeDateLabel(date: Date, text: (typeof copy)[keyof typeof copy]) {

@@ -1,4 +1,5 @@
 from datetime import timedelta
+from decimal import Decimal
 
 import pytest
 from django.core.management import call_command
@@ -73,7 +74,17 @@ def test_seed_demo_inventory_receipts_is_fortnightly_and_starts_before_productio
             .aggregate(total=Sum("base_quantity"))["total"]
             or 0
         )
-        assert purchased >= consumed * 1.10
+        assert purchased >= consumed * Decimal("1.10")
+
+    snapshot_plan = ProductionPlan.objects.filter(
+        reference__startswith="HIST-",
+        actual_unit_material_cost__isnull=False,
+    ).first()
+    assert snapshot_plan is not None
+    snapshot_plan.actual_unit_material_cost = Decimal("999.0000")
+    snapshot_plan.save(update_fields=("actual_unit_material_cost", "updated_at"))
 
     call_command("seed_demo_inventory_receipts")
     assert InventoryReceipt.objects.filter(reference__startswith=RECEIPT_PREFIX).count() == first_count
+    snapshot_plan.refresh_from_db()
+    assert snapshot_plan.actual_unit_material_cost != Decimal("999.0000")

@@ -169,7 +169,7 @@ export function AppSidebar({
       data-sidebar-mode={mode}
       data-sidebar-expanded={expanded}
       className={cn(
-        "app-sidebar flex shrink-0 flex-col overflow-hidden border-r border-[var(--border)] bg-[var(--sidebar)] transition-[width] duration-200 ease-out",
+        "app-sidebar flex shrink-0 flex-col overflow-hidden border-r border-[var(--border)] transition-[width] duration-200 ease-out",
         expanded ? "w-[236px]" : "w-[76px]",
         className,
       )}

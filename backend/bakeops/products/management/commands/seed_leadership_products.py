@@ -1,3 +1,4 @@
+from decimal import Decimal
 from typing import Any
 
 from django.core.management.base import BaseCommand
@@ -74,6 +75,18 @@ LEADERSHIP_PRODUCTS: tuple[dict[str, Any], ...] = (
 )
 
 
+def merge_section_items(items: tuple[tuple[str, str], ...]) -> tuple[tuple[str, str], ...]:
+    """Combine duplicate ingredients while preserving their first-seen order."""
+    merged: dict[str, Decimal] = {}
+    for ingredient_name, weight in items:
+        merged[ingredient_name] = merged.get(ingredient_name, Decimal("0")) + Decimal(weight)
+
+    return tuple(
+        (ingredient_name, format(weight.normalize(), "f"))
+        for ingredient_name, weight in merged.items()
+    )
+
+
 class Command(BaseCommand):
     help = "Create or refresh the 30 leadership-standard demo products and recipes."
 
@@ -103,7 +116,7 @@ class Command(BaseCommand):
             recipe.sections.all().delete()
             for section_position, (section_name, items) in enumerate(definition["sections"]):
                 section = RecipeSection.objects.create(recipe=recipe, name=section_name, position=section_position)
-                for item_position, (ingredient_name, weight) in enumerate(items):
+                for item_position, (ingredient_name, weight) in enumerate(merge_section_items(items)):
                     ingredient, _ = Ingredient.objects.get_or_create(name=ingredient_name, defaults={"base_unit": "g"})
                     RecipeIngredient.objects.create(
                         section=section,

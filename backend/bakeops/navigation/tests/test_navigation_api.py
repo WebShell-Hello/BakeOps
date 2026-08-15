@@ -95,6 +95,58 @@ def test_reorder_is_atomic_and_rejects_stale_revision(
 
 
 @pytest.mark.django_db
+def test_reorder_moves_inactive_siblings_out_of_active_positions(
+    admin_client: APIClient, navigation_menu: NavigationMenu
+) -> None:
+    category = NavigationItem.objects.get(menu=navigation_menu, item_type=NavigationItem.ItemType.CATEGORY)
+    first_page = NavigationItem.objects.get(menu=navigation_menu, item_type=NavigationItem.ItemType.PAGE)
+    inactive_page = NavigationItem.objects.create(
+        menu=navigation_menu,
+        parent=category,
+        item_type=NavigationItem.ItemType.PAGE,
+        key="test-category.hidden",
+        label_zh="隐藏页面",
+        label_en="Hidden Page",
+        frontend_path="/test/hidden",
+        position=1,
+        is_active=False,
+        is_visible=False,
+    )
+    second_page = NavigationItem.objects.create(
+        menu=navigation_menu,
+        parent=category,
+        item_type=NavigationItem.ItemType.PAGE,
+        key="test-category.second",
+        label_zh="第二页面",
+        label_en="Second Page",
+        frontend_path="/test/second",
+        position=2,
+    )
+    payload = {
+        "revision": navigation_menu.revision,
+        "items": [
+            {"id": str(category.id), "parent_id": None, "position": 0},
+            {"id": str(second_page.id), "parent_id": str(category.id), "position": 0},
+            {"id": str(first_page.id), "parent_id": str(category.id), "position": 1},
+        ],
+    }
+
+    response = admin_client.post(
+        reverse("navigation-reorder", kwargs={"menu_id": navigation_menu.id}),
+        payload,
+        format="json",
+    )
+
+    assert response.status_code == 200
+    first_page.refresh_from_db()
+    second_page.refresh_from_db()
+    inactive_page.refresh_from_db()
+    assert second_page.position == 0
+    assert first_page.position == 1
+    assert inactive_page.position == 2
+
+
+@pytest.mark.django_db
 def test_anonymous_management_request_is_forbidden(navigation_menu: NavigationMenu) -> None:
     response = APIClient().get(reverse("navigation-item-list", kwargs={"menu_id": navigation_menu.id}))
 

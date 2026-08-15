@@ -332,6 +332,102 @@ export type SalesAnalysis = {
   }>;
 };
 
+export type DashboardOverview = {
+  generated_at: string;
+  business_date: string;
+  kpis: {
+    today_net_sales: string;
+    today_sales_quantity: number;
+    today_order_count: number;
+    today_planned_production: number;
+    today_actual_production: number;
+    daily_estimated_cost: {
+      total: string | null;
+      material_cost: string;
+      labour_cost: string;
+      allocated_operating_cost: string;
+      direct_daily_cost: string;
+      planned_business_days: number;
+      production_source: "ACTUAL" | "PLAN";
+      labour_source: "ACTUAL" | "PLAN";
+      calculation_complete: boolean;
+      missing_cost_count: number;
+    };
+    inventory_risk_count: number;
+    event_risk_count: number;
+  };
+  sales_trend: Array<{ date: string; net_sales: string; order_count: number }>;
+  sales_mix: Array<{
+    product_id: string | null;
+    product_name_zh: string;
+    product_name_en: string;
+    net_sales: string;
+    share: string;
+  }>;
+  top_products: SalesAnalysis["products"];
+  inventory_risks: Array<{
+    ingredient_id: string;
+    ingredient_name: string;
+    status: "EMERGENCY" | "PURCHASE_REQUIRED" | "WATCH";
+    current_stock: string;
+    unit: string;
+    shortage_date: string | null;
+  }>;
+  event_risks: Array<{
+    id: string;
+    name: string;
+    start_date: string;
+    days_until_start: number;
+    checklist_completed: number;
+    checklist_total: number;
+  }>;
+};
+
+export type ProfitabilityAnalysisGrain = "day" | "week" | "month";
+
+export type ProfitabilityAnalysis = {
+  range: {
+    start: string;
+    end: string;
+    grain: ProfitabilityAnalysisGrain;
+  };
+  kpis: {
+    net_sales: string;
+    material_cost: string;
+    gross_profit: string;
+    gross_margin: string;
+    wages: string;
+    other_costs: string;
+    operating_profit: string;
+    operating_margin: string;
+  };
+  cost_structure: Array<{
+    key: "MATERIALS" | "WAGES" | "OTHER";
+    amount: string;
+  }>;
+  trend: Array<{
+    period: string;
+    net_sales: string;
+    material_cost: string;
+    gross_profit: string;
+    wages: string;
+    other_costs: string;
+    operating_profit: string;
+  }>;
+  products: Array<{
+    product_id: string;
+    product_name_zh: string;
+    product_name_en: string;
+    quantity: number;
+    net_sales: string;
+    material_cost: string;
+    contribution_profit: string;
+    contribution_margin: string;
+    contribution_share: string;
+    quadrant: "STAR" | "POTENTIAL" | "TRAFFIC" | "REVIEW";
+  }>;
+};
+
 export type WageDetail = {
   month: string;
   total: string;
@@ -344,6 +440,29 @@ export type WageDetail = {
     shift_count: number;
     wage: string;
     is_deleted: boolean;
+  }>;
+};
+
+export type MaterialDetail = {
+  month: string;
+  total: string;
+  missing_cost_count: number;
+  items: Array<{
+    production_plan_id: string;
+    production_date: string;
+    product_id: string;
+    product_name_zh: string;
+    product_name_en: string;
+    planned_quantity: number;
+    actual_quantity: number;
+    remaining_planned_quantity: number;
+    actual_unit_cost: string | null;
+    planned_unit_cost: string | null;
+    actual_cost: string | null;
+    planned_cost: string | null;
+    total_cost: string;
+    source: "ACTUAL" | "PLAN";
+    calculation_complete: boolean;
   }>;
 };
 
@@ -819,6 +938,8 @@ export type ProductionPlanUpdateInput = {
   notes?: string;
 };
 
+export const BAKEOPS_DATA_CHANGE_EVENT = "bakeops-data-change";
+
 function getApiBaseUrl() {
   const baseUrl =
     process.env.INTERNAL_API_BASE_URL ?? process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -852,6 +973,13 @@ async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
     );
     Object.assign(error, { status: response.status, body });
     throw error;
+  }
+
+  if (
+    typeof window !== "undefined" &&
+    !["GET", "HEAD", "OPTIONS", "TRACE"].includes(method)
+  ) {
+    window.dispatchEvent(new Event(BAKEOPS_DATA_CHANGE_EVENT));
   }
 
   if (response.status === 204) return undefined as T;
@@ -1095,8 +1223,26 @@ export function getSalesAnalysis(
   return apiRequest<SalesAnalysis>(`/sales/analysis/?${query}`);
 }
 
+export function getDashboardOverview(date?: string) {
+  const query = date ? `?date=${encodeURIComponent(date)}` : "";
+  return apiRequest<DashboardOverview>(`/dashboard/overview/${query}`);
+}
+
+export function getProfitabilityAnalysis(
+  start: string,
+  end: string,
+  grain: ProfitabilityAnalysisGrain,
+) {
+  const query = new URLSearchParams({ start, end, grain });
+  return apiRequest<ProfitabilityAnalysis>(`/sales/profitability/?${query}`);
+}
+
 export function getWageDetails(month: string) {
   return apiRequest<WageDetail>(`/costs/wage-details/?month=${encodeURIComponent(month)}`);
+}
+
+export function getMaterialDetails(month: string) {
+  return apiRequest<MaterialDetail>(`/costs/material-details/?month=${encodeURIComponent(month)}`);
 }
 
 export function getCostItems(includeInactive = false) {

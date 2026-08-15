@@ -29,6 +29,7 @@ import {
   deleteMonthlyCost,
   getMonthlyCostItems,
   getCostOverview,
+  getMaterialDetails,
   getWageDetails,
   saveMonthlyCostItems,
   updateMonthlyCost,
@@ -36,6 +37,7 @@ import {
   type CostOverview,
   type MonthlyCost,
   type MonthlyCostItemInput,
+  type MaterialDetail,
   type WageDetail,
 } from "@/lib/api";
 import { cn } from "@/lib/utils";
@@ -124,6 +126,17 @@ const copy = {
     itemFormError: "请完整填写中英文名称和分类",
     itemNote: "输入该月各项实际金额后统一保存；员工工资和食材物料为自动计算，不可修改。",
     wageTitle: "员工工资明细",
+    materialTitle: "食材物料明细",
+    product: "产品",
+    productionDate: "生产日期",
+    plannedQuantity: "计划数量",
+    actualQuantity: "实际制作",
+    remainingPlan: "剩余计划",
+    unitCost: "单位材料成本",
+    actualCost: "实际成本",
+    plannedCost: "计划成本",
+    calculationIssue: "缺少可用成本",
+    emptyMaterials: "这个月没有生产记录",
     employee: "员工",
     deletedEmployee: "已删除员工",
     position: "岗位",
@@ -201,6 +214,17 @@ const copy = {
     itemFormError: "Complete both names and choose a category",
     itemNote: "Enter manual costs and save them together. Employee wages and materials are calculated automatically.",
     wageTitle: "Employee Wage Details",
+    materialTitle: "Ingredients & Materials Details",
+    product: "Product",
+    productionDate: "Production Date",
+    plannedQuantity: "Planned Quantity",
+    actualQuantity: "Actual Production",
+    remainingPlan: "Remaining Plan",
+    unitCost: "Unit Material Cost",
+    actualCost: "Actual Cost",
+    plannedCost: "Planned Cost",
+    calculationIssue: "Missing usable cost",
+    emptyMaterials: "There are no production records for this month",
     employee: "Employee",
     deletedEmployee: "Deleted employee",
     position: "Position",
@@ -243,6 +267,7 @@ export function CostManagementPage() {
   const [deletingItem, setDeletingItem] = useState<MonthlyCost | null>(null);
   const [itemForm, setItemForm] = useState<ItemFormState>(emptyItemForm);
   const [wages, setWages] = useState<WageDetail | null>(null);
+  const [materials, setMaterials] = useState<MaterialDetail | null>(null);
   const [itemAmounts, setItemAmounts] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
 
@@ -332,6 +357,14 @@ export function CostManagementPage() {
     }
   }
 
+  async function openMaterials() {
+    try {
+      setMaterials(await getMaterialDetails(month));
+    } catch (loadError) {
+      setError(loadError instanceof Error ? loadError.message : text.loadError);
+    }
+  }
+
   async function saveItemAmounts() {
     setSaving(true);
     setError(null);
@@ -412,6 +445,7 @@ export function CostManagementPage() {
           onEdit={openItem}
           onDelete={setDeletingItem}
           onWages={() => void openWages()}
+          onMaterials={() => void openMaterials()}
         />
         {editingItem !== undefined ? (
           <ItemDialog
@@ -439,12 +473,13 @@ export function CostManagementPage() {
           </Modal>
         ) : null}
         {wages ? <WageDrawer text={text} detail={wages} onClose={() => setWages(null)} /> : null}
+        {materials ? <MaterialDrawer text={text} detail={materials} onClose={() => setMaterials(null)} /> : null}
       </main>
     </DashboardShell>
   );
 }
 
-function MonthlyView({ overview, items, amounts, loading, text, dateLocale, monthDate, month, saving, onAmountChange, onEdit, onDelete, onWages }: {
+function MonthlyView({ overview, items, amounts, loading, text, dateLocale, monthDate, month, saving, onAmountChange, onEdit, onDelete, onWages, onMaterials }: {
   overview: CostOverview | null;
   items: MonthlyCost[];
   amounts: Record<string, string>;
@@ -458,6 +493,7 @@ function MonthlyView({ overview, items, amounts, loading, text, dateLocale, mont
   onEdit: (item: MonthlyCost) => void;
   onDelete: (item: MonthlyCost) => void;
   onWages: () => void;
+  onMaterials: () => void;
 }) {
   const summary = overview?.summary;
   const chinese = text.title === "成本管理";
@@ -492,7 +528,7 @@ function MonthlyView({ overview, items, amounts, loading, text, dateLocale, mont
                     <td className="px-4 py-3 font-mono text-xs">{month}</td>
                     <td className="px-4 py-3"><SourceBadge source={item.source} text={text} /></td>
                     <td className="max-w-64 px-4 py-3 text-[var(--muted)]">{automaticMaterial ? text.materialSource : item.notes || "—"}</td>
-                    <td className="px-4 py-3 text-right">{automaticMaterial ? <span className="text-[var(--muted)]">—</span> : <><Button variant="ghost" size="icon" aria-label={`${text.edit}: ${chinese ? item.name_zh : item.name_en}`} onClick={() => onEdit(item)}><Pencil className="size-4" /></Button><Button variant="ghost" size="icon" className="text-rose-600" disabled={saving} aria-label={`${text.delete}: ${chinese ? item.name_zh : item.name_en}`} onClick={() => onDelete(item)}><Trash2 className="size-4" /></Button></>}</td>
+                    <td className="px-4 py-3 text-right">{automaticMaterial ? <Button variant="ghost" className="h-8 px-2" onClick={onMaterials}><Eye className="size-4" />{text.viewDetails}</Button> : <><Button variant="ghost" size="icon" aria-label={`${text.edit}: ${chinese ? item.name_zh : item.name_en}`} onClick={() => onEdit(item)}><Pencil className="size-4" /></Button><Button variant="ghost" size="icon" className="text-rose-600" disabled={saving} aria-label={`${text.delete}: ${chinese ? item.name_zh : item.name_en}`} onClick={() => onDelete(item)}><Trash2 className="size-4" /></Button></>}</td>
                   </tr>
                 );
               })}
@@ -626,6 +662,62 @@ function ItemDialog({ text, value, editing, saving, onChange, onClose, onSubmit 
 
 function WageDrawer({ text, detail, onClose }: { text: typeof copy["zh-CN"] | typeof copy["en-GB"]; detail: WageDetail; onClose: () => void }) {
   return <div className="fixed inset-0 z-[80] bg-slate-950/30" role="dialog" aria-modal="true"><button type="button" className="absolute inset-0" aria-label={text.cancel} onClick={onClose} /><aside className="absolute inset-y-0 right-0 z-10 flex w-full max-w-3xl flex-col border-l border-[var(--border)] bg-[var(--card)] shadow-2xl"><header className="flex items-center justify-between border-b border-[var(--border)] px-5 py-4"><div><h2 className="font-semibold">{text.wageTitle}</h2><p className="mt-1 text-sm text-[var(--muted)]">{detail.month} · {money(detail.total)}</p></div><Button variant="ghost" size="icon" aria-label={text.cancel} onClick={onClose}><X className="size-4" /></Button></header><div className="flex-1 overflow-auto p-5"><div className="overflow-x-auto"><table className="w-full min-w-[650px] text-sm"><thead className="bg-[var(--surface-muted)] text-left text-xs uppercase text-[var(--muted)]"><tr><th className="px-3 py-3">{text.employee}</th><th className="px-3 py-3">{text.position}</th><th className="px-3 py-3 text-right">{text.shifts}</th><th className="px-3 py-3 text-right">{text.hours}</th><th className="px-3 py-3 text-right">{text.hourlyRate}</th><th className="px-3 py-3 text-right">{text.wage}</th></tr></thead><tbody>{detail.employees.map((employee) => <tr key={employee.employee_id} className="border-t border-[var(--border)]"><td className="px-3 py-3"><span className="inline-flex flex-wrap items-center gap-2 font-medium">{employee.employee_name}{employee.is_deleted ? <span className="rounded-full bg-rose-500/10 px-2 py-0.5 text-xs font-medium text-rose-600">{text.deletedEmployee}</span> : null}</span></td><td className="px-3 py-3 text-[var(--muted)]">{employee.position}</td><td className="px-3 py-3 text-right tabular-nums">{employee.shift_count}</td><td className="px-3 py-3 text-right tabular-nums">{employee.actual_hours}h</td><td className="px-3 py-3 text-right tabular-nums">{money(employee.hourly_rate)}</td><td className="px-3 py-3 text-right font-medium tabular-nums">{money(employee.wage)}</td></tr>)}</tbody></table></div>{!detail.employees.length ? <p className="py-16 text-center text-sm text-[var(--muted)]">{text.emptyWages}</p> : null}</div><footer className="flex items-center justify-between border-t border-[var(--border)] px-5 py-4"><p className="font-semibold">{text.wages}: {money(detail.total)}</p><Link href="/people/attendance" className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--card)] px-4 text-sm font-medium hover:bg-[var(--surface-muted)]"><CalendarDays className="size-4" />{text.openSchedule}</Link></footer></aside></div>;
+}
+
+function MaterialDrawer({ text, detail, onClose }: { text: typeof copy["zh-CN"] | typeof copy["en-GB"]; detail: MaterialDetail; onClose: () => void }) {
+  const chinese = text.title === "成本管理";
+  return <div className="fixed inset-0 z-[80] bg-slate-950/30" role="dialog" aria-modal="true">
+    <button type="button" className="absolute inset-0" aria-label={text.cancel} onClick={onClose} />
+    <aside className="absolute inset-y-0 right-0 z-10 flex w-full max-w-5xl flex-col border-l border-[var(--border)] bg-[var(--card)] shadow-2xl">
+      <header className="flex items-center justify-between border-b border-[var(--border)] px-5 py-4">
+        <div>
+          <h2 className="font-semibold">{text.materialTitle}</h2>
+          <p className="mt-1 text-sm text-[var(--muted)]">{detail.month} · {money(detail.total)}</p>
+        </div>
+        <Button variant="ghost" size="icon" aria-label={text.cancel} onClick={onClose}><X className="size-4" /></Button>
+      </header>
+      <div className="flex-1 overflow-auto p-5">
+        {detail.missing_cost_count > 0 ? <div className="mb-4 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-700">{detail.missing_cost_count} {text.calculationIssue}</div> : null}
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[1050px] text-sm">
+            <thead className="bg-[var(--surface-muted)] text-left text-xs uppercase text-[var(--muted)]">
+              <tr>
+                <th className="px-3 py-3">{text.product}</th>
+                <th className="px-3 py-3">{text.productionDate}</th>
+                <th className="px-3 py-3 text-right">{text.plannedQuantity}</th>
+                <th className="px-3 py-3 text-right">{text.actualQuantity}</th>
+                <th className="px-3 py-3 text-right">{text.remainingPlan}</th>
+                <th className="px-3 py-3 text-right">{text.unitCost}</th>
+                <th className="px-3 py-3 text-right">{text.actualCost}</th>
+                <th className="px-3 py-3 text-right">{text.plannedCost}</th>
+                <th className="px-3 py-3 text-right">{text.amount}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {detail.items.map((item) => (
+                <tr key={item.production_plan_id} className="border-t border-[var(--border)]">
+                  <td className="px-3 py-3 font-medium">{chinese ? item.product_name_zh : item.product_name_en}</td>
+                  <td className="px-3 py-3 font-mono text-xs">{item.production_date}</td>
+                  <td className="px-3 py-3 text-right tabular-nums">{item.planned_quantity}</td>
+                  <td className="px-3 py-3 text-right tabular-nums">{item.actual_quantity || "—"}</td>
+                  <td className="px-3 py-3 text-right tabular-nums">{item.remaining_planned_quantity || "—"}</td>
+                  <td className="px-3 py-3 text-right tabular-nums">{money(item.actual_unit_cost ?? item.planned_unit_cost ?? undefined)}</td>
+                  <td className="px-3 py-3 text-right tabular-nums">{item.actual_cost ? money(item.actual_cost) : "—"}</td>
+                  <td className="px-3 py-3 text-right tabular-nums">{item.planned_cost ? money(item.planned_cost) : "—"}</td>
+                  <td className={cn("px-3 py-3 text-right font-medium tabular-nums", !item.calculation_complete && "text-amber-600")}>{item.calculation_complete ? money(item.total_cost) : text.materialUnavailable}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {!detail.items.length ? <p className="py-16 text-center text-sm text-[var(--muted)]">{text.emptyMaterials}</p> : null}
+      </div>
+      <footer className="flex items-center justify-between border-t border-[var(--border)] px-5 py-4">
+        <p className="font-semibold">{text.materialTitle}: {money(detail.total)}</p>
+        <Button variant="outline" onClick={onClose}>{text.cancel}</Button>
+      </footer>
+    </aside>
+  </div>;
 }
 
 function Modal({ title, children, onClose }: { title: string; children: React.ReactNode; onClose: () => void }) { return <div className="fixed inset-0 z-[80] grid place-items-center bg-slate-950/30 p-4" role="dialog" aria-modal="true"><button type="button" className="absolute inset-0" aria-label="Close" onClick={onClose} /><div className="relative z-10 w-full max-w-xl rounded-lg border border-[var(--border)] bg-[var(--card)] shadow-2xl"><header className="flex items-center justify-between border-b border-[var(--border)] px-5 py-4"><h2 className="font-semibold">{title}</h2><Button variant="ghost" size="icon" onClick={onClose}><X className="size-4" /></Button></header><div className="p-5">{children}</div></div></div>; }

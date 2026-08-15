@@ -24,7 +24,7 @@ export function AuthShell({ children }: { children: ReactNode }) {
               </span>
               <div>
                 <p className="text-xl font-bold tracking-[-0.03em]">BakeOps</p>
-                <p className="text-xs text-[var(--muted)]">{isEnglish ? "Bing's Backery" : "冰冰点心屋"}</p>
+                <p className="text-xs text-[var(--muted)]">{isEnglish ? "bitemeloud" : "来咬我啊"}</p>
               </div>
             </div>
             <Button type="button" variant="ghost" size="icon" aria-label={isEnglish ? "切换为中文" : "Switch to English"} onClick={toggleLocale}>

@@ -190,7 +190,11 @@ const statusDotStyles: Record<InventoryPurchaseStatus, string> = {
   NO_DEMAND: "bg-zinc-400",
 };
 
-export function InventoryManagementPage() {
+export function InventoryManagementPage({
+  initialIngredientId = null,
+}: {
+  initialIngredientId?: string | null;
+}) {
   const { locale } = useAppPreferences();
   const { showInfo } = useToast();
   const text = copy[locale];
@@ -199,7 +203,7 @@ export function InventoryManagementPage() {
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<InventoryPurchaseStatus | "ALL">("ALL");
-  const [selectedIngredientId, setSelectedIngredientId] = useState<string | null>(null);
+  const [selectedIngredientId, setSelectedIngredientId] = useState<string | null>(initialIngredientId);
   const [receiptItem, setReceiptItem] = useState<InventoryForecastItem | null>(null);
   const [receiptQuantity, setReceiptQuantity] = useState("");
   const [receiptSupplierId, setReceiptSupplierId] = useState("");

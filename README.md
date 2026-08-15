@@ -4,6 +4,17 @@ BakeOps 是一套面向面包店日常运营与经营决策的内部管理平台
 
 > 当前状态基准：2026-08-14。业务蓝图、实施状态、工程约定和路线图详见 [V1.2 中文设计说明书](docs/Bakery_Operations_Website_Design_Spec_V1.2_CN.docx)。
 
+## 项目资料
+
+- [功能逻辑架构图（Draw.io）](docs/diagrams/bakeops-functional-architecture.drawio)
+- [功能逻辑架构图（Mermaid）](docs/diagrams/bakeops-functional-architecture.mmd)
+- [数据结构图（Draw.io）](docs/diagrams/bakeops-data-structure.drawio)
+- [数据结构图（Mermaid）](docs/diagrams/bakeops-data-structure.mmd)
+- [数据字典（Excel）](docs/BakeOps_Data_Dictionary.xlsx)
+- [门店老板版使用说明书（Word）](docs/BakeOps_Owner_User_Guide.docx)
+
+`.posm` 不是当前项目或主流图表工具普遍支持的标准格式，因此架构图提供 Draw.io 可编辑文件和 Mermaid 源文件两种格式。
+
 ## 当前进度
 
 ### 已实现
@@ -21,22 +32,35 @@ BakeOps 是一套面向面包店日常运营与经营决策的内部管理平台
 - 供应商管理：供应商资料、食材价格、计价单位、MOQ、提前天数、采购备注、停用与首选供应商
 - `Supplier -> SupplierIngredient <- Ingredient` 多对多关系，以及基于当前配方食材的 20 家模拟供应商
 - 中英文通用分页和可手动输入的每页行数
+- 生产计划：历史实际制作、当前计划、未来计划和计划/实际状态
+- 库存管理：未来 14 天生产需求、库存覆盖天数、预计不足日期和采购预警
+- 采购入库和进货记录：食材、数量、采购单价、采购时间、供应商和库存价值
+- 活动管理：节假日、门店活动、准备期和休息/停业日期
+- 销售分析：真实销售收入、销售数量、订单、折扣、退款、实际成交价和每日明细
+- 成本管理：员工工资、生产物料成本、每月其他经营成本和历史月份明细
+- 盈利与产品表现：整体盈利 KPI、利润趋势、成本结构、产品贡献毛利和四象限
 - Django API、PostgreSQL 健康检查、OpenAPI Schema 和 Swagger 文档
 - 同一 Wi-Fi 下的手机访问与登录
 
-### 部分实现
+### 当前口径
 
-- Dashboard 已完成页面结构、系统状态和业务空状态，尚未接入真实经营指标
-- 当前 Attendance 相关能力是计划排班，不是签到、签退、实际工时或工资核算
-- 供应商报价与采购条件已经建立；配方预估价格、价格历史、采购单和库存计价尚未形成闭环
+```text
+净销售收入 = 实际支付金额 - 退款
+员工工资 = 排班实际工时 × 员工时薪
+物料成本 = 生产数量 × 产品材料成本
+产品贡献毛利 = 产品实际净销售收入 - 产品材料成本
+经营利润 = 净销售收入 - 物料成本 - 员工工资 - 其他经营成本
+```
+
+产品层暂不分摊房租、人工和水电，因此显示“贡献毛利”，不伪装成精确的 SKU 净利润。
 
 ### 待开发
 
-- Sales、Production、Inventory、Purchase Orders、Waste
-- Production Planning、Calendar & Events、Marketing
-- 实际考勤、人工成本、成本利润和经营 Dashboard
-- Analytics、需求预测、自动生产建议
-- 多门店、完整审计日志、通知、全局搜索和生产部署体系
+- POS/订单数据的稳定导入和销售数据校验
+- 库存批次、损耗、库存移动和真实出库记录
+- Yield Rate、半成品配方、包装和损耗成本
+- 活动建议到生产计划/采购计划的确认工作流
+- 多门店、审计日志、通知、备份恢复和生产部署体系
 
 导航中存在页面或 Dashboard 中存在卡片，不代表对应业务能力已经完成。当前完成度以代码、迁移、测试和上述状态说明为准。
 
@@ -72,6 +96,9 @@ Browser
 - 新增用户可见文案必须同时支持 `zh-CN` 和 `en-GB`；英文含义以确认后的中文业务含义为基准。
 - 开发和演示使用合成数据，但始终运行真实 PostgreSQL、REST API、权限和迁移。
 - 排班是未来计划，实际考勤是已发生事实；后续不得直接使用计划排班计算工资。
+- 供应商报价、实际进货单价和库存平均成本是三个不同概念，不能混用。
+- 历史业务数据优先软删除或停用，不能因为当前产品或员工被删除而破坏历史记录。
+- 用户未明确要求时，不同步 README、Word、Excel 或项目状态文档，避免无关文档 churn。
 
 ## 项目结构
 
@@ -80,11 +107,15 @@ BakeOps/
 ├── backend/
 │   ├── bakeops/
 │   │   ├── access/       # 角色与页面权限
+│   │   ├── costs/        # 成本、工资、物料成本
 │   │   ├── api/          # API 汇总与健康检查
 │   │   ├── common/       # UUID 与时间戳基础模型
 │   │   ├── employees/    # 员工档案
+│   │   ├── events/       # 活动、节假日和营业状态
+│   │   ├── inventory/    # 库存、生产计划和进货记录
 │   │   ├── navigation/   # 动态菜单
 │   │   ├── products/     # 产品、原料与配方
+│   │   ├── sales/        # 销售分析和盈利分析
 │   │   ├── scheduling/   # 员工排班
 │   │   ├── suppliers/    # 供应商及食材采购条件
 │   │   └── users/        # 认证、用户和账户偏好
@@ -114,7 +145,7 @@ docker compose ps
 
 默认入口：
 
-- 前端：`http://localhost:3100`
+- 前端：`http://localhost:3000`（以 `.env` 的 `FRONTEND_PORT` 为准）
 - API 健康检查：`http://localhost:8000/api/v1/health/`
 - OpenAPI Schema：`http://localhost:8000/api/schema/`
 - Swagger：`http://localhost:8000/api/docs/`
@@ -127,7 +158,7 @@ docker compose ps
 手机和电脑连接同一 Wi-Fi 后，使用电脑局域网 IP 访问前端，例如：
 
 ```text
-http://192.168.1.61:3100
+http://192.168.1.61:3000
 ```
 
 局域网 IP 发生变化时，需要同步更新 `.env` 中的：
@@ -178,14 +209,14 @@ docker compose exec frontend npm run build
 
 ## 下一阶段
 
-当前正在推进 M3“库存与采购基础”。供应商主数据和采购条件已经完成，下一步建议：
+当前重点是把已有演示数据链路逐步替换为真实业务输入：
 
-1. 建立供应商报价历史和采购单，避免直接覆盖历史采购价格。
-2. 深化 Ingredient Library 的采购单位与配方单位换算。
-3. 建立库存批次与 Inventory Movement，保留每次入库、领用、报废和调整原因。
-4. 用有效采购价格为配方项和产品成本提供可信数据。
-5. 在此基础上实现生产计划、耗材需求和库存缺口。
-6. 再接入实际生产、销售与损耗，最终替换 Dashboard 的业务空状态。
+1. 建立 POS/订单数据导入和销售数据校验。
+2. 增加库存批次、损耗、库存移动和真实出库记录。
+3. 增加 Yield Rate、半成品配方、包装和损耗成本。
+4. 将活动准备建议连接到可确认的生产计划和采购计划。
+5. 完善盈利分析的历史成本口径、导出和多门店扩展。
+6. 建立审计日志、通知、备份恢复和生产部署流程。
 
 详细里程碑和未来展望请阅读 [V1.2 中文设计说明书](docs/Bakery_Operations_Website_Design_Spec_V1.2_CN.docx)。重要且跨模块的技术决策应新增到 [docs/architecture](docs/architecture/) 中。
 

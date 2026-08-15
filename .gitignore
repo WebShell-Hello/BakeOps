@@ -10,6 +10,13 @@ backups/
 *.dump.gz
 *.dump.enc
 
+# The demo database dump is intentionally versioned for local recovery.
+!backups/demo/
+!backups/demo/bakeops-demo.sql
+!backups/demo/docker-environment.txt
+!backups/
+!backups/demo/
+
 # Python
 __pycache__/
 *.py[cod]
@@ -29,3 +36,4 @@ npm-debug.log*
 # Editors
 .idea/
 .vscode/
+.~*

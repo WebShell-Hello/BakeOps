@@ -89,8 +89,8 @@ class ProductionPlanListCreateApi(APIView):
                 {"detail": "End date cannot be earlier than start date."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        if (end_date - start_date).days > 92:
-            return Response({"detail": "Date range cannot exceed 93 days."}, status=status.HTTP_400_BAD_REQUEST)
+        if (end_date - start_date).days > 366:
+            return Response({"detail": "Date range cannot exceed 367 days."}, status=status.HTTP_400_BAD_REQUEST)
 
         active = ~Q(status=ProductionPlan.Status.CANCELLED)
         plans = (

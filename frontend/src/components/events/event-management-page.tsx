@@ -284,19 +284,25 @@ const eventTone: Record<BusinessEventStatus, string> = {
 };
 const inputClass = "h-10 w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 text-sm outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary-ring)]";
 
-export function EventManagementPage() {
+export function EventManagementPage({
+  initialEventId = null,
+  initialYear,
+}: {
+  initialEventId?: string | null;
+  initialYear?: number;
+}) {
   const { locale } = useAppPreferences();
   const { showSuccess } = useToast();
   const text = copy[locale];
   const dateLocale = locale === "en-GB" ? enGB : zhCN;
-  const [year, setYear] = useState(() => new Date().getFullYear());
+  const [year, setYear] = useState(() => initialYear ?? new Date().getFullYear());
   const [mode, setMode] = useState<DisplayMode>("calendar");
   const [filter, setFilter] = useState<FilterType>("ALL");
   const [overview, setOverview] = useState<EventOverview | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(initialEventId);
   const [eventDetail, setEventDetail] = useState<BusinessEventDetail | null>(null);
   const [eventFormOpen, setEventFormOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState<BusinessEvent | null>(null);

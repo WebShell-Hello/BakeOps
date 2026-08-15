@@ -21,6 +21,7 @@ from bakeops.costs.services import (
     monthly_costs_with_materials,
     next_month,
     parse_month,
+    production_material_cost_details,
     wage_summary,
 )
 
@@ -144,6 +145,14 @@ class WageDetailApi(APIView):
                 "employees": wages["employees"],
             }
         )
+
+
+class MaterialDetailApi(APIView):
+    permission_classes = (CanManageCosts,)
+
+    def get(self, request: Request) -> Response:
+        month = requested_month(request)
+        return Response(production_material_cost_details(month))
 
 
 class MonthlyCostBatchUpdateApi(APIView):
