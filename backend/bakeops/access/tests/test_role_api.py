@@ -38,6 +38,29 @@ def navigation_page() -> NavigationItem:
     )
 
 
+@pytest.fixture
+def roles_permission_page() -> NavigationItem:
+    menu = NavigationMenu.objects.create(code="settings-test", name_zh="设置测试", name_en="Settings Test")
+    category = NavigationItem.objects.create(
+        menu=menu,
+        item_type=NavigationItem.ItemType.CATEGORY,
+        key="settings",
+        label_zh="系统设置",
+        label_en="Settings",
+        position=0,
+    )
+    return NavigationItem.objects.create(
+        menu=menu,
+        parent=category,
+        item_type=NavigationItem.ItemType.PAGE,
+        key="settings.roles-permissions",
+        label_zh="角色权限",
+        label_en="Roles & Permissions",
+        frontend_path="/settings/roles-permissions",
+        position=0,
+    )
+
+
 @pytest.mark.django_db
 def test_role_crud_persists_page_permissions(admin_client: APIClient, navigation_page: NavigationItem) -> None:
     create_response = admin_client.post(
@@ -85,6 +108,33 @@ def test_role_crud_persists_page_permissions(admin_client: APIClient, navigation
     permanent_delete_response = admin_client.delete(reverse("role-detail", kwargs={"pk": role.id}))
     assert permanent_delete_response.status_code == 204
     assert not Role.objects.filter(id=role.id).exists()
+
+
+@pytest.mark.django_db
+def test_role_page_permission_allows_non_superuser_to_manage_roles(
+    roles_permission_page: NavigationItem,
+) -> None:
+    user = User.objects.create_user(email="role-manager@example.com", password="test-password")
+    role = Role.objects.create(code="role-manager", name="Role Manager")
+    role.pages.set([roles_permission_page])
+    user.roles.set([role])
+    client = APIClient()
+    client.force_authenticate(user)
+
+    response = client.get(reverse("role-list"))
+
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_non_superuser_without_roles_page_cannot_manage_roles() -> None:
+    user = User.objects.create_user(email="no-role-manager@example.com", password="test-password")
+    client = APIClient()
+    client.force_authenticate(user)
+
+    response = client.get(reverse("role-list"))
+
+    assert response.status_code == 403
 
 
 @pytest.mark.django_db

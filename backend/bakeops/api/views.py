@@ -1,12 +1,18 @@
 from django.db import connection
 from django.utils.dateparse import parse_date
 from rest_framework.exceptions import ValidationError
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import BasePermission
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from bakeops.access.permissions import has_role_page_access
 from bakeops.api.dashboard import build_dashboard_overview
+
+
+class CanReadDashboard(BasePermission):
+    def has_permission(self, request: Request, view: APIView) -> bool:
+        return has_role_page_access(request.user, {"dashboard"})
 
 
 class HealthCheckApi(APIView):
@@ -22,7 +28,7 @@ class HealthCheckApi(APIView):
 
 
 class DashboardOverviewApi(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (CanReadDashboard,)
 
     def get(self, request: Request) -> Response:
         requested_date = request.query_params.get("date")

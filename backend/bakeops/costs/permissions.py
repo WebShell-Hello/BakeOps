@@ -3,15 +3,12 @@ from rest_framework.permissions import BasePermission
 from rest_framework.request import Request
 from rest_framework.views import APIView
 
+from bakeops.access.permissions import has_django_or_role_permission
+
 
 class CanManageCosts(BasePermission):
     def has_permission(self, request: Request, view: APIView) -> bool:
         return bool(
             settings.DEBUG
-            or (
-                request.user.is_authenticated
-                and request.user.is_active
-                and request.user.has_perm("costs.manage_costs")
-            )
+            or has_django_or_role_permission(request.user, "costs.manage_costs", {"analytics.costs"})
         )
-
