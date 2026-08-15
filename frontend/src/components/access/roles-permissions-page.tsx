@@ -163,6 +163,15 @@ export function RolesPermissionsPage() {
     () => buildPageGroups(navigationItems, locale),
     [navigationItems, locale],
   );
+  const assignablePageIds = useMemo(
+    () =>
+      new Set(
+        navigationItems
+          .filter((item) => item.item_type === "PAGE" && item.is_active)
+          .map((item) => item.id),
+      ),
+    [navigationItems],
+  );
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -200,7 +209,7 @@ export function RolesPermissionsPage() {
       name: role.name,
       description: role.description,
       is_protected: role.is_protected,
-      page_ids: role.page_ids,
+      page_ids: role.page_ids.filter((pageId) => assignablePageIds.has(pageId)),
     });
     setEditingRole(role);
   }
@@ -237,7 +246,7 @@ export function RolesPermissionsPage() {
       name: form.name.trim(),
       description: form.description.trim(),
       is_protected: form.is_protected,
-      page_ids: form.page_ids,
+      page_ids: form.page_ids.filter((pageId) => assignablePageIds.has(pageId)),
     };
     try {
       if (editingRole) await updateAccessRole(editingRole.id, input);
