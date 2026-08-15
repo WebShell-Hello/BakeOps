@@ -89,8 +89,14 @@ export function AppTopbar({
             <Menu className="size-5" />
           </Button>
 
-          <p className="truncate text-sm font-semibold sm:text-[15px]">
-            {isEnglish ? "Bite Me Loud" : "来咬我啊"}
+          <p className="truncate text-sm font-bold sm:text-[15px]">
+            {isEnglish ? (
+              <>
+                BITE ME L<span className="text-red-600">OD</span>
+              </>
+            ) : (
+              "来咬我啊"
+            )}
           </p>
         </div>
 
