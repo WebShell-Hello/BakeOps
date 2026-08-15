@@ -137,6 +137,6 @@ class NavigationTreeApi(APIView):
                 "name_zh": menu.name_zh,
                 "name_en": menu.name_en,
                 "revision": menu.revision,
-                "items": build_navigation_tree(menu),
+                "items": build_navigation_tree(menu, request.user),
             }
         )

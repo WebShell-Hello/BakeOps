@@ -24,7 +24,18 @@ def next_navigation_position(menu: NavigationMenu, parent: NavigationItem | None
     return 0 if maximum is None else int(maximum) + 1
 
 
-def build_navigation_tree(menu: NavigationMenu) -> list[dict[str, Any]]:
+def role_page_ids_for(user: Any) -> set[UUID]:
+    if not user or not user.is_authenticated or not user.is_active:
+        return set()
+    return {
+        page_id
+        for page_id in user.roles.filter(deleted_at__isnull=True).values_list("pages__id", flat=True)
+        if page_id is not None
+    }
+
+
+def build_navigation_tree(menu: NavigationMenu, user: Any | None = None) -> list[dict[str, Any]]:
+    allowed_page_ids = role_page_ids_for(user)
     items = list(
         menu.items.filter(is_active=True, is_visible=True)
         .select_related("parent")
@@ -36,6 +47,8 @@ def build_navigation_tree(menu: NavigationMenu) -> list[dict[str, Any]]:
 
     def serialize_item(item: NavigationItem) -> dict[str, Any] | None:
         children = [serialized for child in children_by_parent[item.id] if (serialized := serialize_item(child))]
+        if item.item_type == NavigationItem.ItemType.PAGE and item.id not in allowed_page_ids:
+            return None
         if item.item_type == NavigationItem.ItemType.CATEGORY and not children:
             return None
         return {

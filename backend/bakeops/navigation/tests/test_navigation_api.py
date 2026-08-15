@@ -2,6 +2,7 @@ import pytest
 from django.urls import reverse
 from rest_framework.test import APIClient
 
+from bakeops.access.models import Role
 from bakeops.navigation.models import NavigationItem, NavigationMenu
 from bakeops.users.models import User
 
@@ -40,6 +41,12 @@ def navigation_menu() -> NavigationMenu:
 
 @pytest.mark.django_db
 def test_tree_returns_visible_navigation(admin_client: APIClient, navigation_menu: NavigationMenu) -> None:
+    page = NavigationItem.objects.get(menu=navigation_menu, item_type=NavigationItem.ItemType.PAGE)
+    role = Role.objects.create(code="test-navigation-reader", name="Test navigation reader")
+    role.pages.set([page])
+    user = User.objects.get(email="navigation-admin@example.com")
+    user.roles.set([role])
+
     response = admin_client.get(reverse("navigation-tree", kwargs={"code": navigation_menu.code}))
 
     assert response.status_code == 200
@@ -52,9 +59,49 @@ def test_category_disappears_when_its_only_page_is_hidden(
     admin_client: APIClient, navigation_menu: NavigationMenu
 ) -> None:
     page = NavigationItem.objects.get(menu=navigation_menu, item_type=NavigationItem.ItemType.PAGE)
+    role = Role.objects.create(code="hidden-page-reader", name="Hidden page reader")
+    role.pages.set([page])
+    user = User.objects.get(email="navigation-admin@example.com")
+    user.roles.set([role])
     page.is_visible = False
     page.save(update_fields=("is_visible", "updated_at"))
 
+    response = admin_client.get(reverse("navigation-tree", kwargs={"code": navigation_menu.code}))
+
+    assert response.status_code == 200
+    assert response.json()["items"] == []
+
+
+@pytest.mark.django_db
+def test_tree_filters_pages_by_assigned_roles(admin_client: APIClient, navigation_menu: NavigationMenu) -> None:
+    page = NavigationItem.objects.get(menu=navigation_menu, item_type=NavigationItem.ItemType.PAGE)
+    hidden_page = NavigationItem.objects.create(
+        menu=navigation_menu,
+        parent=page.parent,
+        item_type=NavigationItem.ItemType.PAGE,
+        key="test-category.role-hidden",
+        label_zh="未授权页面",
+        label_en="Role Hidden Page",
+        frontend_path="/test/role-hidden",
+        position=1,
+    )
+    role = Role.objects.create(code="visible-page-reader", name="Visible page reader")
+    role.pages.set([page])
+    user = User.objects.get(email="navigation-admin@example.com")
+    user.roles.set([role])
+
+    response = admin_client.get(reverse("navigation-tree", kwargs={"code": navigation_menu.code}))
+
+    assert response.status_code == 200
+    children = response.json()["items"][0]["children"]
+    assert [child["id"] for child in children] == [str(page.id)]
+    assert str(hidden_page.id) not in [child["id"] for child in children]
+
+
+@pytest.mark.django_db
+def test_superuser_still_needs_role_pages_for_navigation(
+    admin_client: APIClient, navigation_menu: NavigationMenu
+) -> None:
     response = admin_client.get(reverse("navigation-tree", kwargs={"code": navigation_menu.code}))
 
     assert response.status_code == 200
