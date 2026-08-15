@@ -92,7 +92,7 @@ export function AppTopbar({
           <p className="truncate text-sm font-bold sm:text-[15px]">
             {isEnglish ? (
               <>
-                BITE ME L<span className="text-red-600">OUD</span>
+                BITE ME LU<span className="text-red-600">OD</span>
               </>
             ) : (
               "来咬我啊"
