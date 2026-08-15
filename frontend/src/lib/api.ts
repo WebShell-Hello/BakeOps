@@ -940,9 +940,15 @@ export type ProductionPlanUpdateInput = {
 
 export const BAKEOPS_DATA_CHANGE_EVENT = "bakeops-data-change";
 
+const DEFAULT_PUBLIC_API_BASE_URL = "/api/v1";
+
 function getApiBaseUrl() {
   const baseUrl =
-    process.env.INTERNAL_API_BASE_URL ?? process.env.NEXT_PUBLIC_API_BASE_URL;
+    typeof window === "undefined"
+      ? process.env.INTERNAL_API_BASE_URL ??
+        process.env.NEXT_PUBLIC_API_BASE_URL ??
+        DEFAULT_PUBLIC_API_BASE_URL
+      : process.env.NEXT_PUBLIC_API_BASE_URL ?? DEFAULT_PUBLIC_API_BASE_URL;
 
   if (!baseUrl) {
     throw new Error("API base URL is not configured");
