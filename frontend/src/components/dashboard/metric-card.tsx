@@ -20,6 +20,18 @@ type MetricCardProps = {
 };
 
 export function MetricCard({ label, icon: Icon, tone, value, description }: MetricCardProps) {
+  const compactValue = value.replace(/\s/g, "");
+  const valueSize =
+    compactValue.length > 15
+      ? "text-sm"
+      : compactValue.length > 12
+        ? "text-base"
+        : compactValue.length > 9
+          ? "text-xl"
+          : compactValue.length > 7
+            ? "text-2xl"
+            : "text-3xl";
+
   return (
     <Card className="min-h-40 p-5 transition-colors hover:border-[var(--primary)]/40 xl:p-6">
       <div className="flex items-start gap-4">
@@ -28,7 +40,12 @@ export function MetricCard({ label, icon: Icon, tone, value, description }: Metr
         </span>
         <div className="min-w-0 pt-0.5">
           <p className="text-sm text-[var(--muted)]">{label}</p>
-          <p className="mt-1.5 text-3xl font-semibold tracking-tight tabular-nums">{value}</p>
+          <p
+            className={cn("mt-2 max-w-full whitespace-nowrap font-semibold leading-none tracking-tight tabular-nums", valueSize)}
+            title={value}
+          >
+            {value}
+          </p>
           <p className="mt-3 text-xs text-[var(--muted)]">{description}</p>
         </div>
       </div>
