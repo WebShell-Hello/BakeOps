@@ -1,4 +1,4 @@
-.PHONY: build up down logs ps migrate makemigrations test check shell
+.PHONY: build up down logs ps migrate makemigrations test check shell prod-build prod-up prod-down prod-logs prod-ps prod-migrate
 
 build:
 	docker compose build
@@ -33,3 +33,21 @@ check:
 
 shell:
 	docker compose exec backend python manage.py shell
+
+prod-build:
+	docker compose --env-file .env.prod -f compose.prod.yaml build
+
+prod-up:
+	docker compose --env-file .env.prod -f compose.prod.yaml up --build -d
+
+prod-down:
+	docker compose --env-file .env.prod -f compose.prod.yaml down
+
+prod-logs:
+	docker compose --env-file .env.prod -f compose.prod.yaml logs -f
+
+prod-ps:
+	docker compose --env-file .env.prod -f compose.prod.yaml ps
+
+prod-migrate:
+	docker compose --env-file .env.prod -f compose.prod.yaml exec backend python manage.py migrate

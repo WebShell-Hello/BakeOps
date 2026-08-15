@@ -1,0 +1,8 @@
+{$BAKEOPS_DOMAIN} {
+	encode zstd gzip
+
+	@backend path /api/* /admin* /static/*
+	reverse_proxy @backend backend:8000
+
+	reverse_proxy frontend:3000
+}
