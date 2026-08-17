@@ -36,6 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const { clearAccountPreferences, syncAccountPreferences } = useAppPreferences();
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const [signingOut, setSigningOut] = useState(false);
 
   const refreshUser = useCallback(async () => {
     try {
@@ -60,7 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [refreshUser]);
 
   useEffect(() => {
-    if (loading || user || publicRoutes.has(pathname)) return;
+    if (loading || signingOut || user || publicRoutes.has(pathname)) return;
     let cancelled = false;
     const timer = window.setTimeout(() => {
       void getNavigationTree()
@@ -79,12 +80,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       cancelled = true;
       window.clearTimeout(timer);
     };
-  }, [loading, pathname, router, user]);
+  }, [loading, pathname, router, signingOut, user]);
 
   const signOut = useCallback(async () => {
     try {
       await logoutUser();
     } finally {
+      setSigningOut(true);
       setUser(null);
       clearAccountPreferences();
       router.replace("/");
