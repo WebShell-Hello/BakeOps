@@ -37,6 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [signingOut, setSigningOut] = useState(false);
+  const [guestRoute, setGuestRoute] = useState<{ pathname: string; allowed: boolean } | null>(null);
 
   const refreshUser = useCallback(async () => {
     try {
@@ -66,12 +67,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const timer = window.setTimeout(() => {
       void getNavigationTree()
         .then((tree) => {
-          if (cancelled || anonymousCanAccessPath(pathname, tree.items)) return;
-          const next = `?next=${encodeURIComponent(pathname)}`;
-          router.replace(`/login${next}`);
+          if (cancelled) return;
+          const allowed = anonymousCanAccessPath(pathname, tree.items);
+          setGuestRoute({ pathname, allowed });
+          if (!allowed) {
+            const next = `?next=${encodeURIComponent(pathname)}`;
+            router.replace(`/login${next}`);
+          }
         })
         .catch(() => {
           if (cancelled) return;
+          setGuestRoute({ pathname, allowed: false });
           const next = `?next=${encodeURIComponent(pathname)}`;
           router.replace(`/login${next}`);
         });
@@ -98,8 +104,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     () => ({ user, loading, refreshUser, signOut }),
     [loading, refreshUser, signOut, user],
   );
+  const currentGuestRoute = guestRoute?.pathname === pathname ? guestRoute : null;
+  const shouldBlockProtectedGuestRoute =
+    !loading &&
+    !signingOut &&
+    !user &&
+    !publicRoutes.has(pathname) &&
+    currentGuestRoute?.allowed !== true;
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={value}>{shouldBlockProtectedGuestRoute ? null : children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
