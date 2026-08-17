@@ -7,7 +7,6 @@ import { LoginForm } from "@/components/auth/login-form";
 import { useAuth } from "@/components/auth/auth-provider";
 import { DashboardPage } from "@/components/dashboard/dashboard-page";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
-import { PageBreadcrumb } from "@/components/navigation/page-breadcrumb";
 import { NavigationIcon } from "@/components/navigation/navigation-icon";
 import { useAppPreferences } from "@/components/providers/app-preferences-provider";
 import { Card } from "@/components/ui/card";
@@ -30,6 +29,7 @@ export function HomeGate() {
 
   if (user) return <DashboardPage />;
   if (!tree?.items.length) return <LoginForm nextPath="/" />;
+  if (hasPagePath(tree.items, "/")) return <DashboardPage />;
   return <AnonymousSystemPage items={tree.items} />;
 }
 
@@ -43,12 +43,9 @@ function AnonymousSystemPage({ items }: { items: NavigationTreeItem[] }) {
       <main className="mx-auto w-full max-w-[1560px] p-4 sm:p-6 xl:p-9">
         <header className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
           <div>
-            <PageBreadcrumb
-              fallback={{
-                zh: "未登录可见页面",
-                en: "Public system pages",
-              }}
-            />
+            <h1 className="text-[28px] font-bold">
+              {isEnglish ? "Guest system pages" : "游客可见页面"}
+            </h1>
             <p className="mt-1.5 text-sm text-[var(--muted)]">
               {isEnglish
                 ? "These pages are visible before signing in."
@@ -75,9 +72,6 @@ function AnonymousSystemPage({ items }: { items: NavigationTreeItem[] }) {
                   <span className="block font-semibold">
                     {isEnglish ? page.label_en : page.label_zh}
                   </span>
-                  <code className="mt-1 block truncate text-xs text-[var(--muted)]">
-                    {page.frontend_path}
-                  </code>
                 </span>
                 <ArrowRight className="mt-1 size-4 shrink-0 text-[var(--muted)] transition-transform group-hover:translate-x-0.5 group-hover:text-[var(--primary)]" />
               </Card>
@@ -93,5 +87,12 @@ function flattenPages(items: NavigationTreeItem[]): NavigationTreeItem[] {
   return items.flatMap((item) => {
     if (item.item_type === "PAGE") return [item];
     return flattenPages(item.children);
+  });
+}
+
+function hasPagePath(items: NavigationTreeItem[], path: string): boolean {
+  return items.some((item) => {
+    if (item.item_type === "PAGE") return item.frontend_path === path;
+    return hasPagePath(item.children, path);
   });
 }

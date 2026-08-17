@@ -3,12 +3,15 @@ from decimal import Decimal
 
 import pytest
 from django.core.management import call_command
+from django.test import override_settings
 from django.urls import reverse
 from django.utils import timezone
 from rest_framework.test import APIClient
 
+from bakeops.access.models import Role
 from bakeops.inventory.models import InventoryItem, InventoryReceipt, ProductionPlan, PurchaseRequest
 from bakeops.inventory.services import calculate_forecast_demand, consume_inventory
+from bakeops.navigation.models import NavigationItem
 from bakeops.products.models import Ingredient, Product, Recipe, RecipeIngredient, RecipeSection
 from bakeops.suppliers.models import Supplier, SupplierIngredient
 from bakeops.users.models import User
@@ -343,6 +346,43 @@ def test_production_plan_overview_returns_kpis_and_derived_status(admin_client: 
     assert response.data["plans"][0]["completion_rate"] == 75.0
     assert response.data["plans"][0]["display_status"] == "IN_PROGRESS"
     assert response.data["plans"][1]["display_status"] == "PLANNED"
+
+
+@pytest.mark.django_db
+@override_settings(DEBUG=True)
+def test_anonymous_production_plan_access_is_read_only_when_page_is_public() -> None:
+    today = timezone.localdate()
+    product = Product.objects.create(code="PUBLIC-PLAN-PRODUCT", name_zh="公开计划产品", name_en="Public Plan Product")
+    ProductionPlan.objects.create(
+        reference="PLAN-PUBLIC-READ",
+        product=product,
+        planned_date=today,
+        quantity=100,
+        actual_quantity=80,
+    )
+    anonymous_role = Role.objects.get(code=Role.ANONYMOUS_ROLE_CODE)
+    anonymous_role.anonymous_access_mode = Role.AnonymousAccessMode.SYSTEM_PAGE
+    anonymous_role.pages.set([NavigationItem.objects.get(key="planning.production")])
+    anonymous_role.save(update_fields=("anonymous_access_mode", "updated_at"))
+    client = APIClient()
+
+    read_response = client.get(
+        reverse("production-plan-list-create"),
+        {"start": today.isoformat(), "end": today.isoformat()},
+    )
+    write_response = client.post(
+        reverse("production-plan-list-create"),
+        {
+            "production_date": today.isoformat(),
+            "items": [{"product_id": str(product.id), "planned_quantity": 120}],
+        },
+        format="json",
+    )
+
+    assert read_response.status_code == 200
+    assert read_response.data["plans"][0]["planned_quantity"] == 100
+    assert write_response.status_code == 403
+    assert ProductionPlan.objects.get(reference="PLAN-PUBLIC-READ").quantity == 100
 
 
 @pytest.mark.django_db

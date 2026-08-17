@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { type FormEvent, type ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 
+import { useAuth } from "@/components/auth/auth-provider";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { PageBreadcrumb } from "@/components/navigation/page-breadcrumb";
 import { useAppPreferences } from "@/components/providers/app-preferences-provider";
@@ -97,11 +98,13 @@ const copy = {
     savePlan: "保存计划",
     saving: "正在保存...",
     saved: "生产计划已保存",
+    temporarySaved: "游客临时计划已保存，刷新或登录后不会保留",
     saveError: "生产计划保存失败",
     editTitle: "编辑生产计划",
     delete: "删除计划",
     deleteConfirm: "确定删除这条生产计划吗？",
     deleted: "生产计划已删除",
+    temporaryDeleted: "游客临时计划已删除",
     actualHint: "未来日期暂不记录实际产量",
     closureWarning: "该日期已标记为门店不营业",
     overrideClosure: "仍然安排生产（覆盖停业安排）",
@@ -157,11 +160,13 @@ const copy = {
     savePlan: "Save plan",
     saving: "Saving...",
     saved: "Production plan saved",
+    temporarySaved: "Guest draft saved temporarily; it will disappear after refresh or login",
     saveError: "Unable to save the production plan",
     editTitle: "Edit production plan",
     delete: "Delete plan",
     deleteConfirm: "Delete this production plan?",
     deleted: "Production plan deleted",
+    temporaryDeleted: "Guest draft deleted",
     actualHint: "Actual production is recorded on or after the production date",
     closureWarning: "The store is marked closed on this date",
     overrideClosure: "Schedule production anyway (override closure)",
@@ -186,7 +191,10 @@ const statusStyles: Record<ProductionPlanDisplayStatus, string> = {
 const inputClass =
   "h-10 w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 text-sm outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary-ring)]";
 
+const GUEST_PLAN_ID_PREFIX = "guest-production-plan-";
+
 export function ProductionPlanningPage() {
+  const { user } = useAuth();
   const { locale } = useAppPreferences();
   const { showInfo, showSuccess } = useToast();
   const text = copy[locale];
@@ -208,6 +216,8 @@ export function ProductionPlanningPage() {
   const [overrideClosure, setOverrideClosure] = useState(false);
   const [editing, setEditing] = useState<ProductionPlan | null>(null);
   const [editForm, setEditForm] = useState<EditForm>({ plannedQuantity: "", actualQuantity: "", notes: "" });
+  const [guestPlans, setGuestPlans] = useState<ProductionPlan[]>([]);
+  const isGuest = !user;
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -235,15 +245,35 @@ export function ProductionPlanningPage() {
     return () => window.clearTimeout(timer);
   }, [createOpen, productionDate]);
 
+  useEffect(() => {
+    if (!user || !guestPlans.length) return;
+    const timer = window.setTimeout(() => setGuestPlans([]), 0);
+    return () => window.clearTimeout(timer);
+  }, [guestPlans.length, user]);
+
+  const visiblePlans = useMemo(
+    () => [
+      ...(overview?.plans ?? []),
+      ...guestPlans.filter((plan) => plan.production_date >= rangeStart && plan.production_date <= rangeEnd),
+    ].sort((first, second) => {
+      const dateComparison = first.production_date.localeCompare(second.production_date);
+      if (dateComparison !== 0) return dateComparison;
+      const firstName = locale === "en-GB" ? first.product_name_en : first.product_name_zh;
+      const secondName = locale === "en-GB" ? second.product_name_en : second.product_name_zh;
+      return firstName.localeCompare(secondName);
+    }),
+    [guestPlans, locale, overview?.plans, rangeEnd, rangeStart],
+  );
+
   const groupedPlans = useMemo(() => {
     const groups = new Map<string, ProductionPlan[]>();
-    for (const plan of overview?.plans ?? []) {
+    for (const plan of visiblePlans) {
       const existing = groups.get(plan.production_date) ?? [];
       existing.push(plan);
       groups.set(plan.production_date, existing);
     }
     return [...groups.entries()];
-  }, [overview?.plans]);
+  }, [visiblePlans]);
   const products = overview?.product_options ?? [];
 
   function applyPeriod(unit: PeriodUnit, cursor: Date) {
@@ -278,16 +308,17 @@ export function ProductionPlanningPage() {
     const sourceKey = dateKey(sourceDate);
     try {
       const source = await getProductionPlans(sourceKey, sourceKey);
-      if (!source.plans.length) {
+      const sourcePlans = [...source.plans, ...guestPlans.filter((plan) => plan.production_date === sourceKey)];
+      if (!sourcePlans.length) {
         showInfo(text.noSource);
         return;
       }
       setRows(
-        source.plans
+        sourcePlans
           .filter((plan) => plan.display_status !== "CANCELLED")
           .map((plan) => newRow(plan.product_id, String(plan.planned_quantity))),
       );
-      setNotes(source.plans[0]?.notes ?? "");
+      setNotes(sourcePlans[0]?.notes ?? "");
       showInfo(text.copied(format(sourceDate, "PP", { locale: dateLocale })));
     } catch (copyError) {
       setError(copyError instanceof Error ? copyError.message : text.loadError);
@@ -299,6 +330,26 @@ export function ProductionPlanningPage() {
     if (!rows.length || rows.some((row) => !row.productId || Number(row.quantity) < 1)) return;
     setSaving(true);
     try {
+      if (isGuest) {
+        setGuestPlans((current) => [
+          ...current.filter(
+            (plan) => !rows.some((row) => row.productId === plan.product_id && plan.production_date === productionDate),
+          ),
+          ...rows.map((row) =>
+            createGuestProductionPlan({
+              productionDate,
+              productId: row.productId,
+              products,
+              plannedQuantity: Number(row.quantity),
+              actualQuantity: null,
+              notes: notes.trim(),
+            }),
+          ),
+        ]);
+        setCreateOpen(false);
+        showSuccess(text.temporarySaved);
+        return;
+      }
       await createProductionPlans({
         production_date: productionDate,
         items: rows.map((row) => ({
@@ -332,6 +383,32 @@ export function ProductionPlanningPage() {
     if (!editing || Number(editForm.plannedQuantity) < 1) return;
     setSaving(true);
     try {
+      if (isGuestPlan(editing)) {
+        setGuestPlans((current) =>
+          current.map((plan) =>
+            plan.id === editing.id
+              ? createGuestProductionPlan({
+                  productionDate: editing.production_date,
+                  productId: editing.product_id,
+                  products,
+                  plannedQuantity: Number(editForm.plannedQuantity),
+                  actualQuantity: isFutureDate(editing.production_date)
+                    ? null
+                    : editForm.actualQuantity === ""
+                      ? null
+                      : Number(editForm.actualQuantity),
+                  notes: editForm.notes.trim(),
+                  id: editing.id,
+                  reference: editing.reference,
+                  createdAt: editing.created_at,
+                })
+              : plan,
+          ),
+        );
+        setEditing(null);
+        showSuccess(text.temporarySaved);
+        return;
+      }
       await updateProductionPlan(editing.id, {
         planned_quantity: Number(editForm.plannedQuantity),
         actual_quantity: isFutureDate(editing.production_date)
@@ -355,6 +432,12 @@ export function ProductionPlanningPage() {
     if (!editing || !window.confirm(text.deleteConfirm)) return;
     setSaving(true);
     try {
+      if (isGuestPlan(editing)) {
+        setGuestPlans((current) => current.filter((plan) => plan.id !== editing.id));
+        setEditing(null);
+        showSuccess(text.temporaryDeleted);
+        return;
+      }
       await deleteProductionPlan(editing.id);
       setEditing(null);
       showSuccess(text.deleted);
@@ -366,7 +449,7 @@ export function ProductionPlanningPage() {
     }
   }
 
-  const kpis = overview?.kpis;
+  const kpis = useMemo(() => buildProductionKpis(visiblePlans, today), [today, visiblePlans]);
 
   return (
     <DashboardShell>
@@ -641,4 +724,66 @@ function newRow(productId: string, quantity = "") : PlanRow {
 function formatDifference(value: number | null) {
   if (value === null) return "—";
   return value > 0 ? `+${value}` : String(value);
+}
+
+function isGuestPlan(plan: ProductionPlan) {
+  return plan.id.startsWith(GUEST_PLAN_ID_PREFIX);
+}
+
+function createGuestProductionPlan({
+  productionDate,
+  productId,
+  products,
+  plannedQuantity,
+  actualQuantity,
+  notes,
+  id = `${GUEST_PLAN_ID_PREFIX}${typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`}`,
+  reference = `GUEST-${Date.now().toString(36).toUpperCase()}`,
+  createdAt = new Date().toISOString(),
+}: {
+  productionDate: string;
+  productId: string;
+  products: ProductionPlanOverview["product_options"];
+  plannedQuantity: number;
+  actualQuantity: number | null;
+  notes: string;
+  id?: string;
+  reference?: string;
+  createdAt?: string;
+}): ProductionPlan {
+  const product = products.find((item) => item.id === productId);
+  const difference = actualQuantity === null ? null : actualQuantity - plannedQuantity;
+  const completionRate =
+    actualQuantity === null ? null : Math.round((actualQuantity / plannedQuantity) * 1000) / 10;
+  return {
+    id,
+    reference,
+    production_date: productionDate,
+    product_id: productId,
+    product_name_zh: product?.name_zh ?? "",
+    product_name_en: product?.name_en ?? "",
+    planned_quantity: plannedQuantity,
+    actual_quantity: actualQuantity,
+    difference,
+    completion_rate: completionRate,
+    display_status: actualQuantity === null ? "PLANNED" : "COMPLETED",
+    notes,
+    created_at: createdAt,
+    updated_at: new Date().toISOString(),
+  };
+}
+
+function buildProductionKpis(plans: ProductionPlan[], today: Date): ProductionPlanOverview["kpis"] {
+  const todayKey = dateKey(today);
+  const futureSevenEnd = dateKey(addDays(today, 6));
+  const activePlans = plans.filter((plan) => plan.display_status !== "CANCELLED");
+  const todayPlans = activePlans.filter((plan) => plan.production_date === todayKey);
+  return {
+    today_planned: todayPlans.reduce((total, plan) => total + plan.planned_quantity, 0),
+    today_actual: todayPlans.reduce((total, plan) => total + (plan.actual_quantity ?? 0), 0),
+    future_7_days_planned: activePlans
+      .filter((plan) => plan.production_date >= todayKey && plan.production_date <= futureSevenEnd)
+      .reduce((total, plan) => total + plan.planned_quantity, 0),
+    planned_product_count: new Set(activePlans.map((plan) => plan.product_id)).size,
+  };
 }

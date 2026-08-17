@@ -5,14 +5,36 @@ from django.urls import reverse
 from django.utils import timezone
 from rest_framework.test import APIClient
 
-from bakeops.events.models import BusinessEvent, EventChecklistItem
+from bakeops.access.models import Role
 from bakeops.costs.models import CostItem, MonthlyCost
 from bakeops.employees.models import Employee
+from bakeops.events.models import BusinessEvent, EventChecklistItem
 from bakeops.inventory.models import ProductionPlan
+from bakeops.navigation.models import NavigationItem, NavigationMenu
 from bakeops.products.models import Product
 from bakeops.sales.models import SalesOrder, SalesOrderLine
 from bakeops.scheduling.models import ScheduleEntry
 from bakeops.users.models import User
+
+
+def grant_dashboard_access(user: User) -> None:
+    menu = NavigationMenu.objects.create(
+        code=f"dashboard-access-{user.id}",
+        name_zh="仪表盘权限",
+        name_en="Dashboard Access",
+    )
+    dashboard_page = NavigationItem.objects.create(
+        menu=menu,
+        item_type=NavigationItem.ItemType.PAGE,
+        key="dashboard",
+        label_zh="仪表盘",
+        label_en="Dashboard",
+        frontend_path="/",
+        position=0,
+    )
+    role = Role.objects.create(code=f"dashboard-reader-{user.id}", name=f"Dashboard Reader {user.id}")
+    role.pages.set([dashboard_page])
+    user.roles.set([role])
 
 
 @pytest.mark.django_db
@@ -23,6 +45,7 @@ def test_dashboard_overview_aggregates_existing_modules() -> None:
         username="dashboard",
         password="password123",
     )
+    grant_dashboard_access(user)
     client = APIClient()
     client.force_authenticate(user=user)
     product = Product.objects.create(
@@ -134,8 +157,32 @@ def test_dashboard_overview_requires_authentication() -> None:
 
 
 @pytest.mark.django_db
+def test_dashboard_overview_allows_configured_anonymous_user_role() -> None:
+    menu = NavigationMenu.objects.create(code="anonymous-dashboard-test", name_zh="匿名仪表盘", name_en="Anonymous")
+    dashboard_page = NavigationItem.objects.create(
+        menu=menu,
+        item_type=NavigationItem.ItemType.PAGE,
+        key="dashboard",
+        label_zh="仪表盘",
+        label_en="Dashboard",
+        frontend_path="/",
+        position=0,
+    )
+    role = Role.objects.get(code=Role.ANONYMOUS_ROLE_CODE)
+    role.anonymous_access_mode = Role.AnonymousAccessMode.SYSTEM_PAGE
+    role.save(update_fields=("anonymous_access_mode", "updated_at"))
+    role.pages.set([dashboard_page])
+
+    response = APIClient().get(reverse("dashboard-overview"))
+
+    assert response.status_code == 200
+    assert "kpis" in response.data
+
+
+@pytest.mark.django_db
 def test_dashboard_overview_rejects_invalid_date() -> None:
     user = User.objects.create_user(email="dashboard-date@example.com", password="password123")
+    grant_dashboard_access(user)
     client = APIClient()
     client.force_authenticate(user=user)
 

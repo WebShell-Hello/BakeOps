@@ -29,11 +29,12 @@ export function UserMenu({ placement, expanded = true, onNavigate }: UserMenuPro
       ? [user.first_name, user.last_name].filter(Boolean).join(" ")
       : [user.last_name, user.first_name].filter(Boolean).join("")
     : "";
-  const displayName = accountName || user?.username || (isEnglish ? "Account" : "账户");
+  const guestLabel = isEnglish ? "Guest" : "游客";
+  const displayName = user ? accountName || user.username : guestLabel;
   const initials = useMemo(() => {
-    const source = accountName || user?.username || "A";
+    const source = user ? accountName || user.username : guestLabel;
     return source.trim().slice(0, 1).toUpperCase();
-  }, [accountName, user]);
+  }, [accountName, guestLabel, user]);
 
   useEffect(() => {
     function closeOnOutsideClick(event: MouseEvent) {
@@ -93,7 +94,9 @@ export function UserMenu({ placement, expanded = true, onNavigate }: UserMenuPro
     >
       <div className="border-b border-[var(--border)] px-3 py-2.5">
         <p className="truncate text-sm font-semibold">{displayName}</p>
-        <p className="mt-0.5 truncate text-xs text-[var(--muted)]">{user?.email}</p>
+        <p className="mt-0.5 truncate text-xs text-[var(--muted)]">
+          {user?.email ?? (isEnglish ? "Not signed in" : "未登录")}
+        </p>
       </div>
       {user ? (
         <>
@@ -135,7 +138,19 @@ export function UserMenu({ placement, expanded = true, onNavigate }: UserMenuPro
           <>
             <span className={cn("min-w-0 text-left", placement === "sidebar" ? "flex-1" : "hidden xl:block")}>
               <span className="block max-w-28 truncate text-sm font-medium">{displayName}</span>
-              {placement === "sidebar" ? <span className="block truncate text-xs text-[var(--muted)]">{user?.is_superuser ? (isEnglish ? "System administrator" : "系统管理员") : (isEnglish ? "System user" : "系统用户")}</span> : null}
+              {placement === "sidebar" ? (
+                <span className="block truncate text-xs text-[var(--muted)]">
+                  {user
+                    ? user.is_superuser
+                      ? isEnglish
+                        ? "System administrator"
+                        : "系统管理员"
+                      : isEnglish
+                        ? "System user"
+                        : "系统用户"
+                    : guestLabel}
+                </span>
+              ) : null}
             </span>
             <ChevronDown className={cn("size-4 shrink-0 text-[var(--muted)] transition-transform", open && "rotate-180", placement === "topbar" && "hidden xl:block")} />
           </>

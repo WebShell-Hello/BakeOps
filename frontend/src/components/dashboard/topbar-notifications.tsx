@@ -12,6 +12,7 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import { useAuth } from "@/components/auth/auth-provider";
 import { Button } from "@/components/ui/button";
 import {
   BAKEOPS_DATA_CHANGE_EVENT,
@@ -33,6 +34,7 @@ type NotificationData = {
 const emptyNotifications: NotificationData = { inventory: [], events: [] };
 
 export function TopbarNotifications({ locale }: TopbarNotificationsProps) {
+  const { user } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -44,6 +46,12 @@ export function TopbarNotifications({ locale }: TopbarNotificationsProps) {
   const isEnglish = locale === "en-GB";
 
   const loadNotifications = useCallback(async () => {
+    if (!user) {
+      setNotifications(emptyNotifications);
+      setError(false);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     const year = new Date().getFullYear();
     const [inventoryResult, eventResult] = await Promise.allSettled([
@@ -84,7 +92,7 @@ export function TopbarNotifications({ locale }: TopbarNotificationsProps) {
       inventoryResult.status === "rejected" && eventResult.status === "rejected",
     );
     setLoading(false);
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => void loadNotifications(), 0);
@@ -162,6 +170,7 @@ export function TopbarNotifications({ locale }: TopbarNotificationsProps) {
         title={label}
         aria-haspopup="menu"
         aria-expanded={open}
+        disabled={!user}
         onClick={() => {
           setOpen((current) => !current);
           void loadNotifications();

@@ -87,7 +87,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } finally {
       setUser(null);
       clearAccountPreferences();
-      router.replace("/login");
+      router.replace("/");
       router.refresh();
     }
   }, [clearAccountPreferences, router]);

@@ -6,12 +6,14 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from bakeops.access.permissions import has_role_page_access
+from bakeops.access.permissions import has_anonymous_page_access, has_role_page_access
 from bakeops.api.dashboard import build_dashboard_overview
 
 
 class CanReadDashboard(BasePermission):
     def has_permission(self, request: Request, view: APIView) -> bool:
+        if not request.user.is_authenticated:
+            return has_anonymous_page_access({"dashboard"})
         return has_role_page_access(request.user, {"dashboard"})
 
 
