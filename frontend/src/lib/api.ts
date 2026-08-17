@@ -78,6 +78,8 @@ export type AccessRole = {
   name: string;
   description: string;
   is_protected: boolean;
+  is_assignable: boolean;
+  anonymous_access_mode: "NONE" | "LOGIN_PAGE" | "SYSTEM_PAGE";
   deleted_at: string | null;
   page_ids: string[];
   created_at: string;
@@ -89,6 +91,7 @@ export type AccessRoleInput = {
   name: string;
   description: string;
   is_protected: boolean;
+  anonymous_access_mode?: "NONE" | "LOGIN_PAGE" | "SYSTEM_PAGE";
   page_ids: string[];
 };
 

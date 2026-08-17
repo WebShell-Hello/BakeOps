@@ -43,12 +43,16 @@ import {
 import { cn } from "@/lib/utils";
 
 type RoleForm = AccessRoleInput;
+type AnonymousAccessMode = NonNullable<AccessRoleInput["anonymous_access_mode"]>;
+
+const ANONYMOUS_ROLE_CODE = "anonymous-user";
 
 const emptyRoleForm: RoleForm = {
   code: "",
   name: "",
   description: "",
   is_protected: false,
+  anonymous_access_mode: "NONE",
   page_ids: [],
 };
 
@@ -89,6 +93,15 @@ const copy = {
     protectedRole: "不可删除",
     protectedHint: "用于最高权限等关键角色；启用后后端将禁止删除该角色。",
     protectedDeleteHint: "该角色已设置为不可删除",
+    anonymousRoleBadge: "未登录策略",
+    anonymousModeTitle: "未登录访问",
+    anonymousLoginPage: "登录页",
+    anonymousSystemPage: "系统页",
+    anonymousLoginHint:
+      "选择登录页时，未登录访客只能看到登录页；下方勾选页面会保留但不会生效。",
+    anonymousSystemHint:
+      "选择系统页时，未登录访客访问根地址会看到下方勾选的页面入口。",
+    notAssignable: "不可分配给用户",
     saved: "角色权限已保存",
     deleted: "角色已删除，可以随时还原",
     permanentlyDeleted: "角色已永久删除",
@@ -134,6 +147,15 @@ const copy = {
     protectedHint:
       "Use for critical roles such as the highest-privilege role. The backend will prevent deletion.",
     protectedDeleteHint: "This role is protected from deletion",
+    anonymousRoleBadge: "Anonymous policy",
+    anonymousModeTitle: "Anonymous access",
+    anonymousLoginPage: "Login page",
+    anonymousSystemPage: "System page",
+    anonymousLoginHint:
+      "When Login page is selected, visitors only see the sign-in page. Selected pages are saved but ignored.",
+    anonymousSystemHint:
+      "When System page is selected, visitors opening the root URL see the selected page entries.",
+    notAssignable: "Not assignable to users",
     saved: "Role permissions saved",
     deleted: "Role deleted and available for restoration",
     permanentlyDeleted: "Role permanently deleted",
@@ -209,6 +231,7 @@ export function RolesPermissionsPage() {
       name: role.name,
       description: role.description,
       is_protected: role.is_protected,
+      anonymous_access_mode: role.anonymous_access_mode,
       page_ids: role.page_ids.filter((pageId) => assignablePageIds.has(pageId)),
     });
     setEditingRole(role);
@@ -246,6 +269,10 @@ export function RolesPermissionsPage() {
       name: form.name.trim(),
       description: form.description.trim(),
       is_protected: form.is_protected,
+      anonymous_access_mode:
+        form.code.trim() === ANONYMOUS_ROLE_CODE
+          ? form.anonymous_access_mode
+          : "NONE",
       page_ids: form.page_ids.filter((pageId) => assignablePageIds.has(pageId)),
     };
     try {
@@ -369,12 +396,19 @@ export function RolesPermissionsPage() {
                       )}
                     >
                       <td className="px-4 py-3 font-medium">
-                        <span className="inline-flex items-center gap-2">
-                          {role.is_protected ? (
-                            <Lock className="size-3.5 text-[var(--muted)]" />
+                        <div className="flex flex-col gap-1.5">
+                          <span className="inline-flex items-center gap-2">
+                            {role.is_protected ? (
+                              <Lock className="size-3.5 text-[var(--muted)]" />
+                            ) : null}
+                            {role.name}
+                          </span>
+                          {role.code === ANONYMOUS_ROLE_CODE ? (
+                            <span className="inline-flex w-fit items-center rounded-full bg-[var(--surface-muted)] px-2 py-0.5 text-[11px] font-medium text-[var(--muted)]">
+                              {text.anonymousRoleBadge}
+                            </span>
                           ) : null}
-                          {role.name}
-                        </span>
+                        </div>
                       </td>
                       <td className="px-4 py-3">
                         <code className="rounded-md bg-[var(--surface-muted)] px-2 py-1 text-xs">
@@ -382,7 +416,12 @@ export function RolesPermissionsPage() {
                         </code>
                       </td>
                       <td className="px-4 py-3 text-[var(--muted)]">
-                        {role.description || text.noDescription}
+                        <div className="space-y-1">
+                          <p>{role.description || text.noDescription}</p>
+                          {!role.is_assignable ? (
+                            <p className="text-xs">{text.notAssignable}</p>
+                          ) : null}
+                        </div>
                       </td>
                       <td className="px-4 py-3">
                         <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--primary-soft)] px-2.5 py-1 text-xs font-medium text-[var(--primary)]">
@@ -492,6 +531,14 @@ export function RolesPermissionsPage() {
               </Button>
             </div>
             <form className="space-y-5 p-5" onSubmit={saveRole}>
+              {(() => {
+                const isAnonymousRole =
+                  editingRole?.code === ANONYMOUS_ROLE_CODE ||
+                  form.code === ANONYMOUS_ROLE_CODE;
+                const anonymousMode =
+                  form.anonymous_access_mode ?? "LOGIN_PAGE";
+                return (
+                  <>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field label={text.roleName}>
                   <input
@@ -509,9 +556,10 @@ export function RolesPermissionsPage() {
                 <Field label={text.code}>
                   <input
                     required
+                    disabled={isAnonymousRole}
                     pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
                     value={form.code}
-                    className={inputClass}
+                    className={cn(inputClass, isAnonymousRole && "opacity-65")}
                     placeholder="store-manager"
                     onChange={(event) =>
                       setForm((current) => ({
@@ -522,6 +570,55 @@ export function RolesPermissionsPage() {
                   />
                 </Field>
               </div>
+              {isAnonymousRole ? (
+                <section className="rounded-xl border border-[var(--border)] p-4">
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <div>
+                      <h3 className="text-sm font-semibold">
+                        {text.anonymousModeTitle}
+                      </h3>
+                      <p className="mt-1 text-xs text-[var(--muted)]">
+                        {anonymousMode === "SYSTEM_PAGE"
+                          ? text.anonymousSystemHint
+                          : text.anonymousLoginHint}
+                      </p>
+                    </div>
+                    <span className="shrink-0 rounded-full bg-[var(--surface-muted)] px-2.5 py-1 text-xs text-[var(--muted)]">
+                      {text.notAssignable}
+                    </span>
+                  </div>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    {(
+                      [
+                        ["LOGIN_PAGE", text.anonymousLoginPage],
+                        ["SYSTEM_PAGE", text.anonymousSystemPage],
+                      ] as const
+                    ).map(([mode, label]) => (
+                      <label
+                        key={mode}
+                        className={cn(
+                          "flex cursor-pointer items-center gap-3 rounded-xl border border-[var(--border)] px-4 py-3 text-sm transition-colors",
+                          anonymousMode === mode &&
+                            "border-[var(--primary-border)] bg-[var(--primary-soft)] text-[var(--primary)]",
+                        )}
+                      >
+                        <input
+                          type="radio"
+                          name="anonymous-access-mode"
+                          checked={anonymousMode === mode}
+                          onChange={() =>
+                            setForm((current) => ({
+                              ...current,
+                              anonymous_access_mode: mode as AnonymousAccessMode,
+                            }))
+                          }
+                        />
+                        {label}
+                      </label>
+                    ))}
+                  </div>
+                </section>
+              ) : null}
               <Field label={text.roleDescription}>
                 <textarea
                   rows={3}
@@ -540,6 +637,7 @@ export function RolesPermissionsPage() {
                   className="mt-0.5"
                   type="checkbox"
                   checked={form.is_protected}
+                  disabled={isAnonymousRole}
                   onChange={(event) =>
                     setForm((current) => ({
                       ...current,
@@ -562,7 +660,9 @@ export function RolesPermissionsPage() {
                 <div className="mb-3">
                   <h3 className="font-semibold">{text.permissionsTitle}</h3>
                   <p className="mt-1 text-xs text-[var(--muted)]">
-                    {text.permissionsHint}
+                    {isAnonymousRole && anonymousMode === "LOGIN_PAGE"
+                      ? text.anonymousLoginHint
+                      : text.permissionsHint}
                   </p>
                 </div>
                 <div className="space-y-3">
@@ -626,6 +726,9 @@ export function RolesPermissionsPage() {
                   })}
                 </div>
               </section>
+                  </>
+                );
+              })()}
 
               <div className="flex justify-end gap-2 border-t border-[var(--border)] pt-4">
                 <Button

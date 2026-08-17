@@ -25,12 +25,34 @@ class RoleSerializer(serializers.ModelSerializer[Role]):
             "name",
             "description",
             "is_protected",
+            "is_assignable",
+            "anonymous_access_mode",
             "deleted_at",
             "page_ids",
             "created_at",
             "updated_at",
         )
-        read_only_fields = ("deleted_at", "created_at", "updated_at")
+        read_only_fields = ("is_assignable", "deleted_at", "created_at", "updated_at")
+
+    def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
+        next_code = attrs.get("code", self.instance.code if self.instance else "")
+        is_anonymous_role = next_code == Role.ANONYMOUS_ROLE_CODE
+
+        if self.instance and self.instance.is_anonymous_access_role and next_code != Role.ANONYMOUS_ROLE_CODE:
+            raise serializers.ValidationError({"code": "The anonymous user role code cannot be changed."})
+        if not is_anonymous_role and attrs.get("anonymous_access_mode") not in (None, Role.AnonymousAccessMode.NONE):
+            raise serializers.ValidationError(
+                {"anonymous_access_mode": "Anonymous access mode is only available for the anonymous user role."}
+            )
+        if is_anonymous_role:
+            attrs["is_protected"] = True
+            attrs["anonymous_access_mode"] = attrs.get(
+                "anonymous_access_mode",
+                self.instance.anonymous_access_mode if self.instance else Role.AnonymousAccessMode.LOGIN_PAGE,
+            )
+        else:
+            attrs["anonymous_access_mode"] = Role.AnonymousAccessMode.NONE
+        return attrs
 
     def validate_page_ids(self, pages: list[NavigationItem]) -> list[NavigationItem]:
         if any(page.item_type != NavigationItem.ItemType.PAGE for page in pages):

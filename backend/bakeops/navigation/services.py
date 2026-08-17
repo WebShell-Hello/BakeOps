@@ -6,6 +6,7 @@ from uuid import UUID
 from django.db import transaction
 from django.db.models import Max
 
+from bakeops.access.models import Role
 from bakeops.navigation.models import NavigationItem, NavigationMenu
 
 
@@ -26,10 +27,32 @@ def next_navigation_position(menu: NavigationMenu, parent: NavigationItem | None
 
 def role_page_ids_for(user: Any) -> set[UUID]:
     if not user or not user.is_authenticated or not user.is_active:
-        return set()
+        anonymous_role = (
+            Role.objects.filter(
+                code=Role.ANONYMOUS_ROLE_CODE,
+                deleted_at__isnull=True,
+                anonymous_access_mode=Role.AnonymousAccessMode.SYSTEM_PAGE,
+            )
+            .prefetch_related("pages")
+            .first()
+        )
+        if anonymous_role is None:
+            return set()
+        return {
+            page_id
+            for page_id in anonymous_role.pages.filter(
+                item_type=NavigationItem.ItemType.PAGE,
+                is_active=True,
+                is_visible=True,
+            ).values_list("id", flat=True)
+            if page_id is not None
+        }
     return {
         page_id
-        for page_id in user.roles.filter(deleted_at__isnull=True).values_list("pages__id", flat=True)
+        for page_id in user.roles.filter(deleted_at__isnull=True, is_assignable=True).values_list(
+            "pages__id",
+            flat=True,
+        )
         if page_id is not None
     }
 

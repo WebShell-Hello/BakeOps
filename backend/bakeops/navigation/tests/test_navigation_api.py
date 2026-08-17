@@ -109,6 +109,46 @@ def test_superuser_still_needs_role_pages_for_navigation(
 
 
 @pytest.mark.django_db
+def test_anonymous_tree_uses_anonymous_user_role_system_page_mode(navigation_menu: NavigationMenu) -> None:
+    page = NavigationItem.objects.get(menu=navigation_menu, item_type=NavigationItem.ItemType.PAGE)
+    hidden_page = NavigationItem.objects.create(
+        menu=navigation_menu,
+        parent=page.parent,
+        item_type=NavigationItem.ItemType.PAGE,
+        key="test-category.anonymous-hidden",
+        label_zh="匿名隐藏页面",
+        label_en="Anonymous Hidden Page",
+        frontend_path="/test/anonymous-hidden",
+        position=1,
+    )
+    role = Role.objects.get(code=Role.ANONYMOUS_ROLE_CODE)
+    role.anonymous_access_mode = Role.AnonymousAccessMode.SYSTEM_PAGE
+    role.save(update_fields=("anonymous_access_mode", "updated_at"))
+    role.pages.set([page])
+
+    response = APIClient().get(reverse("navigation-tree", kwargs={"code": navigation_menu.code}))
+
+    assert response.status_code == 200
+    children = response.json()["items"][0]["children"]
+    assert [child["id"] for child in children] == [str(page.id)]
+    assert str(hidden_page.id) not in [child["id"] for child in children]
+
+
+@pytest.mark.django_db
+def test_anonymous_tree_is_empty_in_login_page_mode(navigation_menu: NavigationMenu) -> None:
+    page = NavigationItem.objects.get(menu=navigation_menu, item_type=NavigationItem.ItemType.PAGE)
+    role = Role.objects.get(code=Role.ANONYMOUS_ROLE_CODE)
+    role.anonymous_access_mode = Role.AnonymousAccessMode.LOGIN_PAGE
+    role.save(update_fields=("anonymous_access_mode", "updated_at"))
+    role.pages.set([page])
+
+    response = APIClient().get(reverse("navigation-tree", kwargs={"code": navigation_menu.code}))
+
+    assert response.status_code == 200
+    assert response.json()["items"] == []
+
+
+@pytest.mark.django_db
 def test_reorder_is_atomic_and_rejects_stale_revision(
     admin_client: APIClient, navigation_menu: NavigationMenu
 ) -> None:

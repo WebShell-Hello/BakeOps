@@ -165,3 +165,29 @@ def test_protected_role_cannot_be_deleted(admin_client: APIClient) -> None:
     assert response.status_code == 400
     role.refresh_from_db()
     assert role.deleted_at is None
+
+
+@pytest.mark.django_db
+def test_anonymous_user_role_is_protected_and_configurable(
+    admin_client: APIClient,
+    navigation_page: NavigationItem,
+) -> None:
+    role = Role.objects.get(code=Role.ANONYMOUS_ROLE_CODE)
+
+    update_response = admin_client.patch(
+        reverse("role-detail", kwargs={"pk": role.id}),
+        {
+            "anonymous_access_mode": Role.AnonymousAccessMode.SYSTEM_PAGE,
+            "page_ids": [str(navigation_page.id)],
+        },
+        format="json",
+    )
+    delete_response = admin_client.delete(reverse("role-detail", kwargs={"pk": role.id}))
+
+    assert update_response.status_code == 200
+    role.refresh_from_db()
+    assert role.is_protected
+    assert not role.is_assignable
+    assert role.anonymous_access_mode == Role.AnonymousAccessMode.SYSTEM_PAGE
+    assert list(role.pages.values_list("id", flat=True)) == [navigation_page.id]
+    assert delete_response.status_code == 400

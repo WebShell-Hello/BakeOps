@@ -1,7 +1,7 @@
-import { DashboardPage } from "@/components/dashboard/dashboard-page";
+import { HomeGate } from "@/components/auth/home-gate";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  return <DashboardPage />;
+  return <HomeGate />;
 }

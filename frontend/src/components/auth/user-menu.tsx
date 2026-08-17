@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, LogOut, UserRound } from "lucide-react";
+import { ChevronDown, LogIn, LogOut, UserRound } from "lucide-react";
 import Link from "next/link";
 import { createPortal } from "react-dom";
 import { type CSSProperties, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -95,14 +95,23 @@ export function UserMenu({ placement, expanded = true, onNavigate }: UserMenuPro
         <p className="truncate text-sm font-semibold">{displayName}</p>
         <p className="mt-0.5 truncate text-xs text-[var(--muted)]">{user?.email}</p>
       </div>
-      <Link href="/profile" role="menuitem" className="mt-1 flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm hover:bg-[var(--surface-muted)]" onClick={() => { setOpen(false); onNavigate?.(); }}>
-        <UserRound className="size-4 text-[var(--muted)]" />
-        {isEnglish ? "Personal information" : "个人信息"}
-      </Link>
-      <button type="button" role="menuitem" className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm text-rose-600 hover:bg-[var(--danger-soft)]" onClick={() => void signOut()}>
-        <LogOut className="size-4" />
-        {isEnglish ? "Sign out" : "退出登录"}
-      </button>
+      {user ? (
+        <>
+          <Link href="/profile" role="menuitem" className="mt-1 flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm hover:bg-[var(--surface-muted)]" onClick={() => { setOpen(false); onNavigate?.(); }}>
+            <UserRound className="size-4 text-[var(--muted)]" />
+            {isEnglish ? "Personal information" : "个人信息"}
+          </Link>
+          <button type="button" role="menuitem" className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm text-rose-600 hover:bg-[var(--danger-soft)]" onClick={() => void signOut()}>
+            <LogOut className="size-4" />
+            {isEnglish ? "Sign out" : "退出登录"}
+          </button>
+        </>
+      ) : (
+        <Link href="/login" role="menuitem" className="mt-1 flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm hover:bg-[var(--surface-muted)]" onClick={() => { setOpen(false); onNavigate?.(); }}>
+          <LogIn className="size-4 text-[var(--muted)]" />
+          {isEnglish ? "Sign in" : "登录"}
+        </Link>
+      )}
     </div>
   ) : null;
 

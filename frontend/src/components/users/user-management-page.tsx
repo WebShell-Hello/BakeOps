@@ -200,7 +200,8 @@ export function UserManagementPage() {
   const userPagination = useDataPagination(users);
 
   const activeRoles = useMemo(
-    () => roles.filter((role) => role.deleted_at === null),
+    () =>
+      roles.filter((role) => role.deleted_at === null && role.is_assignable),
     [roles],
   );
   const roleById = useMemo(
@@ -258,7 +259,7 @@ export function UserManagementPage() {
       last_name: user.last_name,
       is_active: user.is_active,
       is_protected: user.is_protected,
-      role_ids: user.role_ids,
+      role_ids: user.role_ids.filter((roleId) => roleById.get(roleId)?.is_assignable),
     });
     setEditingUser(user);
   }

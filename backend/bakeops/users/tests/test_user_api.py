@@ -79,6 +79,27 @@ def test_user_crud_assigns_multiple_roles_and_returns_permission_union(
 
 
 @pytest.mark.django_db
+def test_anonymous_user_role_cannot_be_assigned_to_system_user(admin_client: APIClient) -> None:
+    role = Role.objects.get(code=Role.ANONYMOUS_ROLE_CODE)
+
+    response = admin_client.post(
+        reverse("user-list"),
+        {
+            "username": "public-policy",
+            "email": "public-policy@example.com",
+            "first_name": "Public",
+            "last_name": "Policy",
+            "role_ids": [str(role.id)],
+            "is_active": True,
+        },
+        format="json",
+    )
+
+    assert response.status_code == 400
+    assert not User.objects.filter(email="public-policy@example.com").exists()
+
+
+@pytest.mark.django_db
 def test_password_reset_always_restores_default_password(admin_client: APIClient) -> None:
     user = User.objects.create_user(username="simple", email="simple@example.com", password="old-password")
 

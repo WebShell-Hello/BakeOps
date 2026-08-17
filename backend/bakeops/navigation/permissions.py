@@ -8,7 +8,7 @@ from bakeops.access.permissions import has_django_or_role_permission
 
 class CanReadNavigation(BasePermission):
     def has_permission(self, request: Request, view: APIView) -> bool:
-        return bool(settings.DEBUG or (request.user.is_authenticated and request.user.is_active))
+        return True
 
 
 class CanManageNavigation(BasePermission):

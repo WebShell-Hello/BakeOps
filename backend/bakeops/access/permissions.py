@@ -10,6 +10,7 @@ def has_role_page_access(user: object, page_keys: set[str]) -> bool:
     return bool(
         user.roles.filter(  # type: ignore[attr-defined]
             deleted_at__isnull=True,
+            is_assignable=True,
             pages__key__in=page_keys,
             pages__item_type="PAGE",
             pages__is_active=True,

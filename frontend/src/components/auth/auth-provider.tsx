@@ -1,10 +1,16 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { createContext, type ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { createContext, type ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 import { useAppPreferences } from "@/components/providers/app-preferences-provider";
-import { getCurrentUser, logoutUser, type AuthUser } from "@/lib/api";
+import {
+  getCurrentUser,
+  getNavigationTree,
+  logoutUser,
+  type AuthUser,
+  type NavigationTreeItem,
+} from "@/lib/api";
 
 type AuthContextValue = {
   user: AuthUser | null;
@@ -14,12 +20,19 @@ type AuthContextValue = {
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
-const publicRoutes = new Set(["/login", "/register"]);
+const publicRoutes = new Set(["/", "/login", "/register"]);
+
+function anonymousCanAccessPath(pathname: string, items: NavigationTreeItem[]) {
+  for (const item of items) {
+    if (item.frontend_path === pathname) return true;
+    if (anonymousCanAccessPath(pathname, item.children)) return true;
+  }
+  return false;
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const initialPathRef = useRef(pathname);
   const { clearAccountPreferences, syncAccountPreferences } = useAppPreferences();
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
@@ -41,16 +54,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
-      void refreshUser().then((currentUser) => {
-        const initialPath = initialPathRef.current;
-        if (!currentUser && !publicRoutes.has(initialPath)) {
-          const next = initialPath === "/" ? "" : `?next=${encodeURIComponent(initialPath)}`;
-          router.replace(`/login${next}`);
-        }
-      });
+      void refreshUser();
     }, 0);
     return () => window.clearTimeout(timer);
-  }, [refreshUser, router]);
+  }, [refreshUser]);
+
+  useEffect(() => {
+    if (loading || user || publicRoutes.has(pathname)) return;
+    let cancelled = false;
+    const timer = window.setTimeout(() => {
+      void getNavigationTree()
+        .then((tree) => {
+          if (cancelled || anonymousCanAccessPath(pathname, tree.items)) return;
+          const next = `?next=${encodeURIComponent(pathname)}`;
+          router.replace(`/login${next}`);
+        })
+        .catch(() => {
+          if (cancelled) return;
+          const next = `?next=${encodeURIComponent(pathname)}`;
+          router.replace(`/login${next}`);
+        });
+    }, 0);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [loading, pathname, router, user]);
 
   const signOut = useCallback(async () => {
     try {

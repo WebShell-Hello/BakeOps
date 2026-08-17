@@ -42,7 +42,7 @@ class UserPreferenceSerializer(serializers.ModelSerializer[UserPreference]):
 class UserSerializer(serializers.ModelSerializer[User]):
     role_ids = serializers.PrimaryKeyRelatedField(
         many=True,
-        queryset=Role.objects.filter(deleted_at__isnull=True),
+        queryset=Role.objects.filter(deleted_at__isnull=True, is_assignable=True),
         required=False,
         source="roles",
     )
@@ -101,14 +101,20 @@ class UserSerializer(serializers.ModelSerializer[User]):
         return instance
 
     def get_effective_page_ids(self, instance: User) -> list[str]:
-        page_ids = instance.roles.filter(deleted_at__isnull=True).values_list("pages__id", flat=True)
+        page_ids = instance.roles.filter(deleted_at__isnull=True, is_assignable=True).values_list(
+            "pages__id",
+            flat=True,
+        )
         return sorted({str(page_id) for page_id in page_ids if page_id is not None})
 
     def to_representation(self, instance: User) -> dict[str, Any]:
         representation = super().to_representation(instance)
         representation["role_ids"] = [
             str(role_id)
-            for role_id in instance.roles.filter(deleted_at__isnull=True).values_list("id", flat=True)
+            for role_id in instance.roles.filter(deleted_at__isnull=True, is_assignable=True).values_list(
+                "id",
+                flat=True,
+            )
         ]
         return representation
 
@@ -142,7 +148,7 @@ class SessionUserSerializer(serializers.ModelSerializer[User]):
 
     def get_role_names(self, instance: User) -> list[str]:
         return list(
-            instance.roles.filter(deleted_at__isnull=True)
+            instance.roles.filter(deleted_at__isnull=True, is_assignable=True)
             .order_by("name")
             .values_list("name", flat=True)
         )
