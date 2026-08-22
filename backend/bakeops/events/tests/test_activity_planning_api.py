@@ -7,7 +7,7 @@ from django.utils import timezone
 from rest_framework.test import APIClient
 
 from bakeops.employees.models import Employee
-from bakeops.events.models import ActivityCategory, ActivityPlatform
+from bakeops.events.models import ActivityCategory, ActivityPlan, ActivityPlatform
 
 
 @pytest.fixture
@@ -59,6 +59,52 @@ def test_activity_category_and_platform_can_be_created_inline(admin_client: APIC
     )
     assert duplicate_response.status_code == 400
     assert "name" in duplicate_response.data
+
+
+@pytest.mark.django_db
+def test_unused_activity_options_can_be_deleted(admin_client: APIClient) -> None:
+    category = ActivityCategory.objects.create(
+        code="DELETE_CATEGORY",
+        name_zh="待删除分类",
+        name_en="Category to delete",
+    )
+    platform = ActivityPlatform.objects.create(
+        category=category,
+        code="DELETE_PLATFORM",
+        name_zh="待删除平台",
+        name_en="Platform to delete",
+    )
+
+    category_in_use_response = admin_client.delete(reverse("activity-category-detail", args=(category.id,)))
+    platform_response = admin_client.delete(reverse("activity-platform-detail", args=(platform.id,)))
+    category_response = admin_client.delete(reverse("activity-category-detail", args=(category.id,)))
+
+    assert category_in_use_response.status_code == 409
+    assert platform_response.status_code == 204
+    assert category_response.status_code == 204
+    assert not ActivityCategory.objects.filter(pk=category.id).exists()
+
+
+@pytest.mark.django_db
+def test_activity_options_used_by_a_plan_cannot_be_deleted(
+    admin_client: APIClient,
+    activity_options: tuple[ActivityCategory, ActivityPlatform],
+) -> None:
+    category, platform = activity_options
+    ActivityPlan.objects.create(
+        name="Protected activity plan",
+        category=category,
+        platform=platform,
+        start_date=timezone.localdate(),
+    )
+
+    platform_response = admin_client.delete(reverse("activity-platform-detail", args=(platform.id,)))
+    category_response = admin_client.delete(reverse("activity-category-detail", args=(category.id,)))
+
+    assert platform_response.status_code == 409
+    assert category_response.status_code == 409
+    assert ActivityPlatform.objects.filter(pk=platform.id).exists()
+    assert ActivityCategory.objects.filter(pk=category.id).exists()
 
 
 @pytest.mark.django_db

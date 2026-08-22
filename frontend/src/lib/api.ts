@@ -138,6 +138,7 @@ export type AuthUser = {
   full_name: string;
   role_names: string[];
   is_superuser: boolean;
+  can_export_production_backup: boolean;
   system_mode: "TEST" | "PRODUCTION";
   preferences: UserPreferences;
 };
@@ -824,8 +825,10 @@ export type InventoryReceipt = {
   current_stock: string;
   notes: string;
   received_at: string;
-  created_by_id: string | null;
-  created_by_name: string | null;
+  recorded_by_id: string | null;
+  recorded_by_name: string | null;
+  created_by_id?: string | null;
+  created_by_name?: string | null;
   invoice_name: string;
   invoice_size: number | null;
   invoice_download_url: string | null;
@@ -835,8 +838,8 @@ export type InventoryReceipt = {
 
 export type InventoryRecorderOption = {
   id: string;
-  username: string;
-  email: string;
+  name: string;
+  position: string;
 };
 
 export type InventoryReceiptInput = {
@@ -1309,10 +1312,8 @@ function parseLocalMutationBody(body: BodyInit | null | undefined): Record<strin
       parsed[key] = entry;
     }
   }
-  parsed.created_by_id = parsed.recorded_by_id ?? parsed.created_by_id ?? null;
-  parsed.created_by_name = parsed.recorded_by_name ?? parsed.created_by_name ?? null;
-  delete parsed.recorded_by_id;
-  delete parsed.recorded_by_name;
+  parsed.recorded_by_id = parsed.recorded_by_id ?? null;
+  parsed.recorded_by_name = parsed.recorded_by_name ?? null;
   if (parsed.remove_invoice === "true") {
     parsed.invoice_file = null;
     parsed.invoice_name = "";
@@ -1650,6 +1651,27 @@ function readApiError(value: unknown): string | null {
 
 export async function getHealthStatus(): Promise<HealthStatus> {
   return apiRequest<HealthStatus>("/health/");
+}
+
+export async function downloadProductionBackup(includeMedia: boolean) {
+  const query = includeMedia ? "?include_media=true" : "";
+  const response = await fetch(`${getApiBaseUrl()}/system/production-backup/${query}`, {
+    cache: "no-store",
+    credentials: "include",
+    headers: { "X-BakeOps-System-Mode": "PRODUCTION" },
+  });
+  if (!response.ok) {
+    const body = (await response.json().catch(() => null)) as unknown;
+    const error = new Error(
+      readApiError(body) ?? `BakeOps API request failed with status ${response.status}`,
+    );
+    Object.assign(error, { status: response.status, body });
+    throw error;
+  }
+  const disposition = response.headers.get("Content-Disposition") ?? "";
+  const filename = /filename="?([^";]+)"?/i.exec(disposition)?.[1]
+    ?? `bakeops-production-backup-${new Date().toISOString().replaceAll(":", "-")}.zip`;
+  return { blob: await response.blob(), filename };
 }
 
 export function getCurrentUser() {
@@ -2474,7 +2496,14 @@ export async function bulkDeleteInventoryReceipts(receiptIds: string[]) {
   });
 }
 
-export function getInventoryRecorderOptions() {
+export async function getInventoryRecorderOptions() {
+  if (getDataMode() === "TEST") {
+    return (await getEmployees("", "ACTIVE", false)).map(({ id, name, position }) => ({
+      id,
+      name,
+      position,
+    }));
+  }
   return apiRequest<InventoryRecorderOption[]>("/inventory/receipts/recorder-options/");
 }
 
@@ -2680,6 +2709,10 @@ export function createActivityCategory(name: string) {
   });
 }
 
+export function deleteActivityCategory(categoryId: string) {
+  return apiRequest<void>(`/events/activity-planning/categories/${categoryId}/`, { method: "DELETE" });
+}
+
 export function createActivityPlatform(categoryId: string, name: string) {
   const localFields = getDataMode() === "TEST" ? {
     code: `CUSTOM_PLATFORM_${crypto.randomUUID().replaceAll("-", "").toUpperCase()}`,
@@ -2695,6 +2728,10 @@ export function createActivityPlatform(categoryId: string, name: string) {
       ...localFields,
     }),
   });
+}
+
+export function deleteActivityPlatform(platformId: string) {
+  return apiRequest<void>(`/events/activity-planning/platforms/${platformId}/`, { method: "DELETE" });
 }
 
 export function updateActivityPlan(planId: string, input: ActivityPlanInput) {

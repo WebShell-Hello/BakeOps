@@ -7,6 +7,7 @@ from rest_framework import serializers
 
 from bakeops.access.models import Role
 from bakeops.users.captcha import consume_registration_captcha
+from bakeops.users.constants import is_global_superuser
 from bakeops.users.models import User, UserPreference
 
 
@@ -138,6 +139,7 @@ class SessionUserSerializer(serializers.ModelSerializer[User]):
     full_name = serializers.CharField(source="get_full_name", read_only=True)
     role_names = serializers.SerializerMethodField()
     preferences = serializers.SerializerMethodField()
+    can_export_production_backup = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -152,7 +154,11 @@ class SessionUserSerializer(serializers.ModelSerializer[User]):
             "preferences",
             "is_superuser",
             "system_mode",
+            "can_export_production_backup",
         )
+
+    def get_can_export_production_backup(self, instance: User) -> bool:
+        return is_global_superuser(instance)
 
     def get_role_names(self, instance: User) -> list[str]:
         return list(

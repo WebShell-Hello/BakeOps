@@ -3,9 +3,11 @@ from django.urls import path
 from bakeops.events.views import (
     ActivityPlanDetailApi,
     ActivityPlanListCreateApi,
+    ActivityCategoryDetailApi,
     ActivityCategoryListCreateApi,
     ActivityPlanningOverviewApi,
     ActivityPlatformListCreateApi,
+    ActivityPlatformDetailApi,
     ActivityReminderOccurrenceDetailApi,
     BusinessClosureDetailApi,
     BusinessClosureListCreateApi,
@@ -20,7 +22,9 @@ from bakeops.events.views import (
 urlpatterns = [
     path("activity-planning/overview/", ActivityPlanningOverviewApi.as_view(), name="activity-planning-overview"),
     path("activity-planning/categories/", ActivityCategoryListCreateApi.as_view(), name="activity-category-list-create"),
+    path("activity-planning/categories/<uuid:pk>/", ActivityCategoryDetailApi.as_view(), name="activity-category-detail"),
     path("activity-planning/platforms/", ActivityPlatformListCreateApi.as_view(), name="activity-platform-list-create"),
+    path("activity-planning/platforms/<uuid:pk>/", ActivityPlatformDetailApi.as_view(), name="activity-platform-detail"),
     path("activity-planning/plans/", ActivityPlanListCreateApi.as_view(), name="activity-plan-list-create"),
     path("activity-planning/plans/<uuid:pk>/", ActivityPlanDetailApi.as_view(), name="activity-plan-detail"),
     path("activity-planning/occurrences/<uuid:pk>/", ActivityReminderOccurrenceDetailApi.as_view(), name="activity-occurrence-detail"),

@@ -11,6 +11,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from bakeops.employees.models import Employee
 from bakeops.inventory.models import InventoryReceipt, ProductionPlan
 from bakeops.inventory.permissions import CanManageInventory, CanManageProductionPlans
 from bakeops.inventory.serializers import (
@@ -29,7 +30,6 @@ from bakeops.inventory.services import (
     delete_inventory_receipts,
 )
 from bakeops.products.models import Product
-from bakeops.users.models import User
 
 
 class InventoryOverviewApi(APIView):
@@ -53,15 +53,19 @@ class InventoryReceiptRecorderOptionsApi(APIView):
     permission_classes = (CanManageInventory,)
 
     def get(self, request: Request) -> Response:
-        users = User.objects.filter(is_active=True).order_by("username", "email").values("id", "username", "email")
-        return Response(list(users))
+        employees = (
+            Employee.objects.filter(status=Employee.Status.ACTIVE, deleted_at__isnull=True)
+            .order_by("employee_number")
+            .values("id", "name", "position")
+        )
+        return Response(list(employees))
 
 
 class InventoryReceiptCreateApi(APIView):
     permission_classes = (CanManageInventory,)
 
     def get(self, request: Request) -> Response:
-        receipts = InventoryReceipt.objects.select_related("ingredient", "supplier", "created_by")
+        receipts = InventoryReceipt.objects.select_related("ingredient", "supplier", "recorded_by_employee")
         search = request.query_params.get("search", "").strip()
         start = request.query_params.get("start", "").strip()
         end = request.query_params.get("end", "").strip()
@@ -71,8 +75,8 @@ class InventoryReceiptCreateApi(APIView):
                 | Q(ingredient__name__icontains=search)
                 | Q(supplier__name__icontains=search)
                 | Q(notes__icontains=search)
-                | Q(created_by__username__icontains=search)
-                | Q(created_by__email__icontains=search)
+                | Q(recorded_by_employee__name__icontains=search)
+                | Q(recorded_by_employee__employee_number__icontains=search)
             )
         try:
             if start:
@@ -98,7 +102,7 @@ class InventoryReceiptDetailApi(APIView):
 
     def get_object(self, pk: str) -> InventoryReceipt:
         return get_object_or_404(
-            InventoryReceipt.objects.select_related("ingredient", "supplier", "created_by"),
+            InventoryReceipt.objects.select_related("ingredient", "supplier", "recorded_by_employee"),
             pk=pk,
         )
 

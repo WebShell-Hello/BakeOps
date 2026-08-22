@@ -173,6 +173,13 @@ class InventoryReceipt(BaseModel):
         on_delete=models.SET_NULL,
         related_name="inventory_receipts_created",
     )
+    recorded_by_employee = models.ForeignKey(
+        "employees.Employee",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="inventory_receipts_recorded",
+    )
 
     class Meta:
         ordering = ("-received_at", "-created_at")

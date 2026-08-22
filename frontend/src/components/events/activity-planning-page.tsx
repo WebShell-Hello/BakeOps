@@ -35,7 +35,7 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import { type FormEvent, type MouseEvent, useCallback, useEffect, useId, useMemo, useState } from "react";
+import { type FormEvent, type MouseEvent, useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { PageBreadcrumb } from "@/components/navigation/page-breadcrumb";
@@ -48,6 +48,8 @@ import {
   createActivityPlan,
   createActivityCategory,
   createActivityPlatform,
+  deleteActivityCategory,
+  deleteActivityPlatform,
   deleteActivityPlan,
   getActivityPlanningOverview,
   updateActivityOccurrence,
@@ -101,6 +103,14 @@ const copy = {
     categoryPlaceholder: "选择或输入活动分类",
     platformPlaceholder: "选择或输入活动平台",
     addOptionError: "无法添加此选项",
+    deleteCategory: (name: string) => `删除活动分类“${name}”`,
+    deletePlatform: (name: string) => `删除活动平台“${name}”`,
+    confirmDeleteCategory: (name: string) => `确定删除活动分类“${name}”吗？`,
+    confirmDeletePlatform: (name: string) => `确定删除活动平台“${name}”吗？`,
+    categoryDeleteBlocked: "请先删除该分类下的平台；已被活动计划使用的分类不能删除。",
+    platformDeleteBlocked: "该平台已被活动计划使用，不能删除。",
+    optionDeleted: "选项已删除",
+    deleteOptionError: "无法删除此选项，请确认它没有被活动计划使用。",
     descriptionLabel: "活动描述",
     descriptionPlaceholder: "填写活动目标、执行内容或注意事项",
     priority: "优先级",
@@ -161,6 +171,14 @@ const copy = {
     categoryPlaceholder: "Select or enter a category",
     platformPlaceholder: "Select or enter a platform",
     addOptionError: "Unable to add this option",
+    deleteCategory: (name: string) => `Delete activity category ${name}`,
+    deletePlatform: (name: string) => `Delete activity platform ${name}`,
+    confirmDeleteCategory: (name: string) => `Delete the activity category “${name}”?`,
+    confirmDeletePlatform: (name: string) => `Delete the activity platform “${name}”?`,
+    categoryDeleteBlocked: "Delete the platforms in this category first. Categories used by activity plans cannot be deleted.",
+    platformDeleteBlocked: "This platform is used by an activity plan and cannot be deleted.",
+    optionDeleted: "Option deleted",
+    deleteOptionError: "Unable to delete this option. Make sure it is not used by an activity plan.",
     descriptionLabel: "Description",
     descriptionPlaceholder: "Add the goal, execution details or notes",
     priority: "Priority",
@@ -343,6 +361,56 @@ export function ActivityPlanningPage() {
     }
   }
 
+  async function removeCategory(category: { id: string; name: string }) {
+    if (!overview) return false;
+    const hasPlatforms = overview.platforms.some((item) => item.category_id === category.id);
+    const hasPlans = overview.plans.some((item) => item.category_id === category.id);
+    if (hasPlatforms || hasPlans) {
+      showInfo(text.categoryDeleteBlocked);
+      return false;
+    }
+    if (!window.confirm(text.confirmDeleteCategory(category.name))) return false;
+    try {
+      await deleteActivityCategory(category.id);
+      setOverview((current) => current ? {
+        ...current,
+        categories: current.categories.filter((item) => item.id !== category.id),
+      } : current);
+      if (form.category_id === category.id) {
+        setForm((current) => ({ ...current, category_id: "", platform_id: "" }));
+      }
+      showSuccess(text.optionDeleted);
+      return true;
+    } catch {
+      showInfo(text.deleteOptionError);
+      return false;
+    }
+  }
+
+  async function removePlatform(platform: { id: string; name: string }) {
+    if (!overview) return false;
+    if (overview.plans.some((item) => item.platform_id === platform.id)) {
+      showInfo(text.platformDeleteBlocked);
+      return false;
+    }
+    if (!window.confirm(text.confirmDeletePlatform(platform.name))) return false;
+    try {
+      await deleteActivityPlatform(platform.id);
+      setOverview((current) => current ? {
+        ...current,
+        platforms: current.platforms.filter((item) => item.id !== platform.id),
+      } : current);
+      if (form.platform_id === platform.id) {
+        setForm((current) => ({ ...current, platform_id: "" }));
+      }
+      showSuccess(text.optionDeleted);
+      return true;
+    } catch {
+      showInfo(text.deleteOptionError);
+      return false;
+    }
+  }
+
   async function setOccurrence(occurrence: ActivityReminderOccurrence, action: OccurrenceAction) {
     const snoozedUntil = addDays(parseISO(occurrence.effective_at), 1);
     const hasTomorrowConflict = action === "snooze" && (overview?.occurrences ?? []).some((item) =>
@@ -427,7 +495,7 @@ export function ActivityPlanningPage() {
       </main>
 
       {calendarActionMenu ? <OccurrenceActionPopover menu={calendarActionMenu} locale={locale} text={text} onClose={() => setCalendarActionMenu(null)} onAction={(occurrence, action) => { setCalendarActionMenu(null); void setOccurrence(occurrence, action); }} /> : null}
-      {formOpen && overview ? <EditablePlanDialog overview={overview} form={form} editing={Boolean(editing)} locale={locale} text={text} saving={saving} onChange={setForm} onCreateCategory={addCategory} onCreatePlatform={addPlatform} onClose={() => setFormOpen(false)} onSubmit={save} /> : null}
+      {formOpen && overview ? <EditablePlanDialog overview={overview} form={form} editing={Boolean(editing)} locale={locale} text={text} saving={saving} onChange={setForm} onCreateCategory={addCategory} onCreatePlatform={addPlatform} onDeleteCategory={removeCategory} onDeletePlatform={removePlatform} onClose={() => setFormOpen(false)} onSubmit={save} /> : null}
     </DashboardShell>
   );
 }
@@ -571,6 +639,8 @@ type EditablePlanDialogProps = {
   onChange: (value: ActivityPlanInput) => void;
   onCreateCategory: (name: string) => Promise<ActivityCategory>;
   onCreatePlatform: (categoryId: string, name: string) => Promise<ActivityPlatform>;
+  onDeleteCategory: (category: CreatableOption) => Promise<boolean>;
+  onDeletePlatform: (platform: CreatableOption) => Promise<boolean>;
   onClose: () => void;
   onSubmit: (event: FormEvent) => void;
 };
@@ -585,6 +655,8 @@ function EditablePlanDialog({
   onChange,
   onCreateCategory,
   onCreatePlatform,
+  onDeleteCategory,
+  onDeletePlatform,
   onClose,
   onSubmit,
 }: EditablePlanDialogProps) {
@@ -622,6 +694,8 @@ function EditablePlanDialog({
                 const category = await onCreateCategory(name);
                 return { id: category.id, name: localeName(category, locale) };
               }}
+              onDelete={onDeleteCategory}
+              deleteLabel={text.deleteCategory}
             />
           </Field>
           <Field label={text.platform}>
@@ -638,6 +712,8 @@ function EditablePlanDialog({
                 const platform = await onCreatePlatform(form.category_id, name);
                 return { id: platform.id, name: localeName(platform, locale) };
               }}
+              onDelete={onDeletePlatform}
+              deleteLabel={text.deletePlatform}
             />
           </Field>
           <Field label={text.descriptionLabel} className="sm:col-span-2">
@@ -683,21 +759,39 @@ function EditablePlanDialog({
 
 type CreatableOption = { id: string; name: string };
 
-function CreatableOptionInput({ label, addLabel, placeholder, options, selectedId, disabled = false, onSelect, onCreate }: {
+function CreatableOptionInput({ label, addLabel, deleteLabel, placeholder, options, selectedId, disabled = false, onSelect, onCreate, onDelete }: {
   label: string;
   addLabel: string;
+  deleteLabel: (name: string) => string;
   placeholder: string;
   options: CreatableOption[];
   selectedId: string;
   disabled?: boolean;
   onSelect: (id: string) => void;
   onCreate: (name: string) => Promise<CreatableOption>;
+  onDelete: (option: CreatableOption) => Promise<boolean>;
 }) {
   const listId = useId();
+  const containerRef = useRef<HTMLDivElement>(null);
   const selectedName = options.find((item) => item.id === selectedId)?.name ?? "";
   const [draft, setDraft] = useState(selectedName);
+  const [open, setOpen] = useState(false);
+  const [showAll, setShowAll] = useState(true);
   const [creating, setCreating] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
+  const query = draft.trim().toLocaleLowerCase();
+  const visibleOptions = showAll || !query
+    ? options
+    : options.filter((item) => item.name.toLocaleLowerCase().includes(query));
+
+  useEffect(() => {
+    function closeOnOutsideClick(event: globalThis.MouseEvent) {
+      if (!containerRef.current?.contains(event.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", closeOnOutsideClick);
+    return () => document.removeEventListener("mousedown", closeOnOutsideClick);
+  }, []);
 
   async function addOption() {
     const name = draft.trim();
@@ -706,6 +800,7 @@ function CreatableOptionInput({ label, addLabel, placeholder, options, selectedI
     if (existing) {
       onSelect(existing.id);
       setDraft(existing.name);
+      setOpen(false);
       return;
     }
     setCreating(true);
@@ -714,6 +809,7 @@ function CreatableOptionInput({ label, addLabel, placeholder, options, selectedI
       const created = await onCreate(name);
       onSelect(created.id);
       setDraft(created.name);
+      setOpen(false);
     } catch {
       setFailed(true);
     } finally {
@@ -721,30 +817,81 @@ function CreatableOptionInput({ label, addLabel, placeholder, options, selectedI
     }
   }
 
+  async function deleteOption(option: CreatableOption) {
+    if (deletingId) return;
+    setDeletingId(option.id);
+    const deleted = await onDelete(option);
+    if (deleted && selectedId === option.id) {
+      onSelect("");
+      setDraft("");
+    }
+    setDeletingId(null);
+    setOpen(true);
+    setShowAll(true);
+  }
+
   return (
-    <div>
+    <div ref={containerRef} className="relative">
       <div className="flex gap-2">
         <input
+          role="combobox"
           aria-label={label}
+          aria-autocomplete="list"
+          aria-controls={listId}
+          aria-expanded={open}
           className={cn("h-10 min-w-0 flex-1 rounded-lg border bg-[var(--card)] px-3 text-sm outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary-ring)]", failed ? "border-rose-500" : "border-[var(--border)]")}
-          list={listId}
           placeholder={placeholder}
           disabled={disabled}
           value={draft}
+          onFocus={() => { setOpen(true); setShowAll(true); }}
+          onClick={() => { setOpen(true); setShowAll(true); }}
           onChange={(event) => {
             const value = event.target.value;
             setDraft(value);
             setFailed(false);
+            setOpen(true);
+            setShowAll(false);
             const existing = options.find((item) => item.name.toLocaleLowerCase() === value.trim().toLocaleLowerCase());
             onSelect(existing?.id ?? "");
           }}
-          onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); void addOption(); } }}
+          onKeyDown={(event) => {
+            if (event.key === "Escape") setOpen(false);
+            if (event.key === "Enter") { event.preventDefault(); void addOption(); }
+          }}
         />
-        <datalist id={listId}>{options.map((item) => <option key={item.id} value={item.name} />)}</datalist>
         <Button type="button" variant="outline" size="icon" className="size-10 shrink-0" aria-label={addLabel} title={addLabel} disabled={disabled || creating || !draft.trim()} onClick={() => void addOption()}>
           <Plus className="size-4" />
         </Button>
       </div>
+      {open && !disabled && visibleOptions.length ? (
+        <div id={listId} role="listbox" aria-label={label} className="absolute top-full right-0 left-0 z-30 mt-1 max-h-56 overflow-y-auto rounded-lg border border-[var(--border)] bg-[var(--card)] p-1 shadow-xl">
+          {visibleOptions.map((option) => (
+            <div key={option.id} role="option" aria-selected={option.id === selectedId} className={cn("flex items-center gap-1 rounded-md", option.id === selectedId && "bg-[var(--primary-soft)]")}>
+              <button
+                type="button"
+                className="min-w-0 flex-1 truncate rounded-md px-2.5 py-2 text-left text-sm hover:bg-[var(--surface-muted)]"
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => { onSelect(option.id); setDraft(option.name); setOpen(false); }}
+              >
+                {option.name}
+              </button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="mr-1 size-7 shrink-0"
+                aria-label={deleteLabel(option.name)}
+                title={deleteLabel(option.name)}
+                disabled={deletingId === option.id}
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => void deleteOption(option)}
+              >
+                <X className="size-3.5" />
+              </Button>
+            </div>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }

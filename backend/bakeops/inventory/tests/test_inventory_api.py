@@ -10,6 +10,7 @@ from django.utils import timezone
 from rest_framework.test import APIClient
 
 from bakeops.access.models import Role
+from bakeops.employees.models import Employee
 from bakeops.inventory.models import InventoryItem, InventoryReceipt, ProductionPlan, PurchaseRequest
 from bakeops.inventory.services import calculate_forecast_demand, consume_inventory
 from bakeops.navigation.models import NavigationItem
@@ -586,10 +587,13 @@ def test_inventory_receipt_accepts_invoice_and_editable_recorder(
         minimum_order_unit="kg",
         is_preferred=True,
     )
-    recorder = User.objects.create_user(
-        username="receipt-recorder",
-        email="receipt-recorder@example.com",
-        password="password123",
+    recorder = Employee.objects.create(
+        employee_number="REC-001",
+        name="Receipt Recorder",
+        position="Stock controller",
+        hourly_rate="14.00",
+        employment_type=Employee.EmploymentType.FULL_TIME,
+        status=Employee.Status.ACTIVE,
     )
     invoice = SimpleUploadedFile("invoice.pdf", b"%PDF-1.4 test invoice", content_type="application/pdf")
 
@@ -614,9 +618,14 @@ def test_inventory_receipt_accepts_invoice_and_editable_recorder(
         assert response.status_code == 201
         options = admin_client.get(reverse("inventory-receipt-recorder-options"))
         assert options.status_code == 200
-        assert any(row["id"] == recorder.id and row["email"] == recorder.email for row in options.data)
-        assert response.data["created_by_id"] == str(recorder.id)
-        assert response.data["created_by_name"] == recorder.username
+        assert options.data == [{
+            "id": recorder.id,
+            "name": recorder.name,
+            "position": recorder.position,
+        }]
+        assert response.data["recorded_by_id"] == str(recorder.id)
+        assert response.data["recorded_by_name"] == recorder.name
+        assert "email" not in options.data[0]
         assert response.data["invoice_name"] == "invoice.pdf"
         assert response.data["invoice_size"] == len(b"%PDF-1.4 test invoice")
         assert response.data["invoice_download_url"].endswith("/invoice/")
@@ -650,7 +659,14 @@ def test_inventory_receipt_update_applies_only_inventory_delta_and_removes_invoi
         minimum_order_unit="kg",
         is_preferred=True,
     )
-    recorder = User.objects.create_user(username="new-recorder", email="new-recorder@example.com")
+    recorder = Employee.objects.create(
+        employee_number="REC-002",
+        name="New Recorder",
+        position="Stock controller",
+        hourly_rate="14.00",
+        employment_type=Employee.EmploymentType.FULL_TIME,
+        status=Employee.Status.ACTIVE,
+    )
 
     with override_settings(MEDIA_ROOT=tmp_path):
         create_response = admin_client.post(
@@ -684,7 +700,7 @@ def test_inventory_receipt_update_applies_only_inventory_delta_and_removes_invoi
         assert response.status_code == 200
         assert response.data["quantity"] == "7.000"
         assert response.data["total_cost"] == "21.00"
-        assert response.data["created_by_id"] == str(recorder.id)
+        assert response.data["recorded_by_id"] == str(recorder.id)
         assert response.data["invoice_name"] == ""
         assert response.data["invoice_download_url"] is None
         inventory.refresh_from_db()

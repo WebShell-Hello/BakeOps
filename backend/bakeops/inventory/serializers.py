@@ -7,6 +7,7 @@ from django.db import transaction
 from django.utils import timezone
 from rest_framework import serializers
 
+from bakeops.employees.models import Employee
 from bakeops.inventory.models import InventoryItem, InventoryReceipt, ProductionPlan, PurchaseRequest
 from bakeops.inventory.services import (
     apply_inventory_receipt,
@@ -17,7 +18,6 @@ from bakeops.inventory.services import (
 from bakeops.products.costing import current_product_unit_cost
 from bakeops.products.models import Ingredient, Product
 from bakeops.suppliers.models import Supplier, SupplierIngredient
-from bakeops.users.models import User
 
 
 class PurchaseRequestCreateSerializer(serializers.Serializer[dict[str, Any]]):
@@ -120,8 +120,8 @@ class InventoryReceiptWriteSerializer(serializers.Serializer[dict[str, Any]]):
     received_at = serializers.DateTimeField(required=False)
     notes = serializers.CharField(max_length=255, allow_blank=True, required=False)
     recorded_by_id = serializers.PrimaryKeyRelatedField(
-        source="created_by",
-        queryset=User.objects.filter(is_active=True),
+        source="recorded_by_employee",
+        queryset=Employee.objects.filter(status=Employee.Status.ACTIVE, deleted_at__isnull=True),
         required=False,
     )
     invoice = serializers.FileField(required=False, allow_empty_file=False, write_only=True)
@@ -199,7 +199,7 @@ class InventoryReceiptWriteSerializer(serializers.Serializer[dict[str, Any]]):
         invoice = validated_data.pop("invoice", None)
         validated_data.pop("remove_invoice", None)
         request = self.context["request"]
-        recorded_by = validated_data.pop("created_by", request.user)
+        recorded_by_employee = validated_data.pop("recorded_by_employee", None)
         inventory, _ = InventoryItem.objects.select_for_update().get_or_create(ingredient=ingredient)
         apply_inventory_receipt(inventory, base_quantity, purchase_value)
         return InventoryReceipt.objects.create(
@@ -207,7 +207,8 @@ class InventoryReceiptWriteSerializer(serializers.Serializer[dict[str, Any]]):
             ingredient=ingredient,
             base_quantity=base_quantity,
             base_unit=ingredient.base_unit,
-            created_by=recorded_by,
+            created_by=request.user,
+            recorded_by_employee=recorded_by_employee,
             invoice=invoice or "",
             invoice_original_name=invoice.name if invoice else "",
             invoice_content_type=getattr(invoice, "content_type", "") if invoice else "",
@@ -263,7 +264,7 @@ class InventoryReceiptWriteSerializer(serializers.Serializer[dict[str, Any]]):
         validated_data.pop("ingredient", None)
         for field in (
             "supplier", "quantity", "unit", "unit_price", "received_at", "notes",
-            "created_by", "currency", "price_unit",
+            "recorded_by_employee", "currency", "price_unit",
         ):
             if field in validated_data:
                 setattr(receipt, field, validated_data[field])
@@ -281,8 +282,8 @@ class InventoryReceiptSerializer(serializers.ModelSerializer[InventoryReceipt]):
     ingredient_name = serializers.CharField(source="ingredient.name", read_only=True)
     supplier_id = serializers.UUIDField(source="supplier.id", read_only=True, allow_null=True)
     supplier_name = serializers.CharField(source="supplier.name", read_only=True, allow_null=True)
-    created_by_id = serializers.UUIDField(source="created_by.id", read_only=True, allow_null=True)
-    created_by_name = serializers.CharField(source="created_by.username", read_only=True, allow_null=True)
+    recorded_by_id = serializers.UUIDField(source="recorded_by_employee.id", read_only=True, allow_null=True)
+    recorded_by_name = serializers.CharField(source="recorded_by_employee.name", read_only=True, allow_null=True)
     invoice_name = serializers.CharField(source="invoice_original_name", read_only=True)
     invoice_size = serializers.SerializerMethodField()
     invoice_download_url = serializers.SerializerMethodField()
@@ -294,7 +295,7 @@ class InventoryReceiptSerializer(serializers.ModelSerializer[InventoryReceipt]):
         fields = (
             "id", "reference", "ingredient_id", "ingredient_name", "supplier_id", "supplier_name",
             "quantity", "unit", "unit_price", "currency", "price_unit", "total_cost", "current_stock",
-            "notes", "received_at", "created_by_id", "created_by_name", "invoice_name", "invoice_size",
+            "notes", "received_at", "recorded_by_id", "recorded_by_name", "invoice_name", "invoice_size",
             "invoice_download_url", "created_at",
         )
 

@@ -50,7 +50,7 @@ const copy = {
     clear: "清除筛选",
     refresh: "刷新记录",
     reference: "入库单号",
-    purchasedAt: "采购时间",
+    purchasedAt: "采购日期",
     ingredient: "食材",
     quantity: "入库数量",
     unitPrice: "成本单价",
@@ -99,7 +99,7 @@ const copy = {
     clear: "Clear filters",
     refresh: "Refresh records",
     reference: "Receipt",
-    purchasedAt: "Purchase time",
+    purchasedAt: "Purchase date",
     ingredient: "Ingredient",
     quantity: "Quantity received",
     unitPrice: "Cost unit price",
@@ -164,7 +164,7 @@ export function InventoryReceiptsPage() {
   const text = copy[locale];
   const [receipts, setReceipts] = useState<InventoryReceipt[]>([]);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-  const [users, setUsers] = useState<InventoryRecorderOption[]>([]);
+  const [employees, setEmployees] = useState<InventoryRecorderOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -188,7 +188,7 @@ export function InventoryReceiptsPage() {
       setReceipts(receiptRows);
       setSelectedIds([]);
       setSuppliers(supplierRows);
-      setUsers(userRows);
+      setEmployees(userRows);
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : text.loadError);
     } finally {
@@ -208,7 +208,7 @@ export function InventoryReceiptsPage() {
         receipt.reference,
         receipt.ingredient_name,
         receipt.supplier_name ?? "",
-        receipt.created_by_name ?? "",
+        receipt.recorded_by_name ?? receipt.created_by_name ?? "",
         receipt.notes,
       ].join(" ").toLocaleLowerCase(locale);
       const receiptDate = receipt.received_at.slice(0, 10);
@@ -273,9 +273,9 @@ export function InventoryReceiptsPage() {
       supplierId: receipt.supplier_id ?? "",
       quantity: receipt.quantity,
       unitPrice: receipt.unit_price ?? "",
-      receivedAt: toDateTimeLocalValue(receipt.received_at),
+      receivedAt: receipt.received_at.slice(0, 10),
       notes: receipt.notes,
-      recordedById: receipt.created_by_id ?? "",
+      recordedById: receipt.recorded_by_id ?? receipt.created_by_id ?? "",
       invoice: null,
       removeInvoice: false,
     });
@@ -294,7 +294,7 @@ export function InventoryReceiptsPage() {
     const term = supplier?.supplied_ingredients.find(
       (row) => row.ingredient === selected.ingredient_id && row.is_active,
     );
-    const recordedBy = users.find((row) => row.id === form.recordedById);
+    const recordedBy = employees.find((row) => row.id === form.recordedById);
     setSaving(true);
     try {
       const updated = await updateInventoryReceipt(selected.id, {
@@ -305,10 +305,10 @@ export function InventoryReceiptsPage() {
         unit_price: form.unitPrice,
         currency: term?.currency ?? selected.currency,
         price_unit: term?.price_unit ?? selected.price_unit,
-        received_at: new Date(form.receivedAt).toISOString(),
+        received_at: dateToLocalIso(form.receivedAt),
         notes: form.notes.trim(),
         recorded_by_id: form.recordedById,
-        recorded_by_name: recordedBy?.username,
+        recorded_by_name: recordedBy?.name,
         invoice: form.invoice,
         remove_invoice: form.removeInvoice,
       });
@@ -386,7 +386,7 @@ export function InventoryReceiptsPage() {
           ) : null}
 
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[1220px] text-left text-sm">
+            <table className="w-full min-w-[1500px] text-left text-sm">
               <thead className="bg-[var(--surface-muted)] text-xs text-[var(--muted)]">
                 <tr>
                   <th className="w-12 px-4 py-3 font-medium">
@@ -403,13 +403,13 @@ export function InventoryReceiptsPage() {
                   </th>
                   <th className="px-4 py-3 font-medium">{text.purchasedAt}</th>
                   <th className="px-4 py-3 font-medium">{text.reference}</th>
-                  <th className="px-4 py-3 font-medium">{text.ingredient}</th>
+                  <th className="min-w-56 px-4 py-3 font-medium">{text.ingredient}</th>
                   <th className="px-4 py-3 text-right font-medium">{text.quantity}</th>
                   <th className="px-4 py-3 text-right font-medium">{text.unitPrice}</th>
                   <th className="px-4 py-3 text-right font-medium">{text.amount}</th>
                   <th className="px-4 py-3 font-medium">{text.supplier}</th>
-                  <th className="px-4 py-3 font-medium">{text.recordedBy}</th>
-                  <th className="px-4 py-3 font-medium">{text.invoice}</th>
+                  <th className="min-w-48 px-4 py-3 font-medium">{text.recordedBy}</th>
+                  <th className="min-w-60 px-4 py-3 font-medium">{text.invoice}</th>
                   <th className="px-4 py-3 font-medium">{text.notes}</th>
                 </tr>
               </thead>
@@ -453,13 +453,13 @@ export function InventoryReceiptsPage() {
                     </td>
                     <td className="whitespace-nowrap px-4 py-3">{formatDateTime(receipt.received_at, locale)}</td>
                     <td className="px-4 py-3 font-medium">{receipt.reference}</td>
-                    <td className="px-4 py-3">{receipt.ingredient_name}</td>
+                    <td className="min-w-56 px-4 py-3">{receipt.ingredient_name}</td>
                     <td className="px-4 py-3 text-right tabular-nums">{formatNumber(receipt.quantity, locale)} {receipt.unit}</td>
                     <td className="px-4 py-3 text-right tabular-nums">{receipt.unit_price ? `${formatCurrency(Number(receipt.unit_price), receipt.currency, locale)}/${receipt.price_unit}` : text.unknown}</td>
                     <td className="px-4 py-3 text-right font-medium tabular-nums">{receipt.total_cost ? formatCurrency(Number(receipt.total_cost), receipt.currency, locale) : text.unknown}</td>
                     <td className="px-4 py-3">{receipt.supplier_name ?? text.unknown}</td>
-                    <td className="px-4 py-3">{receipt.created_by_name ?? text.unknown}</td>
-                    <td className="max-w-44 truncate px-4 py-3 text-[var(--muted)]">{receipt.invoice_name || text.unknown}</td>
+                    <td className="min-w-48 px-4 py-3">{receipt.recorded_by_name ?? receipt.created_by_name ?? text.unknown}</td>
+                    <td className="min-w-60 max-w-72 truncate px-4 py-3 text-[var(--muted)]" title={receipt.invoice_name || undefined}>{receipt.invoice_name || text.unknown}</td>
                     <td className="max-w-64 truncate px-4 py-3 text-[var(--muted)]" title={receipt.notes}>{receipt.notes || text.unknown}</td>
                   </tr>
                 )) : (
@@ -478,7 +478,7 @@ export function InventoryReceiptsPage() {
           receipt={selected}
           form={form}
           suppliers={suppliers}
-          users={users}
+          employees={employees}
           locale={locale}
           text={text}
           saving={saving}
@@ -491,11 +491,11 @@ export function InventoryReceiptsPage() {
   );
 }
 
-function ReceiptDetailDialog({ receipt, form, suppliers, users, locale, text, saving, onChange, onClose, onSubmit }: {
+function ReceiptDetailDialog({ receipt, form, suppliers, employees, locale, text, saving, onChange, onClose, onSubmit }: {
   receipt: InventoryReceipt;
   form: ReceiptForm;
   suppliers: Supplier[];
-  users: InventoryRecorderOption[];
+  employees: InventoryRecorderOption[];
   locale: "zh-CN" | "en-GB";
   text: LocalisedText;
   saving: boolean;
@@ -564,11 +564,11 @@ function ReceiptDetailDialog({ receipt, form, suppliers, users, locale, text, sa
             <Field label={text.unitPrice}>
               <div className="flex"><span className="grid h-10 min-w-12 place-items-center rounded-l-lg border border-r-0 border-[var(--border)] bg-[var(--surface-muted)] px-2 text-sm">{selectedSupplier?.term.currency ?? receipt.currency}</span><input required type="number" min="0.0001" step="0.0001" value={form.unitPrice} className={cn(inputClass, "rounded-none")} disabled={saving} onChange={(event) => onChange({ ...form, unitPrice: event.target.value })} /><span className="grid h-10 min-w-14 place-items-center rounded-r-lg border border-l-0 border-[var(--border)] bg-[var(--surface-muted)] px-2 text-sm">/{selectedSupplier?.term.price_unit ?? receipt.price_unit}</span></div>
             </Field>
-            <Field label={text.purchasedAt}><input required type="datetime-local" value={form.receivedAt} className={inputClass} disabled={saving} onChange={(event) => onChange({ ...form, receivedAt: event.target.value })} /></Field>
+            <Field label={text.purchasedAt}><DateInput required locale={locale} value={form.receivedAt} className={inputClass} disabled={saving} onChange={(value) => onChange({ ...form, receivedAt: value })} /></Field>
             <Field label={text.recordedBy}>
               <select required value={form.recordedById} className={inputClass} disabled={saving} onChange={(event) => onChange({ ...form, recordedById: event.target.value })}>
                 <option value="">{text.recordedBy}</option>
-                {users.map((user) => <option key={user.id} value={user.id}>{user.username}{user.email ? ` · ${user.email}` : ""}</option>)}
+                {employees.map((employee) => <option key={employee.id} value={employee.id}>{employee.name}{employee.position ? ` · ${employee.position}` : ""}</option>)}
               </select>
             </Field>
             <Field label={text.notes} wide><textarea rows={3} maxLength={255} value={form.notes} className={cn(inputClass, "h-auto resize-y py-2")} disabled={saving} onChange={(event) => onChange({ ...form, notes: event.target.value })} /></Field>
@@ -608,14 +608,12 @@ function Field({ label, wide = false, children }: { label: string; wide?: boolea
 
 const inputClass = "h-10 w-full min-w-0 rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 text-sm outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary-ring)]";
 
-function toDateTimeLocalValue(value: string) {
-  const date = new Date(value);
-  const local = new Date(date.getTime() - date.getTimezoneOffset() * 60_000);
-  return local.toISOString().slice(0, 16);
+function dateToLocalIso(value: string) {
+  return new Date(`${value}T12:00:00`).toISOString();
 }
 
 function formatDateTime(value: string, locale: "zh-CN" | "en-GB") {
-  return new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeStyle: "short" }).format(new Date(value));
+  return new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeZone: "UTC" }).format(new Date(`${value.slice(0, 10)}T00:00:00Z`));
 }
 
 function formatCurrency(value: number, currency: string, locale: "zh-CN" | "en-GB") {

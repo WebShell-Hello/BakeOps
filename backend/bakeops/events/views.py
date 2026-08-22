@@ -4,6 +4,7 @@ from zoneinfo import ZoneInfo
 
 from django.db import transaction
 from django.db.models import Max, Q
+from django.db.models.deletion import ProtectedError
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import generics, status
@@ -270,6 +271,31 @@ class ActivityCategoryListCreateApi(APIView):
         return Response(ActivityCategorySerializer(category).data, status=status.HTTP_201_CREATED)
 
 
+class ActivityCategoryDetailApi(APIView):
+    permission_classes = (CanManageActivityPlans,)
+
+    def delete(self, request: Request, pk: object) -> Response:
+        category = get_object_or_404(ActivityCategory, pk=pk, is_active=True)
+        if category.activity_plans.exists():
+            return Response(
+                {"detail": "This activity category is used by an activity plan and cannot be deleted."},
+                status=status.HTTP_409_CONFLICT,
+            )
+        if category.platforms.exists():
+            return Response(
+                {"detail": "Delete the platforms in this activity category first."},
+                status=status.HTTP_409_CONFLICT,
+            )
+        try:
+            category.delete()
+        except ProtectedError:
+            return Response(
+                {"detail": "This activity category is in use and cannot be deleted."},
+                status=status.HTTP_409_CONFLICT,
+            )
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class ActivityPlatformListCreateApi(APIView):
     permission_classes = (CanManageActivityPlans,)
 
@@ -285,6 +311,26 @@ class ActivityPlatformListCreateApi(APIView):
         serializer.is_valid(raise_exception=True)
         platform = serializer.save()
         return Response(ActivityPlatformSerializer(platform).data, status=status.HTTP_201_CREATED)
+
+
+class ActivityPlatformDetailApi(APIView):
+    permission_classes = (CanManageActivityPlans,)
+
+    def delete(self, request: Request, pk: object) -> Response:
+        platform = get_object_or_404(ActivityPlatform, pk=pk, is_active=True)
+        if platform.activity_plans.exists():
+            return Response(
+                {"detail": "This activity platform is used by an activity plan and cannot be deleted."},
+                status=status.HTTP_409_CONFLICT,
+            )
+        try:
+            platform.delete()
+        except ProtectedError:
+            return Response(
+                {"detail": "This activity platform is in use and cannot be deleted."},
+                status=status.HTTP_409_CONFLICT,
+            )
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ActivityPlanDetailApi(generics.RetrieveUpdateDestroyAPIView[ActivityPlan]):

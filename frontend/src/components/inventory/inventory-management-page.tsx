@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 import { type FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 
-import { useAuth } from "@/components/auth/auth-provider";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { PageBreadcrumb } from "@/components/navigation/page-breadcrumb";
 import { useAppPreferences } from "@/components/providers/app-preferences-provider";
@@ -24,6 +23,7 @@ import { useToast } from "@/components/providers/toast-provider";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { DataPagination, useDataPagination } from "@/components/ui/data-pagination";
+import { DateInput } from "@/components/ui/date-input";
 import {
   createInventoryReceipt,
   getInventoryOverview,
@@ -91,7 +91,7 @@ const copy = {
     receiptQuantity: "本次入库数量",
     receiptSupplier: "供应商",
     receiptUnitPrice: "成本单价",
-    receiptTime: "采购时间",
+    receiptTime: "采购日期",
     receiptNotes: "入库备注",
     receiptNotesPlaceholder: "例如：已验收，包装完好",
     recordedBy: "录入人",
@@ -166,7 +166,7 @@ const copy = {
     receiptQuantity: "Quantity received",
     receiptSupplier: "Supplier",
     receiptUnitPrice: "Cost unit price",
-    receiptTime: "Purchase time",
+    receiptTime: "Purchase date",
     receiptNotes: "Receipt notes",
     receiptNotesPlaceholder: "For example: inspected and accepted",
     recordedBy: "Recorded by",
@@ -212,7 +212,6 @@ export function InventoryManagementPage({
   initialIngredientId?: string | null;
 }) {
   const { locale } = useAppPreferences();
-  const { user } = useAuth();
   const { showInfo } = useToast();
   const text = copy[locale];
   const [overview, setOverview] = useState<InventoryOverview | null>(null);
@@ -232,7 +231,7 @@ export function InventoryManagementPage({
   const [receiptInvoice, setReceiptInvoice] = useState<File | null>(null);
   const [receiving, setReceiving] = useState(false);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-  const [systemUsers, setSystemUsers] = useState<InventoryRecorderOption[]>([]);
+  const [employees, setEmployees] = useState<InventoryRecorderOption[]>([]);
 
   const loadOverview = useCallback(async () => {
     setLoading(true);
@@ -256,11 +255,11 @@ export function InventoryManagementPage({
       void Promise.all([getSuppliers(), getInventoryRecorderOptions()])
         .then(([supplierRows, userRows]) => {
           setSuppliers(supplierRows);
-          setSystemUsers(userRows);
+          setEmployees(userRows);
         })
         .catch(() => {
           setSuppliers([]);
-          setSystemUsers([]);
+          setEmployees([]);
         });
     }, 0);
     return () => window.clearTimeout(timer);
@@ -314,9 +313,9 @@ export function InventoryManagementPage({
       .find((option) => option.term);
     setReceiptSupplierId(preferredSupplier?.id ?? fallback?.supplier.id ?? "");
     setReceiptUnitPrice(preferredTerm?.unit_price ?? fallback?.term?.unit_price ?? "");
-    setReceiptTime(toDateTimeLocalValue(new Date()));
+    setReceiptTime(toDateValue(new Date()));
     setReceiptNotes("");
-    setReceiptRecordedById(user?.id ?? "");
+    setReceiptRecordedById("");
     setReceiptInvoice(null);
   }
 
@@ -353,7 +352,7 @@ export function InventoryManagementPage({
     setReceiving(true);
     try {
       const selectedSupplier = receiptSupplierOptions.find(({ supplier }) => supplier.id === receiptSupplierId);
-      const recordedBy = systemUsers.find((row) => row.id === receiptRecordedById);
+      const recordedBy = employees.find((row) => row.id === receiptRecordedById);
       const receipt = await createInventoryReceipt({
         ingredient_id: receiptItem.ingredient_id,
         ingredient_name: receiptItem.ingredient_name,
@@ -364,10 +363,10 @@ export function InventoryManagementPage({
         unit_price: receiptUnitPrice,
         currency: selectedSupplier?.term.currency,
         price_unit: selectedSupplier?.term.price_unit,
-        received_at: new Date(receiptTime).toISOString(),
+        received_at: dateToLocalIso(receiptTime),
         notes: receiptNotes.trim(),
         recorded_by_id: receiptRecordedById,
-        recorded_by_name: recordedBy?.username,
+        recorded_by_name: recordedBy?.name,
         invoice: receiptInvoice,
       });
       setReceiptItem(null);
@@ -591,7 +590,7 @@ export function InventoryManagementPage({
           purchaseTime={receiptTime}
           notes={receiptNotes}
           recordedById={receiptRecordedById}
-          users={systemUsers}
+          employees={employees}
           invoice={receiptInvoice}
           receiving={receiving}
           onIngredientChange={changeReceiptIngredient}
@@ -761,7 +760,7 @@ function InventoryReceiptModal({
   purchaseTime,
   notes,
   recordedById,
-  users,
+  employees,
   invoice,
   receiving,
   onIngredientChange,
@@ -790,7 +789,7 @@ function InventoryReceiptModal({
   purchaseTime: string;
   notes: string;
   recordedById: string;
-  users: InventoryRecorderOption[];
+  employees: InventoryRecorderOption[];
   invoice: File | null;
   receiving: boolean;
   onIngredientChange: (value: string) => void;
@@ -920,13 +919,13 @@ function InventoryReceiptModal({
             </label>
             <label className="block space-y-1.5 text-sm font-medium">
               <span>{text.receiptTime}</span>
-              <input
+              <DateInput
                 required
-                type="datetime-local"
+                locale={locale}
                 value={purchaseTime}
                 disabled={receiving}
                 className="h-10 w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 text-sm outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary-ring)]"
-                onChange={(event) => onPurchaseTimeChange(event.target.value)}
+                onChange={onPurchaseTimeChange}
               />
             </label>
           </div>
@@ -940,8 +939,8 @@ function InventoryReceiptModal({
               onChange={(event) => onRecordedByChange(event.target.value)}
             >
               <option value="">{text.recordedBy}</option>
-              {users.map((row) => (
-                <option key={row.id} value={row.id}>{row.username}{row.email ? ` · ${row.email}` : ""}</option>
+              {employees.map((employee) => (
+                <option key={employee.id} value={employee.id}>{employee.name}{employee.position ? ` · ${employee.position}` : ""}</option>
               ))}
             </select>
           </label>
@@ -1054,7 +1053,11 @@ function formatPrice(value: string, currency: string, unit: string, locale: "zh-
   return `${new Intl.NumberFormat(locale, { style: "currency", currency }).format(Number(value))}/${unit}`;
 }
 
-function toDateTimeLocalValue(value: Date) {
+function toDateValue(value: Date) {
   const offset = value.getTimezoneOffset() * 60_000;
-  return new Date(value.getTime() - offset).toISOString().slice(0, 16);
+  return new Date(value.getTime() - offset).toISOString().slice(0, 10);
+}
+
+function dateToLocalIso(value: string) {
+  return new Date(`${value}T12:00:00`).toISOString();
 }

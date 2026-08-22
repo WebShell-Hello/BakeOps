@@ -10,6 +10,7 @@ SECRET_KEY = env("DJANGO_SECRET_KEY")
 DEBUG = False
 ALLOWED_HOSTS: list[str] = []
 CORS_ALLOW_HEADERS = (*default_headers, "x-bakeops-system-mode")
+CORS_EXPOSE_HEADERS = ("Content-Disposition",)
 
 INSTALLED_APPS = [
     "django.contrib.admin",

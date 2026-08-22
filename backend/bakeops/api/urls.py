@@ -16,5 +16,6 @@ urlpatterns = [
     path("schedules/", include("bakeops.scheduling.urls")),
     path("sales/", include("bakeops.sales.urls")),
     path("suppliers/", include("bakeops.suppliers.urls")),
+    path("system/", include("bakeops.system.urls")),
     path("users/", include("bakeops.users.urls")),
 ]
