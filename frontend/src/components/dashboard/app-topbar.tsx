@@ -3,14 +3,16 @@
 import {
   Check,
   CircleHelp,
+  Download,
   Languages,
   Linkedin,
   Mail,
   Menu,
   Palette,
+  Upload,
   X,
 } from "lucide-react";
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { type ChangeEvent, useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 import { UserMenu } from "@/components/auth/user-menu";
 import { TopbarGlobalSearch } from "@/components/dashboard/topbar-global-search";
@@ -20,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import type { NavigationTreeItem } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { DATA_MODE_SYNC_EVENT, getDataMode, type DataMode } from "@/lib/data-mode";
+import { exportTestData, importTestData } from "@/lib/local-test-db";
 
 type AppTopbarProps = {
   desktopSidebarPinned: boolean;
@@ -49,6 +52,7 @@ export function AppTopbar({
     (): DataMode => "TEST",
   );
   const [themeMenuOpen, setThemeMenuOpen] = useState(false);
+  const importInputRef = useRef<HTMLInputElement>(null);
   const themeMenuRef = useRef<HTMLDivElement>(null);
   const isEnglish = locale === "en-GB";
   const themeMenuLabel = isEnglish ? "Choose colour theme" : "选择颜色风格";
@@ -63,6 +67,26 @@ export function AppTopbar({
     },
     { id: "pink", zh: "公主粉", en: "Princess Pink", swatch: "#d97b99" },
   ] as const;
+
+  async function handleExportTestData() {
+    const payload = await exportTestData();
+    const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `bakeops-test-data-${new Date().toISOString().slice(0, 10)}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function handleImportTestData(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+    const payload = JSON.parse(await file.text());
+    await importTestData(payload);
+    window.location.reload();
+  }
 
   useEffect(() => {
     function closeThemeMenu(event: MouseEvent) {
@@ -125,9 +149,42 @@ export function AppTopbar({
           </span>
         </div>
 
-        <TopbarGlobalSearch locale={locale} navigationItems={navigationItems} />
+          <TopbarGlobalSearch locale={locale} navigationItems={navigationItems} />
 
         <div className="flex shrink-0 items-center gap-1 sm:gap-2">
+          {dataMode === "TEST" ? (
+            <>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="size-9"
+                aria-label={isEnglish ? "Export test data" : "导出测试数据"}
+                title={isEnglish ? "Export test data" : "导出测试数据"}
+                onClick={() => void handleExportTestData()}
+              >
+                <Download className="size-[18px]" />
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="size-9"
+                aria-label={isEnglish ? "Import test data" : "导入测试数据"}
+                title={isEnglish ? "Import test data" : "导入测试数据"}
+                onClick={() => importInputRef.current?.click()}
+              >
+                <Upload className="size-[18px]" />
+              </Button>
+              <input
+                ref={importInputRef}
+                type="file"
+                accept="application/json,.json"
+                className="hidden"
+                onChange={(event) => void handleImportTestData(event)}
+              />
+            </>
+          ) : null}
           <div ref={themeMenuRef} className="relative">
             <Button
               type="button"

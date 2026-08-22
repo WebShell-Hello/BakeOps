@@ -5,6 +5,13 @@ const MUTATION_STORE_NAME = "mutations";
 
 type StoredResponse = { key: string; value: unknown; updatedAt: number };
 
+export type TestDataExport = {
+  version: 1;
+  exportedAt: string;
+  responses: StoredResponse[];
+  mutations: LocalMutation[];
+};
+
 function openDatabase(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
@@ -113,5 +120,40 @@ export async function clearTestResponses(): Promise<void> {
     const request = database.transaction(STORE_NAME, "readwrite").objectStore(STORE_NAME).clear();
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error ?? new Error("Unable to clear local test data."));
+  });
+}
+
+export async function exportTestData(): Promise<TestDataExport> {
+  const database = await openDatabase();
+  return new Promise((resolve, reject) => {
+    const transaction = database.transaction([STORE_NAME, MUTATION_STORE_NAME], "readonly");
+    const responsesRequest = transaction.objectStore(STORE_NAME).getAll();
+    const mutationsRequest = transaction.objectStore(MUTATION_STORE_NAME).getAll();
+    transaction.oncomplete = () => resolve({
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      responses: responsesRequest.result as StoredResponse[],
+      mutations: mutationsRequest.result as LocalMutation[],
+    });
+    transaction.onerror = () => reject(transaction.error ?? new Error("Unable to export local test data."));
+  });
+}
+
+export async function importTestData(payload: TestDataExport): Promise<void> {
+  if (payload.version !== 1 || !Array.isArray(payload.responses) || !Array.isArray(payload.mutations)) {
+    throw new Error("Unsupported test data export format.");
+  }
+  const database = await openDatabase();
+  await new Promise<void>((resolve, reject) => {
+    const transaction = database.transaction([STORE_NAME, MUTATION_STORE_NAME], "readwrite");
+    const responsesStore = transaction.objectStore(STORE_NAME);
+    const mutationsStore = transaction.objectStore(MUTATION_STORE_NAME);
+    responsesStore.clear();
+    mutationsStore.clear();
+    payload.responses.forEach((response) => responsesStore.put(response));
+    payload.mutations.forEach((mutation) => mutationsStore.put(mutation));
+    transaction.oncomplete = () => resolve();
+    transaction.onerror = () => reject(transaction.error ?? new Error("Unable to import local test data."));
+    transaction.onabort = () => reject(transaction.error ?? new Error("Unable to import local test data."));
   });
 }
