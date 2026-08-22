@@ -5,6 +5,13 @@ const MUTATION_STORE_NAME = "mutations";
 
 type StoredResponse = { key: string; value: unknown; updatedAt: number };
 
+export type TestDataExport = {
+  version: 1;
+  exportedAt: string;
+  responses: StoredResponse[];
+  mutations: LocalMutation[];
+};
+
 function openDatabase(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
@@ -113,5 +120,21 @@ export async function clearTestResponses(): Promise<void> {
     const request = database.transaction(STORE_NAME, "readwrite").objectStore(STORE_NAME).clear();
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error ?? new Error("Unable to clear local test data."));
+  });
+}
+
+export async function exportTestData(): Promise<TestDataExport> {
+  const database = await openDatabase();
+  return new Promise((resolve, reject) => {
+    const transaction = database.transaction([STORE_NAME, MUTATION_STORE_NAME], "readonly");
+    const responsesRequest = transaction.objectStore(STORE_NAME).getAll();
+    const mutationsRequest = transaction.objectStore(MUTATION_STORE_NAME).getAll();
+    transaction.oncomplete = () => resolve({
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      responses: responsesRequest.result as StoredResponse[],
+      mutations: mutationsRequest.result as LocalMutation[],
+    });
+    transaction.onerror = () => reject(transaction.error ?? new Error("Unable to export local test data."));
   });
 }
