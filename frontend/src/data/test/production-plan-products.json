@@ -1,0 +1,187 @@
+[
+  {
+    "id": "224d4535-3eab-45fa-9a7d-30ca3f852b6f",
+    "name_zh": "全麦吐司",
+    "name_en": "Whole Wheat Toast"
+  },
+  {
+    "id": "432f9d0f-b663-41ab-8aab-daf6ac782a7b",
+    "name_zh": "凉皮",
+    "name_en": "Liangpi"
+  },
+  {
+    "id": "5ee6bf08-7a3c-48a8-bd9a-edb0f378e4df",
+    "name_zh": "奶黄包",
+    "name_en": "Custard Bun"
+  },
+  {
+    "id": "a7c3196c-6717-4564-937e-dbc9bfb06597",
+    "name_zh": "桂花桂圆莲子八宝粥",
+    "name_en": "Osmanthus Longan Eight-Treasure Porridge"
+  },
+  {
+    "id": "7442cbfe-1e5e-4f8c-b72b-3f6abae0f228",
+    "name_zh": "红糖姜奶鸡蛋羹",
+    "name_en": "Brown Sugar Ginger Milk Egg Custard"
+  },
+  {
+    "id": "a1ca6123-5ede-412b-9fb4-3bf38e15c8fa",
+    "name_zh": "胡辣汤",
+    "name_en": "Hu La Tang"
+  },
+  {
+    "id": "21cfa4f2-034f-47cb-927a-ea318786579f",
+    "name_zh": "蒸馒头",
+    "name_en": "Steamed Mantou"
+  },
+  {
+    "id": "88d78754-87a8-4d9f-af8d-30d1feb55499",
+    "name_zh": "蔓越莓山核桃面包",
+    "name_en": "Cranberry Pecan Bread"
+  },
+  {
+    "id": "12253dd3-7802-4998-bfed-4dbdc64a3d49",
+    "name_zh": "南瓜香料面包",
+    "name_en": "Pumpkin Spice Bread"
+  },
+  {
+    "id": "7bf6834f-b8ab-4f42-ba43-ebeb6e6e6646",
+    "name_zh": "原味吐司",
+    "name_en": "Plain Toast"
+  },
+  {
+    "id": "05a36672-d643-4fb7-88cd-27ad5474a48b",
+    "name_zh": "原味牛角包",
+    "name_en": "Plain Croissant"
+  },
+  {
+    "id": "2f074958-66c0-49e5-abc1-2fb849ec7a64",
+    "name_zh": "可颂火腿芝士三明治",
+    "name_en": "Croissant Ham and Cheese Sandwich"
+  },
+  {
+    "id": "905a013d-002a-4222-8b75-5bb00b5ca5ba",
+    "name_zh": "圣诞果干面包",
+    "name_en": "Christmas Fruit Bread"
+  },
+  {
+    "id": "f0dffdd9-f9c1-4c60-8db6-1d03c55b32ff",
+    "name_zh": "巧克力可颂",
+    "name_en": "Chocolate Croissant"
+  },
+  {
+    "id": "eb671d29-b578-4d93-9a47-ed2c0ce5a0de",
+    "name_zh": "巧克力草莓可颂",
+    "name_en": "Chocolate Strawberry Croissant"
+  },
+  {
+    "id": "104daed1-9238-4bf7-ad2f-d8a161382c6d",
+    "name_zh": "开心果可颂",
+    "name_en": "Pistachio Croissant"
+  },
+  {
+    "id": "4a0260a0-f9b1-4aa5-8d27-a77ac0c6a455",
+    "name_zh": "杏仁可颂",
+    "name_en": "Almond Croissant"
+  },
+  {
+    "id": "83395fd2-1662-46fe-9d04-8100e181641c",
+    "name_zh": "栗子可颂",
+    "name_en": "Chestnut Croissant"
+  },
+  {
+    "id": "5bfbeb52-da97-4448-808d-595bbb092d8f",
+    "name_zh": "核桃蔓越莓欧包",
+    "name_en": "Walnut Cranberry Bread"
+  },
+  {
+    "id": "c3c3cd64-4f24-4c13-a014-c11dc3890c69",
+    "name_zh": "法棍",
+    "name_en": "Baguette"
+  },
+  {
+    "id": "a6720cdd-59ff-49b4-bbbe-0cfe02ed1151",
+    "name_zh": "流心月饼",
+    "name_en": "Custard Lava Mooncake"
+  },
+  {
+    "id": "deb2604d-2d36-41e1-94e3-db134dc7ee98",
+    "name_zh": "火腿芝士三明治",
+    "name_en": "Ham and Cheese Sandwich"
+  },
+  {
+    "id": "a22c78a7-ec20-499c-9045-8e5126773ede",
+    "name_zh": "牛奶吐司",
+    "name_en": "Milk Toast"
+  },
+  {
+    "id": "33f31fc1-7d00-4b39-9a3a-5db953230caf",
+    "name_zh": "红豆吐司",
+    "name_en": "Red Bean Toast"
+  },
+  {
+    "id": "78b83057-76c8-4660-96dd-66a6489cd1a9",
+    "name_zh": "红豆面包",
+    "name_en": "Red Bean Bun"
+  },
+  {
+    "id": "2ba8ee14-8455-4ef5-a335-192652ed995d",
+    "name_zh": "肉松面包",
+    "name_en": "Pork Floss Bun"
+  },
+  {
+    "id": "e9992f42-541f-4bee-b02f-8984b3288b30",
+    "name_zh": "肉桂卷",
+    "name_en": "Cinnamon Roll"
+  },
+  {
+    "id": "e8b3a9d2-9f46-4fe5-9b44-36b18209565d",
+    "name_zh": "苹果肉桂丹麦",
+    "name_en": "Apple Cinnamon Danish"
+  },
+  {
+    "id": "4f291348-2bfe-4b67-8ba0-165ec1765bcb",
+    "name_zh": "草莓丹麦",
+    "name_en": "Strawberry Danish"
+  },
+  {
+    "id": "8e6b2a4d-68cd-4854-a985-81cbce120ac8",
+    "name_zh": "菠萝包",
+    "name_en": "Pineapple Bun"
+  },
+  {
+    "id": "80b24b04-d2a6-4b4d-96bd-ad31d6a84b8a",
+    "name_zh": "萨其马",
+    "name_en": "Sachima"
+  },
+  {
+    "id": "797d2aed-bf83-4d85-aebd-b55642203981",
+    "name_zh": "蓝莓奶酪丹麦",
+    "name_en": "Blueberry Cheese Danish"
+  },
+  {
+    "id": "95a59349-d926-4eda-ae4e-f13d83d051f0",
+    "name_zh": "蛋挞",
+    "name_en": "Egg Tart"
+  },
+  {
+    "id": "347f90c6-719c-4143-9b8e-ab14d6cf2975",
+    "name_zh": "蛋黄酥",
+    "name_en": "Salted Egg Yolk Pastry"
+  },
+  {
+    "id": "6fd808cd-1f27-4b3a-a35c-ee3c3aa693ad",
+    "name_zh": "酸种面包",
+    "name_en": "Sourdough Bread"
+  },
+  {
+    "id": "d32ebf77-5237-4479-bc41-2fbb3e3c8abd",
+    "name_zh": "鲜花饼",
+    "name_en": "Rose Pastry"
+  },
+  {
+    "id": "d306e005-41cc-43e3-a057-ca45f5df3586",
+    "name_zh": "鸡肉沙拉三明治",
+    "name_en": "Chicken Salad Sandwich"
+  }
+]

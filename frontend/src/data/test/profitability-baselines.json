@@ -1,0 +1,3787 @@
+[
+  {
+    "key": "BASE:/sales/profitability/?start=2026-01-01&end=2026-01-28&grain=day",
+    "value": {
+      "range": {
+        "start": "2026-01-01",
+        "end": "2026-01-28",
+        "grain": "day"
+      },
+      "kpis": {
+        "net_sales": "0.00",
+        "material_cost": "0.00",
+        "missing_material_cost_count": 0,
+        "material_cost_complete": true,
+        "gross_profit": "0.00",
+        "gross_margin": "0.0",
+        "wages": "0.00",
+        "other_costs": "0.00",
+        "operating_profit": "0.00",
+        "operating_margin": "0.0"
+      },
+      "cost_structure": [
+        {
+          "key": "MATERIALS",
+          "amount": "0.00"
+        },
+        {
+          "key": "WAGES",
+          "amount": "0.00"
+        },
+        {
+          "key": "OTHER",
+          "amount": "0.00"
+        }
+      ],
+      "trend": [
+        {
+          "period": "2026-01-01",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-02",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-03",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-04",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-05",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-06",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-07",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-08",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-09",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-10",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-11",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-12",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-13",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-14",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-15",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-16",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-17",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-18",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-19",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-20",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-21",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-22",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-23",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-24",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-25",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-26",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-27",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-01-28",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        }
+      ],
+      "products": []
+    }
+  },
+  {
+    "key": "BASE:/sales/profitability/?start=2026-02-01&end=2026-02-28&grain=day",
+    "value": {
+      "range": {
+        "start": "2026-02-01",
+        "end": "2026-02-28",
+        "grain": "day"
+      },
+      "kpis": {
+        "net_sales": "0.00",
+        "material_cost": "0.00",
+        "missing_material_cost_count": 0,
+        "material_cost_complete": true,
+        "gross_profit": "0.00",
+        "gross_margin": "0.0",
+        "wages": "0.00",
+        "other_costs": "0.00",
+        "operating_profit": "0.00",
+        "operating_margin": "0.0"
+      },
+      "cost_structure": [
+        {
+          "key": "MATERIALS",
+          "amount": "0.00"
+        },
+        {
+          "key": "WAGES",
+          "amount": "0.00"
+        },
+        {
+          "key": "OTHER",
+          "amount": "0.00"
+        }
+      ],
+      "trend": [
+        {
+          "period": "2026-02-01",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-02",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-03",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-04",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-05",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-06",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-07",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-08",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-09",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-10",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-11",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-12",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-13",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-14",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-15",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-16",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-17",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-18",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-19",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-20",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-21",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-22",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-23",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-24",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-25",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-26",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-27",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-02-28",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        }
+      ],
+      "products": []
+    }
+  },
+  {
+    "key": "BASE:/sales/profitability/?start=2026-03-01&end=2026-03-30&grain=day",
+    "value": {
+      "range": {
+        "start": "2026-03-01",
+        "end": "2026-03-30",
+        "grain": "day"
+      },
+      "kpis": {
+        "net_sales": "0.00",
+        "material_cost": "0.00",
+        "missing_material_cost_count": 0,
+        "material_cost_complete": true,
+        "gross_profit": "0.00",
+        "gross_margin": "0.0",
+        "wages": "0.00",
+        "other_costs": "0.00",
+        "operating_profit": "0.00",
+        "operating_margin": "0.0"
+      },
+      "cost_structure": [
+        {
+          "key": "MATERIALS",
+          "amount": "0.00"
+        },
+        {
+          "key": "WAGES",
+          "amount": "0.00"
+        },
+        {
+          "key": "OTHER",
+          "amount": "0.00"
+        }
+      ],
+      "trend": [
+        {
+          "period": "2026-03-01",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-02",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-03",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-04",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-05",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-06",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-07",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-08",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-09",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-10",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-11",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-12",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-13",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-14",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-15",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-16",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-17",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-18",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-19",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-20",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-21",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-22",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-23",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-24",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-25",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-26",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-27",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-28",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-29",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-30",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        }
+      ],
+      "products": []
+    }
+  },
+  {
+    "key": "BASE:/sales/profitability/?start=2026-03-01&end=2026-03-31&grain=day",
+    "value": {
+      "range": {
+        "start": "2026-03-01",
+        "end": "2026-03-31",
+        "grain": "day"
+      },
+      "kpis": {
+        "net_sales": "0.00",
+        "material_cost": "0.00",
+        "missing_material_cost_count": 0,
+        "material_cost_complete": true,
+        "gross_profit": "0.00",
+        "gross_margin": "0.0",
+        "wages": "0.00",
+        "other_costs": "0.00",
+        "operating_profit": "0.00",
+        "operating_margin": "0.0"
+      },
+      "cost_structure": [
+        {
+          "key": "MATERIALS",
+          "amount": "0.00"
+        },
+        {
+          "key": "WAGES",
+          "amount": "0.00"
+        },
+        {
+          "key": "OTHER",
+          "amount": "0.00"
+        }
+      ],
+      "trend": [
+        {
+          "period": "2026-03-01",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-02",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-03",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-04",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-05",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-06",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-07",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-08",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-09",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-10",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-11",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-12",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-13",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-14",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-15",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-16",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-17",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-18",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-19",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-20",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-21",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-22",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-23",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-24",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-25",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-26",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-27",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-28",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-29",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-30",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-03-31",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        }
+      ],
+      "products": []
+    }
+  },
+  {
+    "key": "BASE:/sales/profitability/?start=2026-04-01&end=2026-04-30&grain=day",
+    "value": {
+      "range": {
+        "start": "2026-04-01",
+        "end": "2026-04-30",
+        "grain": "day"
+      },
+      "kpis": {
+        "net_sales": "0.00",
+        "material_cost": "0.00",
+        "missing_material_cost_count": 0,
+        "material_cost_complete": true,
+        "gross_profit": "0.00",
+        "gross_margin": "0.0",
+        "wages": "0.00",
+        "other_costs": "0.00",
+        "operating_profit": "0.00",
+        "operating_margin": "0.0"
+      },
+      "cost_structure": [
+        {
+          "key": "MATERIALS",
+          "amount": "0.00"
+        },
+        {
+          "key": "WAGES",
+          "amount": "0.00"
+        },
+        {
+          "key": "OTHER",
+          "amount": "0.00"
+        }
+      ],
+      "trend": [
+        {
+          "period": "2026-04-01",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-02",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-03",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-04",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-05",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-06",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-07",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-08",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-09",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-10",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-11",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-12",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-13",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-14",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-15",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-16",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-17",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-18",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-19",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-20",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-21",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-22",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-23",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-24",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-25",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-26",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-27",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-28",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-29",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-04-30",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        }
+      ],
+      "products": []
+    }
+  },
+  {
+    "key": "BASE:/sales/profitability/?start=2026-05-01&end=2026-05-30&grain=day",
+    "value": {
+      "range": {
+        "start": "2026-05-01",
+        "end": "2026-05-30",
+        "grain": "day"
+      },
+      "kpis": {
+        "net_sales": "0.00",
+        "material_cost": "0.00",
+        "missing_material_cost_count": 0,
+        "material_cost_complete": true,
+        "gross_profit": "0.00",
+        "gross_margin": "0.0",
+        "wages": "0.00",
+        "other_costs": "0.00",
+        "operating_profit": "0.00",
+        "operating_margin": "0.0"
+      },
+      "cost_structure": [
+        {
+          "key": "MATERIALS",
+          "amount": "0.00"
+        },
+        {
+          "key": "WAGES",
+          "amount": "0.00"
+        },
+        {
+          "key": "OTHER",
+          "amount": "0.00"
+        }
+      ],
+      "trend": [
+        {
+          "period": "2026-05-01",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-02",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-03",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-04",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-05",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-06",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-07",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-08",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-09",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-10",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-11",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-12",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-13",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-14",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-15",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-16",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-17",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-18",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-19",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-20",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-21",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-22",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-23",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-24",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-25",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-26",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-27",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-28",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-29",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-30",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        }
+      ],
+      "products": []
+    }
+  },
+  {
+    "key": "BASE:/sales/profitability/?start=2026-05-01&end=2026-05-31&grain=day",
+    "value": {
+      "range": {
+        "start": "2026-05-01",
+        "end": "2026-05-31",
+        "grain": "day"
+      },
+      "kpis": {
+        "net_sales": "0.00",
+        "material_cost": "0.00",
+        "missing_material_cost_count": 0,
+        "material_cost_complete": true,
+        "gross_profit": "0.00",
+        "gross_margin": "0.0",
+        "wages": "0.00",
+        "other_costs": "0.00",
+        "operating_profit": "0.00",
+        "operating_margin": "0.0"
+      },
+      "cost_structure": [
+        {
+          "key": "MATERIALS",
+          "amount": "0.00"
+        },
+        {
+          "key": "WAGES",
+          "amount": "0.00"
+        },
+        {
+          "key": "OTHER",
+          "amount": "0.00"
+        }
+      ],
+      "trend": [
+        {
+          "period": "2026-05-01",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-02",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-03",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-04",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-05",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-06",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-07",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-08",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-09",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-10",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-11",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-12",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-13",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-14",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-15",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-16",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-17",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-18",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-19",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-20",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-21",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-22",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-23",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-24",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-25",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-26",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-27",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-28",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-29",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-30",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-05-31",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        }
+      ],
+      "products": []
+    }
+  },
+  {
+    "key": "BASE:/sales/profitability/?start=2026-06-01&end=2026-06-30&grain=day",
+    "value": {
+      "range": {
+        "start": "2026-06-01",
+        "end": "2026-06-30",
+        "grain": "day"
+      },
+      "kpis": {
+        "net_sales": "0.00",
+        "material_cost": "0.00",
+        "missing_material_cost_count": 0,
+        "material_cost_complete": true,
+        "gross_profit": "0.00",
+        "gross_margin": "0.0",
+        "wages": "0.00",
+        "other_costs": "0.00",
+        "operating_profit": "0.00",
+        "operating_margin": "0.0"
+      },
+      "cost_structure": [
+        {
+          "key": "MATERIALS",
+          "amount": "0.00"
+        },
+        {
+          "key": "WAGES",
+          "amount": "0.00"
+        },
+        {
+          "key": "OTHER",
+          "amount": "0.00"
+        }
+      ],
+      "trend": [
+        {
+          "period": "2026-06-01",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-02",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-03",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-04",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-05",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-06",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-07",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-08",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-09",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-10",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-11",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-12",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-13",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-14",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-15",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-16",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-17",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-18",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-19",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-20",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-21",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-22",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-23",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-24",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-25",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-26",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-27",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-28",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-29",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-06-30",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        }
+      ],
+      "products": []
+    }
+  },
+  {
+    "key": "BASE:/sales/profitability/?start=2026-07-01&end=2026-07-22&grain=day",
+    "value": {
+      "range": {
+        "start": "2026-07-01",
+        "end": "2026-07-22",
+        "grain": "day"
+      },
+      "kpis": {
+        "net_sales": "0.00",
+        "material_cost": "0.00",
+        "gross_profit": "0.00",
+        "gross_margin": "0.0",
+        "wages": "0.00",
+        "other_costs": "0.00",
+        "operating_profit": "0.00",
+        "operating_margin": "0.0"
+      },
+      "cost_structure": [
+        {
+          "key": "MATERIALS",
+          "amount": "0.00"
+        },
+        {
+          "key": "WAGES",
+          "amount": "0.00"
+        },
+        {
+          "key": "OTHER",
+          "amount": "0.00"
+        }
+      ],
+      "trend": [
+        {
+          "period": "2026-07-01",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-02",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-03",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-04",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-05",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-06",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-07",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-08",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-09",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-10",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-11",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-12",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-13",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-14",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-15",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-16",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-17",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-18",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-19",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-20",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-21",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-22",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        }
+      ],
+      "products": []
+    }
+  },
+  {
+    "key": "BASE:/sales/profitability/?start=2026-07-01&end=2026-07-31&grain=day",
+    "value": {
+      "range": {
+        "start": "2026-07-01",
+        "end": "2026-07-31",
+        "grain": "day"
+      },
+      "kpis": {
+        "net_sales": "0.00",
+        "material_cost": "0.00",
+        "missing_material_cost_count": 0,
+        "material_cost_complete": true,
+        "gross_profit": "0.00",
+        "gross_margin": "0.0",
+        "wages": "0.00",
+        "other_costs": "0.00",
+        "operating_profit": "0.00",
+        "operating_margin": "0.0"
+      },
+      "cost_structure": [
+        {
+          "key": "MATERIALS",
+          "amount": "0.00"
+        },
+        {
+          "key": "WAGES",
+          "amount": "0.00"
+        },
+        {
+          "key": "OTHER",
+          "amount": "0.00"
+        }
+      ],
+      "trend": [
+        {
+          "period": "2026-07-01",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-02",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-03",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-04",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-05",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-06",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-07",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-08",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-09",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-10",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-11",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-12",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-13",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-14",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-15",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-16",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-17",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-18",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-19",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-20",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-21",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-22",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-23",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-24",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-25",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-26",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-27",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-28",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-29",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-30",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        },
+        {
+          "period": "2026-07-31",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "missing_material_cost_count": 0,
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "0.00",
+          "operating_profit": "0.00"
+        }
+      ],
+      "products": []
+    }
+  },
+  {
+    "key": "BASE:/sales/profitability/?start=2026-08-01&end=2026-08-22&grain=day",
+    "value": {
+      "range": {
+        "start": "2026-08-01",
+        "end": "2026-08-22",
+        "grain": "day"
+      },
+      "kpis": {
+        "net_sales": "0.00",
+        "material_cost": "0.00",
+        "gross_profit": "0.00",
+        "gross_margin": "0.0",
+        "wages": "660.00",
+        "other_costs": "4612.90",
+        "operating_profit": "-5272.90",
+        "operating_margin": "0.0"
+      },
+      "cost_structure": [
+        {
+          "key": "MATERIALS",
+          "amount": "0.00"
+        },
+        {
+          "key": "WAGES",
+          "amount": "660.00"
+        },
+        {
+          "key": "OTHER",
+          "amount": "4612.90"
+        }
+      ],
+      "trend": [
+        {
+          "period": "2026-08-01",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-02",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-03",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-04",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-05",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-06",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-07",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-08",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-09",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-10",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-11",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-12",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-13",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-14",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-15",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-16",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-17",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-18",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "132.00",
+          "other_costs": "209.68",
+          "operating_profit": "-341.68"
+        },
+        {
+          "period": "2026-08-19",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "132.00",
+          "other_costs": "209.68",
+          "operating_profit": "-341.68"
+        },
+        {
+          "period": "2026-08-20",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "132.00",
+          "other_costs": "209.68",
+          "operating_profit": "-341.68"
+        },
+        {
+          "period": "2026-08-21",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "132.00",
+          "other_costs": "209.68",
+          "operating_profit": "-341.68"
+        },
+        {
+          "period": "2026-08-22",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "132.00",
+          "other_costs": "209.68",
+          "operating_profit": "-341.68"
+        }
+      ],
+      "products": []
+    }
+  },
+  {
+    "key": "BASE:/sales/profitability/?start=2026-08-10&end=2026-08-15&grain=day",
+    "value": {
+      "range": {
+        "start": "2026-08-10",
+        "end": "2026-08-15",
+        "grain": "day"
+      },
+      "kpis": {
+        "net_sales": "0.00",
+        "material_cost": "0.00",
+        "gross_profit": "0.00",
+        "gross_margin": "0.0",
+        "wages": "0.00",
+        "other_costs": "1258.06",
+        "operating_profit": "-1258.06",
+        "operating_margin": "0.0"
+      },
+      "cost_structure": [
+        {
+          "key": "MATERIALS",
+          "amount": "0.00"
+        },
+        {
+          "key": "WAGES",
+          "amount": "0.00"
+        },
+        {
+          "key": "OTHER",
+          "amount": "1258.06"
+        }
+      ],
+      "trend": [
+        {
+          "period": "2026-08-10",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-11",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-12",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-13",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-14",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-15",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        }
+      ],
+      "products": []
+    }
+  },
+  {
+    "key": "BASE:/sales/profitability/?start=2026-08-17&end=2026-08-22&grain=day",
+    "value": {
+      "range": {
+        "start": "2026-08-17",
+        "end": "2026-08-22",
+        "grain": "day"
+      },
+      "kpis": {
+        "net_sales": "0.00",
+        "material_cost": "0.00",
+        "gross_profit": "0.00",
+        "gross_margin": "0.0",
+        "wages": "660.00",
+        "other_costs": "1258.06",
+        "operating_profit": "-1918.06",
+        "operating_margin": "0.0"
+      },
+      "cost_structure": [
+        {
+          "key": "MATERIALS",
+          "amount": "0.00"
+        },
+        {
+          "key": "WAGES",
+          "amount": "660.00"
+        },
+        {
+          "key": "OTHER",
+          "amount": "1258.06"
+        }
+      ],
+      "trend": [
+        {
+          "period": "2026-08-17",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "0.00",
+          "other_costs": "209.68",
+          "operating_profit": "-209.68"
+        },
+        {
+          "period": "2026-08-18",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "132.00",
+          "other_costs": "209.68",
+          "operating_profit": "-341.68"
+        },
+        {
+          "period": "2026-08-19",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "132.00",
+          "other_costs": "209.68",
+          "operating_profit": "-341.68"
+        },
+        {
+          "period": "2026-08-20",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "132.00",
+          "other_costs": "209.68",
+          "operating_profit": "-341.68"
+        },
+        {
+          "period": "2026-08-21",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "132.00",
+          "other_costs": "209.68",
+          "operating_profit": "-341.68"
+        },
+        {
+          "period": "2026-08-22",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "132.00",
+          "other_costs": "209.68",
+          "operating_profit": "-341.68"
+        }
+      ],
+      "products": []
+    }
+  },
+  {
+    "key": "BASE:/sales/profitability/?start=2026-08-21&end=2026-08-21&grain=day",
+    "value": {
+      "range": {
+        "start": "2026-08-21",
+        "end": "2026-08-21",
+        "grain": "day"
+      },
+      "kpis": {
+        "net_sales": "0.00",
+        "material_cost": "0.00",
+        "gross_profit": "0.00",
+        "gross_margin": "0.0",
+        "wages": "132.00",
+        "other_costs": "209.68",
+        "operating_profit": "-341.68",
+        "operating_margin": "0.0"
+      },
+      "cost_structure": [
+        {
+          "key": "MATERIALS",
+          "amount": "0.00"
+        },
+        {
+          "key": "WAGES",
+          "amount": "132.00"
+        },
+        {
+          "key": "OTHER",
+          "amount": "209.68"
+        }
+      ],
+      "trend": [
+        {
+          "period": "2026-08-21",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "132.00",
+          "other_costs": "209.68",
+          "operating_profit": "-341.68"
+        }
+      ],
+      "products": []
+    }
+  },
+  {
+    "key": "BASE:/sales/profitability/?start=2026-08-22&end=2026-08-22&grain=day",
+    "value": {
+      "range": {
+        "start": "2026-08-22",
+        "end": "2026-08-22",
+        "grain": "day"
+      },
+      "kpis": {
+        "net_sales": "0.00",
+        "material_cost": "0.00",
+        "gross_profit": "0.00",
+        "gross_margin": "0.0",
+        "wages": "132.00",
+        "other_costs": "209.68",
+        "operating_profit": "-341.68",
+        "operating_margin": "0.0"
+      },
+      "cost_structure": [
+        {
+          "key": "MATERIALS",
+          "amount": "0.00"
+        },
+        {
+          "key": "WAGES",
+          "amount": "132.00"
+        },
+        {
+          "key": "OTHER",
+          "amount": "209.68"
+        }
+      ],
+      "trend": [
+        {
+          "period": "2026-08-22",
+          "net_sales": "0.00",
+          "material_cost": "0.00",
+          "gross_profit": "0.00",
+          "wages": "132.00",
+          "other_costs": "209.68",
+          "operating_profit": "-341.68"
+        }
+      ],
+      "products": []
+    }
+  }
+]

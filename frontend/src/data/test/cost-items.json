@@ -1,0 +1,82 @@
+[
+  {
+    "id": "2cdcc4d8-b613-41ef-9b85-20ff6270080c",
+    "name_zh": "会计",
+    "name_en": "Accounting",
+    "category": "ACCOUNTING",
+    "is_active": true,
+    "notes": "Demo operating cost"
+  },
+  {
+    "id": "a6c243fc-f163-4c81-9bd5-38153a538f84",
+    "name_zh": "清洁费用",
+    "name_en": "Cleaning",
+    "category": "CLEANING",
+    "is_active": true,
+    "notes": "Demo operating cost"
+  },
+  {
+    "id": "63df513f-9d7a-4f75-97da-35224034ab96",
+    "name_zh": "电费",
+    "name_en": "Electricity",
+    "category": "UTILITIES",
+    "is_active": true,
+    "notes": "Demo operating cost"
+  },
+  {
+    "id": "57d16a3f-3e31-482f-8ab4-3eb51d863b33",
+    "name_zh": "燃气费",
+    "name_en": "Gas",
+    "category": "UTILITIES",
+    "is_active": true,
+    "notes": "Demo operating cost"
+  },
+  {
+    "id": "08f813cc-2989-4912-80fa-ef22966f28c2",
+    "name_zh": "食材物料",
+    "name_en": "Ingredients and Materials",
+    "category": "MATERIALS",
+    "is_active": true,
+    "notes": "Demo operating cost"
+  },
+  {
+    "id": "b1043313-6c93-4f80-b90f-385d8f6dab44",
+    "name_zh": "保险",
+    "name_en": "Insurance",
+    "category": "INSURANCE",
+    "is_active": true,
+    "notes": "Demo operating cost"
+  },
+  {
+    "id": "cfbb0e85-661f-48c7-8077-6dcfb943d786",
+    "name_zh": "店铺房租",
+    "name_en": "Shop Rent",
+    "category": "RENT",
+    "is_active": true,
+    "notes": "Demo operating cost"
+  },
+  {
+    "id": "cd2f2412-605e-406c-967c-6be6d3218fc8",
+    "name_zh": "水电",
+    "name_en": "Utilities",
+    "category": "UTILITIES",
+    "is_active": true,
+    "notes": "Demo operating cost"
+  },
+  {
+    "id": "3968f22b-3773-45e3-9edf-96b09a15daf4",
+    "name_zh": "垃圾处理",
+    "name_en": "Waste Disposal",
+    "category": "WASTE",
+    "is_active": true,
+    "notes": "Demo operating cost"
+  },
+  {
+    "id": "e4c6f13a-65db-463b-b2d2-e1a6d048936f",
+    "name_zh": "水费",
+    "name_en": "Water",
+    "category": "UTILITIES",
+    "is_active": true,
+    "notes": "Demo operating cost"
+  }
+]

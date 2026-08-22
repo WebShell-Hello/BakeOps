@@ -1,0 +1,54 @@
+[
+  {
+    "business_event_id": "83b739ed-762d-4554-9e34-630d4515f97c",
+    "product_id": "5ee6bf08-7a3c-48a8-bd9a-edb0f378e4df"
+  },
+  {
+    "business_event_id": "83b739ed-762d-4554-9e34-630d4515f97c",
+    "product_id": "7442cbfe-1e5e-4f8c-b72b-3f6abae0f228"
+  },
+  {
+    "business_event_id": "83b739ed-762d-4554-9e34-630d4515f97c",
+    "product_id": "88d78754-87a8-4d9f-af8d-30d1feb55499"
+  },
+  {
+    "business_event_id": "8671d899-7348-4940-882e-ad54199ffad8",
+    "product_id": "432f9d0f-b663-41ab-8aab-daf6ac782a7b"
+  },
+  {
+    "business_event_id": "8671d899-7348-4940-882e-ad54199ffad8",
+    "product_id": "7442cbfe-1e5e-4f8c-b72b-3f6abae0f228"
+  },
+  {
+    "business_event_id": "84feaf66-db61-4d05-b596-44c75dbff22f",
+    "product_id": "5ee6bf08-7a3c-48a8-bd9a-edb0f378e4df"
+  },
+  {
+    "business_event_id": "84feaf66-db61-4d05-b596-44c75dbff22f",
+    "product_id": "88d78754-87a8-4d9f-af8d-30d1feb55499"
+  },
+  {
+    "business_event_id": "2623979e-aaab-429c-802b-38d72992d86f",
+    "product_id": "432f9d0f-b663-41ab-8aab-daf6ac782a7b"
+  },
+  {
+    "business_event_id": "2623979e-aaab-429c-802b-38d72992d86f",
+    "product_id": "a7c3196c-6717-4564-937e-dbc9bfb06597"
+  },
+  {
+    "business_event_id": "74c39bb9-ea72-4c32-a97e-44770dec433c",
+    "product_id": "432f9d0f-b663-41ab-8aab-daf6ac782a7b"
+  },
+  {
+    "business_event_id": "74c39bb9-ea72-4c32-a97e-44770dec433c",
+    "product_id": "5ee6bf08-7a3c-48a8-bd9a-edb0f378e4df"
+  },
+  {
+    "business_event_id": "74c39bb9-ea72-4c32-a97e-44770dec433c",
+    "product_id": "7442cbfe-1e5e-4f8c-b72b-3f6abae0f228"
+  },
+  {
+    "business_event_id": "74c39bb9-ea72-4c32-a97e-44770dec433c",
+    "product_id": "88d78754-87a8-4d9f-af8d-30d1feb55499"
+  }
+]

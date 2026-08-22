@@ -1,0 +1,47 @@
+[
+  {
+    "id": "a1000000-0000-4000-8000-000000000001",
+    "code": "SOCIAL",
+    "name_zh": "社交媒体",
+    "name_en": "Social media",
+    "colour": "rose",
+    "icon_key": "messages-square",
+    "position": 10
+  },
+  {
+    "id": "a1000000-0000-4000-8000-000000000002",
+    "code": "DELIVERY",
+    "name_zh": "外卖平台",
+    "name_en": "Delivery platform",
+    "colour": "blue",
+    "icon_key": "bike",
+    "position": 20
+  },
+  {
+    "id": "a1000000-0000-4000-8000-000000000003",
+    "code": "IN_STORE",
+    "name_zh": "现场推广",
+    "name_en": "In-store promotion",
+    "colour": "amber",
+    "icon_key": "store",
+    "position": 30
+  },
+  {
+    "id": "a1000000-0000-4000-8000-000000000004",
+    "code": "INFLUENCER",
+    "name_zh": "网红合作",
+    "name_en": "Influencer",
+    "colour": "violet",
+    "icon_key": "sparkles",
+    "position": 40
+  },
+  {
+    "id": "a1000000-0000-4000-8000-000000000005",
+    "code": "OTHER",
+    "name_zh": "其他",
+    "name_en": "Other",
+    "colour": "green",
+    "icon_key": "megaphone",
+    "position": 90
+  }
+]

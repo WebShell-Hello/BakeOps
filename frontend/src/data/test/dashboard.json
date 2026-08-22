@@ -1,0 +1,193 @@
+{
+  "generated_at": "2026-08-22T10:17:03.945562+00:00",
+  "business_date": "2026-08-22",
+  "kpis": {
+    "today_net_sales": "1528.21",
+    "today_sales_quantity": 366,
+    "today_order_count": 148,
+    "today_planned_production": 425,
+    "today_actual_production": 412,
+    "daily_estimated_cost": {
+      "total": "906.76",
+      "material_cost": "199.26",
+      "labour_cost": "468.00",
+      "allocated_operating_cost": "239.50",
+      "direct_daily_cost": "0.00",
+      "planned_business_days": 30,
+      "production_source": "ACTUAL",
+      "labour_source": "ACTUAL",
+      "calculation_complete": true,
+      "missing_cost_count": 0
+    },
+    "inventory_risk_count": 1,
+    "event_risk_count": 1
+  },
+  "sales_trend": [
+    {
+      "date": "2026-08-16",
+      "net_sales": "1251.53",
+      "order_count": 125
+    },
+    {
+      "date": "2026-08-17",
+      "net_sales": "1422.96",
+      "order_count": 143
+    },
+    {
+      "date": "2026-08-18",
+      "net_sales": "1389.40",
+      "order_count": 130
+    },
+    {
+      "date": "2026-08-19",
+      "net_sales": "914.88",
+      "order_count": 89
+    },
+    {
+      "date": "2026-08-20",
+      "net_sales": "1152.51",
+      "order_count": 108
+    },
+    {
+      "date": "2026-08-21",
+      "net_sales": "1244.05",
+      "order_count": 127
+    },
+    {
+      "date": "2026-08-22",
+      "net_sales": "1528.21",
+      "order_count": 148
+    }
+  ],
+  "sales_mix": [
+    {
+      "product_id": "2f074958-66c0-49e5-abc1-2fb849ec7a64",
+      "product_name_zh": "可颂火腿芝士三明治",
+      "product_name_en": "Croissant Ham and Cheese Sandwich",
+      "net_sales": "805.21",
+      "share": "9.0"
+    },
+    {
+      "product_id": "d306e005-41cc-43e3-a057-ca45f5df3586",
+      "product_name_zh": "鸡肉沙拉三明治",
+      "product_name_en": "Chicken Salad Sandwich",
+      "net_sales": "619.64",
+      "share": "7.0"
+    },
+    {
+      "product_id": "deb2604d-2d36-41e1-94e3-db134dc7ee98",
+      "product_name_zh": "火腿芝士三明治",
+      "product_name_en": "Ham and Cheese Sandwich",
+      "net_sales": "600.65",
+      "share": "6.7"
+    },
+    {
+      "product_id": "5bfbeb52-da97-4448-808d-595bbb092d8f",
+      "product_name_zh": "核桃蔓越莓欧包",
+      "product_name_en": "Walnut Cranberry Bread",
+      "net_sales": "478.78",
+      "share": "5.4"
+    },
+    {
+      "product_id": "a22c78a7-ec20-499c-9045-8e5126773ede",
+      "product_name_zh": "牛奶吐司",
+      "product_name_en": "Milk Toast",
+      "net_sales": "403.51",
+      "share": "4.5"
+    },
+    {
+      "product_id": null,
+      "product_name_zh": "其他产品",
+      "product_name_en": "Other products",
+      "net_sales": "5995.75",
+      "share": "67.3"
+    }
+  ],
+  "top_products": [
+    {
+      "product_id": "2f074958-66c0-49e5-abc1-2fb849ec7a64",
+      "product_name_zh": "可颂火腿芝士三明治",
+      "product_name_en": "Croissant Ham and Cheese Sandwich",
+      "quantity": 117,
+      "standard_sales": "912.60",
+      "discount": "107.39",
+      "refunds": "0.00",
+      "net_sales": "805.21",
+      "standard_unit_price": "7.80",
+      "actual_average_price": "6.88",
+      "price_realisation_rate": "88.2"
+    },
+    {
+      "product_id": "d306e005-41cc-43e3-a057-ca45f5df3586",
+      "product_name_zh": "鸡肉沙拉三明治",
+      "product_name_en": "Chicken Salad Sandwich",
+      "quantity": 95,
+      "standard_sales": "684.00",
+      "discount": "64.36",
+      "refunds": "0.00",
+      "net_sales": "619.64",
+      "standard_unit_price": "7.20",
+      "actual_average_price": "6.52",
+      "price_realisation_rate": "90.6"
+    },
+    {
+      "product_id": "deb2604d-2d36-41e1-94e3-db134dc7ee98",
+      "product_name_zh": "火腿芝士三明治",
+      "product_name_en": "Ham and Cheese Sandwich",
+      "quantity": 99,
+      "standard_sales": "673.20",
+      "discount": "65.75",
+      "refunds": "6.80",
+      "net_sales": "600.65",
+      "standard_unit_price": "6.80",
+      "actual_average_price": "6.07",
+      "price_realisation_rate": "89.2"
+    },
+    {
+      "product_id": "5bfbeb52-da97-4448-808d-595bbb092d8f",
+      "product_name_zh": "核桃蔓越莓欧包",
+      "product_name_en": "Walnut Cranberry Bread",
+      "quantity": 93,
+      "standard_sales": "539.40",
+      "discount": "57.72",
+      "refunds": "2.90",
+      "net_sales": "478.78",
+      "standard_unit_price": "5.80",
+      "actual_average_price": "5.15",
+      "price_realisation_rate": "88.8"
+    },
+    {
+      "product_id": "a22c78a7-ec20-499c-9045-8e5126773ede",
+      "product_name_zh": "牛奶吐司",
+      "product_name_en": "Milk Toast",
+      "quantity": 88,
+      "standard_sales": "457.60",
+      "discount": "48.89",
+      "refunds": "5.20",
+      "net_sales": "403.51",
+      "standard_unit_price": "5.20",
+      "actual_average_price": "4.59",
+      "price_realisation_rate": "88.2"
+    }
+  ],
+  "inventory_risks": [
+    {
+      "ingredient_id": "d8913df5-a6bc-4034-932c-dea710f79c00",
+      "ingredient_name": "片状黄油",
+      "status": "WATCH",
+      "current_stock": "19.391",
+      "unit": "kg",
+      "shortage_date": "2026-09-04"
+    }
+  ],
+  "event_risks": [
+    {
+      "id": "8671d899-7348-4940-882e-ad54199ffad8",
+      "name": "老客户回馈周",
+      "start_date": "2026-09-01",
+      "days_until_start": 10,
+      "checklist_completed": 0,
+      "checklist_total": 15
+    }
+  ]
+}

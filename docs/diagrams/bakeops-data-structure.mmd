@@ -2,6 +2,11 @@ erDiagram
     USER ||--o| USER_PREFERENCE : has
     USER }o--o{ ROLE : receives
     ROLE }o--o{ NAVIGATION_ITEM : grants
+    NAVIGATION_MENU ||--o{ NAVIGATION_ITEM : contains
+    NAVIGATION_ITEM ||--o{ NAVIGATION_ITEM : parents
+    USER ||--o{ ACCESS_LOG : generates
+    USER ||--o{ AUDIT_LOG : performs
+
     PRODUCT ||--o{ RECIPE : has
     RECIPE ||--o{ RECIPE_SECTION : contains
     RECIPE_SECTION ||--o{ RECIPE_INGREDIENT : contains
@@ -11,15 +16,68 @@ erDiagram
     INGREDIENT ||--o{ SUPPLIER_INGREDIENT : offered_by
     INGREDIENT ||--o{ INVENTORY_RECEIPT : received
     SUPPLIER ||--o{ INVENTORY_RECEIPT : supplies
+    USER ||--o{ INVENTORY_RECEIPT : records
     PRODUCT ||--o{ PRODUCTION_PLAN : planned
-    EMPLOYEE ||--o{ SCHEDULE_ENTRY : scheduled
-    PRODUCT ||--o{ SALES_ORDER_LINE : sold
-    SALES_ORDER ||--o{ SALES_ORDER_LINE : contains
-    COST_ITEM ||--o{ MONTHLY_COST : records
-    COST_MONTH ||--o{ MONTHLY_COST : groups
-    EMPLOYEE ||--o{ SCHEDULE_ENTRY : earns
-    BUSINESS_EVENT ||--o{ EVENT_CHECKLIST : has
+    INGREDIENT ||--o{ PURCHASE_REQUEST : requested
+    SUPPLIER ||--o{ PURCHASE_REQUEST : proposed_supplier
 
+    EMPLOYEE ||--o{ SCHEDULE_ENTRY : scheduled
+    SALES_ORDER ||--o{ SALES_ORDER_LINE : contains
+    PRODUCT ||--o{ SALES_ORDER_LINE : sold
+    PRODUCT ||--o{ SALES_DATA_RECORD : summarised
+    COST_ITEM ||--o{ MONTHLY_COST : classifies
+    USER ||--o{ MONTHLY_COST : creates
+
+    HOLIDAY ||--o{ BUSINESS_EVENT : linked_to
+    BUSINESS_EVENT ||--o{ EVENT_CHECKLIST_ITEM : has
+    BUSINESS_EVENT ||--o{ ACTIVITY_PLAN : linked_to
+    ACTIVITY_CATEGORY ||--o{ ACTIVITY_PLATFORM : groups
+    ACTIVITY_CATEGORY ||--o{ ACTIVITY_PLAN : classifies
+    ACTIVITY_PLATFORM ||--o{ ACTIVITY_PLAN : hosts
+    USER ||--o{ ACTIVITY_PLAN : owns
+    PRODUCT }o--o{ ACTIVITY_PLAN : focuses_on
+    ACTIVITY_PLAN ||--|| ACTIVITY_REMINDER_RULE : schedules
+    ACTIVITY_PLAN ||--o{ ACTIVITY_REMINDER_OCCURRENCE : produces
+    ACTIVITY_REMINDER_RULE ||--o{ ACTIVITY_REMINDER_OCCURRENCE : generates
+    USER ||--o{ ACTIVITY_REMINDER_OCCURRENCE : completes
+
+    USER {
+      uuid id PK
+      string email UK
+      string username
+      string system_mode
+      boolean is_active
+    }
+    ROLE {
+      uuid id PK
+      string code UK
+      string name UK
+      string anonymous_access_mode
+      datetime deleted_at
+    }
+    NAVIGATION_ITEM {
+      uuid id PK
+      uuid menu_id FK
+      uuid parent_id FK
+      string key
+      string frontend_path
+      string item_type
+    }
+    ACCESS_LOG {
+      uuid id PK
+      uuid user_id FK
+      string system_mode
+      string action
+      string path
+      string ip_hash
+    }
+    AUDIT_LOG {
+      uuid id PK
+      uuid user_id FK
+      string system_mode
+      string action
+      string resource_id
+    }
     PRODUCT {
       uuid id PK
       string code UK
@@ -32,13 +90,21 @@ erDiagram
       uuid product_id FK
       int yield_quantity
       string yield_unit
-      bool is_active
+      boolean is_active
     }
     INGREDIENT {
       uuid id PK
       string name UK
       string base_unit
-      bool is_active
+      boolean is_active
+    }
+    SUPPLIER_INGREDIENT {
+      uuid id PK
+      uuid supplier_id FK
+      uuid ingredient_id FK
+      decimal unit_price
+      string price_unit
+      boolean is_preferred
     }
     INVENTORY_ITEM {
       uuid id PK
@@ -59,20 +125,78 @@ erDiagram
       uuid id PK
       uuid ingredient_id FK
       uuid supplier_id FK
+      uuid created_by_id FK
       decimal quantity
       decimal unit_price
       datetime received_at
+      string invoice
     }
-    SALES_ORDER {
+    EMPLOYEE {
       uuid id PK
-      string reference UK
-      datetime sold_at
+      string employee_number UK
+      string name
+      string status
+      datetime deleted_at
     }
-    SALES_ORDER_LINE {
+    SCHEDULE_ENTRY {
       uuid id PK
-      uuid order_id FK
+      uuid employee_id FK
+      date work_date
+      time start_time
+      time end_time
+      int break_minutes
+    }
+    SALES_DATA_RECORD {
+      uuid id PK
+      date sales_date
+      string channel
       uuid product_id FK
       int quantity
-      decimal paid_amount
+      decimal received_amount
+      decimal discount_amount
       decimal refund_amount
+    }
+    MONTHLY_COST {
+      uuid id PK
+      uuid cost_item_id FK
+      date incurred_date
+      date cost_month
+      decimal amount
+    }
+    BUSINESS_EVENT {
+      uuid id PK
+      string name
+      string event_type
+      date start_date
+      date end_date
+    }
+    ACTIVITY_PLAN {
+      uuid id PK
+      uuid category_id FK
+      uuid platform_id FK
+      uuid owner_id FK
+      string name
+      string priority
+      string status
+      date start_date
+      date end_date
+    }
+    ACTIVITY_REMINDER_RULE {
+      uuid id PK
+      uuid plan_id FK
+      string frequency
+      int interval
+      json weekdays
+      json month_days
+      time reminder_time
+      string timezone
+    }
+    ACTIVITY_REMINDER_OCCURRENCE {
+      uuid id PK
+      uuid plan_id FK
+      uuid rule_id FK
+      datetime scheduled_at
+      string status
+      datetime snoozed_until
+      datetime completed_at
     }

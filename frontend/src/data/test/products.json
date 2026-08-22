@@ -1,0 +1,4835 @@
+[
+  {
+    "id": "224d4535-3eab-45fa-9a7d-30ca3f852b6f",
+    "code": "WHOLEWHEAT-TOAST",
+    "name_zh": "全麦吐司",
+    "name_en": "Whole Wheat Toast",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "33a29199-8e5f-4fb4-b05e-cba0e3bdd4d0",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "1770.000",
+      "sections": [
+        {
+          "id": "f4283f26-6522-4f5c-bfd0-f6a52bd9bccd",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "80328f15-7e6e-40c0-a8eb-603de7224efb",
+              "section_id": "f4283f26-6522-4f5c-bfd0-f6a52bd9bccd",
+              "section_name": "标准配方",
+              "ingredient_name": "全麦面粉",
+              "weight": "700.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "b8dce88e-b2ae-4b56-be99-49be348b0d81",
+              "section_id": "f4283f26-6522-4f5c-bfd0-f6a52bd9bccd",
+              "section_name": "标准配方",
+              "ingredient_name": "高筋面粉",
+              "weight": "300.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "3a3ccda9-012f-4661-aad9-4f671556d0c7",
+              "section_id": "f4283f26-6522-4f5c-bfd0-f6a52bd9bccd",
+              "section_name": "标准配方",
+              "ingredient_name": "水",
+              "weight": "620.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "586e25f8-1806-4a0c-9b74-843b0a610f51",
+              "section_id": "f4283f26-6522-4f5c-bfd0-f6a52bd9bccd",
+              "section_name": "标准配方",
+              "ingredient_name": "蜂蜜",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "c5813dcf-86b6-4fc4-8c11-c61145104ebb",
+              "section_id": "f4283f26-6522-4f5c-bfd0-f6a52bd9bccd",
+              "section_name": "标准配方",
+              "ingredient_name": "黄油",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "1ebafd95-ab10-4f75-99af-5bf6e71fe944",
+              "section_id": "f4283f26-6522-4f5c-bfd0-f6a52bd9bccd",
+              "section_name": "标准配方",
+              "ingredient_name": "酵母",
+              "weight": "12.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "79c28455-f1fa-4aa7-b7a4-3f3a9e24a6e5",
+              "section_id": "f4283f26-6522-4f5c-bfd0-f6a52bd9bccd",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "18.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "2.1764",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.072454+01:00",
+    "updated_at": "2026-08-17T10:54:42.750072+01:00"
+  },
+  {
+    "id": "432f9d0f-b663-41ab-8aab-daf6ac782a7b",
+    "code": "LIANGPI",
+    "name_zh": "凉皮",
+    "name_en": "Liangpi",
+    "sale_status": "ON_SALE",
+    "notes": "初始配方未提供成品份数，暂按1批记录；豆芽、面筋和黄瓜丝未提供重量，暂不计入配方重量与成本。",
+    "active_recipe": {
+      "id": "ca50e819-1933-4b2b-bf3e-46b4a60f5766",
+      "version": 1,
+      "yield_quantity": 1,
+      "yield_unit": "批",
+      "production_description": "1. 澄粉、中筋面粉、盐和水搅拌均匀，过筛成细腻面糊。\n2. 蒸盘均匀刷薄油，倒入适量面糊。\n3. 水开后上锅，大火蒸；约3秒时轻轻摇匀蒸盘中的面糊，然后盖盖继续蒸。\n4. 蒸至表面鼓起大泡，约2分钟，取出蒸盘过凉水。\n5. 成品可搭配豆芽、面筋和黄瓜丝；配菜重量待实际出品标准确认。",
+      "total_weight": "523.000",
+      "sections": [
+        {
+          "id": "7b0ca6af-2148-4798-9e68-f24ae39874b6",
+          "name": "面糊",
+          "position": 0,
+          "items": [
+            {
+              "id": "61efd486-c41d-4106-8611-303b40804edf",
+              "section_id": "7b0ca6af-2148-4798-9e68-f24ae39874b6",
+              "section_name": "面糊",
+              "ingredient_name": "澄粉",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "903e41cd-3482-44f8-a5ad-6d085a9e0bfe",
+              "section_id": "7b0ca6af-2148-4798-9e68-f24ae39874b6",
+              "section_name": "面糊",
+              "ingredient_name": "中筋面粉",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "269d1b60-e1f3-459c-8b51-183534ee04fd",
+              "section_id": "7b0ca6af-2148-4798-9e68-f24ae39874b6",
+              "section_name": "面糊",
+              "ingredient_name": "盐",
+              "weight": "3.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "5f9a0df7-1a84-4e98-94ee-cdd2c717ef36",
+              "section_id": "7b0ca6af-2148-4798-9e68-f24ae39874b6",
+              "section_name": "面糊",
+              "ingredient_name": "水",
+              "weight": "320.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "0.3922",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-13T22:14:55.901747+01:00",
+    "updated_at": "2026-08-17T10:54:41.233833+01:00"
+  },
+  {
+    "id": "12253dd3-7802-4998-bfed-4dbdc64a3d49",
+    "code": "PUMPKIN-SPICE-BREAD",
+    "name_zh": "南瓜香料面包",
+    "name_en": "Pumpkin Spice Bread",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "8b5d1880-71ca-4af8-ba19-2a419850e0a4",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "704.000",
+      "sections": [
+        {
+          "id": "64e5a985-bd9c-4a04-b4a3-ac9d945f6b0e",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "ec8c540b-6e14-40eb-8e3c-66150913fb0a",
+              "section_id": "64e5a985-bd9c-4a04-b4a3-ac9d945f6b0e",
+              "section_name": "标准配方",
+              "ingredient_name": "中筋面粉",
+              "weight": "260.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "e5a4cc3f-48d6-4f3a-a1ad-bf43954c327f",
+              "section_id": "64e5a985-bd9c-4a04-b4a3-ac9d945f6b0e",
+              "section_name": "标准配方",
+              "ingredient_name": "南瓜泥",
+              "weight": "180.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "05e023b4-e428-4d72-bdf4-361aa1f9512d",
+              "section_id": "64e5a985-bd9c-4a04-b4a3-ac9d945f6b0e",
+              "section_name": "标准配方",
+              "ingredient_name": "鸡蛋",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "20e2ef36-b582-4cc2-9c66-c2beb22277ad",
+              "section_id": "64e5a985-bd9c-4a04-b4a3-ac9d945f6b0e",
+              "section_name": "标准配方",
+              "ingredient_name": "砂糖",
+              "weight": "90.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "784b923d-bfc6-4fa6-964b-9d1d3da1e5cd",
+              "section_id": "64e5a985-bd9c-4a04-b4a3-ac9d945f6b0e",
+              "section_name": "标准配方",
+              "ingredient_name": "植物油",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "68d9ea51-806c-4820-bc48-5904d4b40739",
+              "section_id": "64e5a985-bd9c-4a04-b4a3-ac9d945f6b0e",
+              "section_name": "标准配方",
+              "ingredient_name": "肉桂粉",
+              "weight": "3.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "6774c98c-2a5c-455c-b4d9-91173912baba",
+              "section_id": "64e5a985-bd9c-4a04-b4a3-ac9d945f6b0e",
+              "section_name": "标准配方",
+              "ingredient_name": "姜粉",
+              "weight": "1.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            },
+            {
+              "id": "aaefbe48-18dd-40fd-9a25-e14d696ebbe3",
+              "section_id": "64e5a985-bd9c-4a04-b4a3-ac9d945f6b0e",
+              "section_name": "标准配方",
+              "ingredient_name": "肉豆蔻粉",
+              "weight": "1.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 7
+            },
+            {
+              "id": "ff546aab-339d-45de-bd78-8b73b798390a",
+              "section_id": "64e5a985-bd9c-4a04-b4a3-ac9d945f6b0e",
+              "section_name": "标准配方",
+              "ingredient_name": "泡打粉",
+              "weight": "6.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 8
+            },
+            {
+              "id": "db0e4344-15c2-448c-b153-7f454eed9ef1",
+              "section_id": "64e5a985-bd9c-4a04-b4a3-ac9d945f6b0e",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "3.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 9
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.3555",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.273629+01:00",
+    "updated_at": "2026-08-17T10:54:43.121272+01:00"
+  },
+  {
+    "id": "7bf6834f-b8ab-4f42-ba43-ebeb6e6e6646",
+    "code": "PLAIN-TOAST",
+    "name_zh": "原味吐司",
+    "name_en": "Plain Toast",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "f4926264-d0b2-4c75-9ee4-b15f7814d282",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "1828.000",
+      "sections": [
+        {
+          "id": "67705e8f-e8ec-410f-9070-5d154b69bffa",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "637a78f7-27fa-4f3c-8903-f5be10aa4af3",
+              "section_id": "67705e8f-e8ec-410f-9070-5d154b69bffa",
+              "section_name": "标准配方",
+              "ingredient_name": "高筋面粉",
+              "weight": "1000.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "671fa28d-f08a-4e1e-939d-b3ecdf1693e2",
+              "section_id": "67705e8f-e8ec-410f-9070-5d154b69bffa",
+              "section_name": "标准配方",
+              "ingredient_name": "牛奶",
+              "weight": "500.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "3527b629-8fac-46a9-a6ac-30d20217ad69",
+              "section_id": "67705e8f-e8ec-410f-9070-5d154b69bffa",
+              "section_name": "标准配方",
+              "ingredient_name": "鸡蛋",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "a94106ba-fa8d-40b8-8fae-b53ca840ecb7",
+              "section_id": "67705e8f-e8ec-410f-9070-5d154b69bffa",
+              "section_name": "标准配方",
+              "ingredient_name": "砂糖",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "0c2ff0a1-0593-47df-b4b5-139943d887d5",
+              "section_id": "67705e8f-e8ec-410f-9070-5d154b69bffa",
+              "section_name": "标准配方",
+              "ingredient_name": "黄油",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "c2a2679a-bbd6-4926-9c05-fc32605a2d8d",
+              "section_id": "67705e8f-e8ec-410f-9070-5d154b69bffa",
+              "section_name": "标准配方",
+              "ingredient_name": "酵母",
+              "weight": "12.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "a9180dfe-37c0-404f-a15e-40a95e79753f",
+              "section_id": "67705e8f-e8ec-410f-9070-5d154b69bffa",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "16.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "3.7545",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.052733+01:00",
+    "updated_at": "2026-08-17T10:54:42.739853+01:00"
+  },
+  {
+    "id": "05a36672-d643-4fb7-88cd-27ad5474a48b",
+    "code": "PLAIN-CROISSANT",
+    "name_zh": "原味牛角包",
+    "name_en": "Plain Croissant",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "09e292ed-eb0f-4d37-8b54-4b409252c0ad",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "392.000",
+      "sections": [
+        {
+          "id": "a90286ad-a0ee-4357-b9c7-9166c6d79a19",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "7e3399d9-299a-4875-a11b-e0585b24cea0",
+              "section_id": "a90286ad-a0ee-4357-b9c7-9166c6d79a19",
+              "section_name": "标准配方",
+              "ingredient_name": "高筋面粉",
+              "weight": "180.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "2b128200-7e0d-4239-bd82-c0830ed4c8b5",
+              "section_id": "a90286ad-a0ee-4357-b9c7-9166c6d79a19",
+              "section_name": "标准配方",
+              "ingredient_name": "牛奶",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "3e8ae024-d7a0-4d53-ae95-7c95b25418af",
+              "section_id": "a90286ad-a0ee-4357-b9c7-9166c6d79a19",
+              "section_name": "标准配方",
+              "ingredient_name": "水",
+              "weight": "35.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "eaa00f9a-1efb-4976-a941-39283fe96075",
+              "section_id": "a90286ad-a0ee-4357-b9c7-9166c6d79a19",
+              "section_name": "标准配方",
+              "ingredient_name": "砂糖",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "6caf94c4-ca5f-4ed6-91fe-0e0b97ce0cc5",
+              "section_id": "a90286ad-a0ee-4357-b9c7-9166c6d79a19",
+              "section_name": "标准配方",
+              "ingredient_name": "黄油",
+              "weight": "15.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "6cf870b7-57e4-4a2a-b041-f13a025f6ae8",
+              "section_id": "a90286ad-a0ee-4357-b9c7-9166c6d79a19",
+              "section_name": "标准配方",
+              "ingredient_name": "片状黄油",
+              "weight": "75.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "370fa157-b8b4-401e-86be-90a0817eadff",
+              "section_id": "a90286ad-a0ee-4357-b9c7-9166c6d79a19",
+              "section_name": "标准配方",
+              "ingredient_name": "酵母",
+              "weight": "4.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            },
+            {
+              "id": "4fa8bc1a-dd62-421b-9f19-d737448d98e4",
+              "section_id": "a90286ad-a0ee-4357-b9c7-9166c6d79a19",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "3.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 7
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "0.9423",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.096970+01:00",
+    "updated_at": "2026-08-17T10:54:42.783347+01:00"
+  },
+  {
+    "id": "2f074958-66c0-49e5-abc1-2fb849ec7a64",
+    "code": "CROISSANT-HAM-CHEESE-SANDWICH",
+    "name_zh": "可颂火腿芝士三明治",
+    "name_en": "Croissant Ham and Cheese Sandwich",
+    "sale_status": "ON_SALE",
+    "notes": "半成品先按原味可颂原料记录；后续可升级为可颂半成品配方。",
+    "active_recipe": {
+      "id": "1b1750f4-bea6-4ceb-beba-7c19a3ec0ba8",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "765.000",
+      "sections": [
+        {
+          "id": "73eabe80-d473-401b-b7f0-d55fe28946c1",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "6632a7da-f6d9-4833-9eef-7135e936e8a3",
+              "section_id": "73eabe80-d473-401b-b7f0-d55fe28946c1",
+              "section_name": "标准配方",
+              "ingredient_name": "原味可颂",
+              "weight": "360.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "9f797d42-fcd8-4bac-b99b-27aab52d1bb6",
+              "section_id": "73eabe80-d473-401b-b7f0-d55fe28946c1",
+              "section_name": "标准配方",
+              "ingredient_name": "火腿",
+              "weight": "160.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "7180c275-93e7-49f6-91a4-8cd8ae1df36e",
+              "section_id": "73eabe80-d473-401b-b7f0-d55fe28946c1",
+              "section_name": "标准配方",
+              "ingredient_name": "切达芝士",
+              "weight": "80.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "18f0b17d-86ce-4b6f-b1f0-a001a38c5f42",
+              "section_id": "73eabe80-d473-401b-b7f0-d55fe28946c1",
+              "section_name": "标准配方",
+              "ingredient_name": "生菜",
+              "weight": "50.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "a20c8020-b078-4756-98eb-f3b6a3d1d65a",
+              "section_id": "73eabe80-d473-401b-b7f0-d55fe28946c1",
+              "section_name": "标准配方",
+              "ingredient_name": "番茄",
+              "weight": "80.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "f7e38d02-c53a-402a-9702-64ff7a2e6bd5",
+              "section_id": "73eabe80-d473-401b-b7f0-d55fe28946c1",
+              "section_name": "标准配方",
+              "ingredient_name": "蛋黄酱",
+              "weight": "35.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.8279",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.237567+01:00",
+    "updated_at": "2026-08-17T10:54:43.039748+01:00"
+  },
+  {
+    "id": "905a013d-002a-4222-8b75-5bb00b5ca5ba",
+    "code": "CHRISTMAS-FRUIT-BREAD",
+    "name_zh": "圣诞果干面包",
+    "name_en": "Christmas Fruit Bread",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "b44efb62-25ca-454d-b4f5-f2364b92d2ad",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "1076.000",
+      "sections": [
+        {
+          "id": "6973c0b5-59a8-470c-9620-28f4d3ba8df0",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "a17354a7-8535-42d1-8b63-faa6b8acf4dc",
+              "section_id": "6973c0b5-59a8-470c-9620-28f4d3ba8df0",
+              "section_name": "标准配方",
+              "ingredient_name": "高筋面粉",
+              "weight": "400.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "48d8c8a8-b8b2-4502-9d1f-21a133b1f4c8",
+              "section_id": "6973c0b5-59a8-470c-9620-28f4d3ba8df0",
+              "section_name": "标准配方",
+              "ingredient_name": "牛奶",
+              "weight": "180.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "d87cbd62-eab3-47a7-a92c-4347b7950f13",
+              "section_id": "6973c0b5-59a8-470c-9620-28f4d3ba8df0",
+              "section_name": "标准配方",
+              "ingredient_name": "鸡蛋",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "8c6be60d-12df-4977-b63c-514180fe57b9",
+              "section_id": "6973c0b5-59a8-470c-9620-28f4d3ba8df0",
+              "section_name": "标准配方",
+              "ingredient_name": "黄油",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "0500c89b-4852-4a1a-a1b0-238e53f37486",
+              "section_id": "6973c0b5-59a8-470c-9620-28f4d3ba8df0",
+              "section_name": "标准配方",
+              "ingredient_name": "砂糖",
+              "weight": "80.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "b573a9d2-db33-4a9d-9540-1ed803a1d75a",
+              "section_id": "6973c0b5-59a8-470c-9620-28f4d3ba8df0",
+              "section_name": "标准配方",
+              "ingredient_name": "酵母",
+              "weight": "6.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "e7485f37-1592-4a41-a63b-6bade0c5ccc9",
+              "section_id": "6973c0b5-59a8-470c-9620-28f4d3ba8df0",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "6.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            },
+            {
+              "id": "8cfd31ae-1075-409d-ac54-708252f0c6a6",
+              "section_id": "6973c0b5-59a8-470c-9620-28f4d3ba8df0",
+              "section_name": "标准配方",
+              "ingredient_name": "葡萄干",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 7
+            },
+            {
+              "id": "f18a6c1a-5058-42fd-b121-4c9e338ee892",
+              "section_id": "6973c0b5-59a8-470c-9620-28f4d3ba8df0",
+              "section_name": "标准配方",
+              "ingredient_name": "蔓越莓干",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 8
+            },
+            {
+              "id": "caaec86b-08f6-4b0c-85c6-ea902334494a",
+              "section_id": "6973c0b5-59a8-470c-9620-28f4d3ba8df0",
+              "section_name": "标准配方",
+              "ingredient_name": "糖渍橙皮",
+              "weight": "40.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 9
+            },
+            {
+              "id": "632c5655-bfb6-4aa1-93ed-b29c8f82949f",
+              "section_id": "6973c0b5-59a8-470c-9620-28f4d3ba8df0",
+              "section_name": "标准配方",
+              "ingredient_name": "肉桂粉",
+              "weight": "3.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 10
+            },
+            {
+              "id": "5797c541-3f7e-4e7a-8f24-42ed9af7f3d7",
+              "section_id": "6973c0b5-59a8-470c-9620-28f4d3ba8df0",
+              "section_name": "标准配方",
+              "ingredient_name": "肉豆蔻粉",
+              "weight": "1.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 11
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "2.4524",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.317807+01:00",
+    "updated_at": "2026-08-17T10:54:43.233074+01:00"
+  },
+  {
+    "id": "5ee6bf08-7a3c-48a8-bd9a-edb0f378e4df",
+    "code": "CUSTARD-BUN",
+    "name_zh": "奶黄包",
+    "name_en": "Custard Bun",
+    "sale_status": "ON_SALE",
+    "notes": "测试配方；每批9个。当前面皮采用全脂牛奶版本，炼乳采用采购成品，预估价格待采购数据接入。",
+    "active_recipe": {
+      "id": "78b899ba-6131-4b7e-8382-65364969ca53",
+      "version": 1,
+      "yield_quantity": 9,
+      "yield_unit": "个",
+      "production_description": "奶黄馅：\n1. 绵白糖、炼乳和软化黄油搅拌均匀。\n2. 低筋面粉、玉米淀粉和全脂牛奶搅拌均匀。\n3. 将前两部分混合并加入蛋黄液，搅拌均匀。\n4. 小火加热，持续搅拌至馅料抱团，放凉备用。\n\n面皮与成型：\n1. 中筋面粉、全脂牛奶、白砂糖和酵母混合成絮，揉成面团。\n2. 盖保鲜膜进行一次发酵，至约1.5倍大。\n3. 排气后揉搓约5分钟至光滑，分成9个面皮剂子。\n4. 包入奶黄馅，二次醒发15–20分钟，至表面光滑且按压回弹。\n5. 水开后中小火蒸15分钟，关火焖3分钟。",
+      "total_weight": "814.500",
+      "sections": [
+        {
+          "id": "b2fb0ba9-e13e-4b0a-96fa-89348712717d",
+          "name": "奶黄馅",
+          "position": 0,
+          "items": [
+            {
+              "id": "a98aad54-3010-4007-80cf-164a7d0095d8",
+              "section_id": "b2fb0ba9-e13e-4b0a-96fa-89348712717d",
+              "section_name": "奶黄馅",
+              "ingredient_name": "鸡蛋黄",
+              "weight": "72.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "约4个蛋黄",
+              "position": 0
+            },
+            {
+              "id": "e804aae4-e1ca-4862-b196-eaa91e2dbdf2",
+              "section_id": "b2fb0ba9-e13e-4b0a-96fa-89348712717d",
+              "section_name": "奶黄馅",
+              "ingredient_name": "绵白糖",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "7043ee29-52a4-4187-831a-336829a1574d",
+              "section_id": "b2fb0ba9-e13e-4b0a-96fa-89348712717d",
+              "section_name": "奶黄馅",
+              "ingredient_name": "泽西全脂牛奶",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "bde76d10-9fe7-44c3-a0d1-39fa8471b1a4",
+              "section_id": "b2fb0ba9-e13e-4b0a-96fa-89348712717d",
+              "section_name": "奶黄馅",
+              "ingredient_name": "椰浆",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "4b09b903-1a60-4d44-a317-378ddc78a7ae",
+              "section_id": "b2fb0ba9-e13e-4b0a-96fa-89348712717d",
+              "section_name": "奶黄馅",
+              "ingredient_name": "低筋面粉",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "d0e0daeb-bd44-4927-aa53-4db13b260531",
+              "section_id": "b2fb0ba9-e13e-4b0a-96fa-89348712717d",
+              "section_name": "奶黄馅",
+              "ingredient_name": "玉米淀粉",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "bbb23dd7-d382-4932-8d1d-c338bcd65e00",
+              "section_id": "b2fb0ba9-e13e-4b0a-96fa-89348712717d",
+              "section_name": "奶黄馅",
+              "ingredient_name": "雀巢炼乳",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "当前版本采用采购成品",
+              "position": 6
+            },
+            {
+              "id": "4496d456-6b2e-4a95-8180-88f97cca3862",
+              "section_id": "b2fb0ba9-e13e-4b0a-96fa-89348712717d",
+              "section_name": "奶黄馅",
+              "ingredient_name": "黄油",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "软化",
+              "position": 7
+            }
+          ]
+        },
+        {
+          "id": "45cbff72-9d1a-4056-9c15-32db8afdb45d",
+          "name": "面皮",
+          "position": 1,
+          "items": [
+            {
+              "id": "44364128-bdf5-4d68-80f0-1dbf4597927b",
+              "section_id": "45cbff72-9d1a-4056-9c15-32db8afdb45d",
+              "section_name": "面皮",
+              "ingredient_name": "中筋面粉",
+              "weight": "280.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "6ac50357-81ab-421a-9c10-fcbf41344cf4",
+              "section_id": "45cbff72-9d1a-4056-9c15-32db8afdb45d",
+              "section_name": "面皮",
+              "ingredient_name": "泽西全脂牛奶",
+              "weight": "155.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "当前版本采用牛奶，不使用温水替代",
+              "position": 1
+            },
+            {
+              "id": "5a1c0bad-82c9-49fc-9b9c-d4ece01e3938",
+              "section_id": "45cbff72-9d1a-4056-9c15-32db8afdb45d",
+              "section_name": "面皮",
+              "ingredient_name": "白砂糖",
+              "weight": "5.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "4de82433-10dc-4680-8981-ef589dab7357",
+              "section_id": "45cbff72-9d1a-4056-9c15-32db8afdb45d",
+              "section_name": "面皮",
+              "ingredient_name": "干酵母",
+              "weight": "2.500",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "混合少量温液体",
+              "position": 3
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.4611",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-13T21:17:02.793505+01:00",
+    "updated_at": "2026-08-17T10:54:41.169305+01:00"
+  },
+  {
+    "id": "f0dffdd9-f9c1-4c60-8db6-1d03c55b32ff",
+    "code": "CHOCOLATE-CROISSANT",
+    "name_zh": "巧克力可颂",
+    "name_en": "Chocolate Croissant",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "0c735cda-1832-4341-9932-974286df8f06",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "440.000",
+      "sections": [
+        {
+          "id": "a3686c15-ecc2-4e8a-810e-667977c9fd5e",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "297e4b8d-bf93-4509-b4f8-8ec3fc67b601",
+              "section_id": "a3686c15-ecc2-4e8a-810e-667977c9fd5e",
+              "section_name": "标准配方",
+              "ingredient_name": "高筋面粉",
+              "weight": "180.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "36371dda-bdef-4bff-92ff-e9f8b483eec1",
+              "section_id": "a3686c15-ecc2-4e8a-810e-667977c9fd5e",
+              "section_name": "标准配方",
+              "ingredient_name": "牛奶",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "f875fbdb-8290-4c69-91dc-109874f6dc1f",
+              "section_id": "a3686c15-ecc2-4e8a-810e-667977c9fd5e",
+              "section_name": "标准配方",
+              "ingredient_name": "水",
+              "weight": "35.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "c5d50587-7603-4af0-82c2-7fae138591ee",
+              "section_id": "a3686c15-ecc2-4e8a-810e-667977c9fd5e",
+              "section_name": "标准配方",
+              "ingredient_name": "砂糖",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "95dac079-8458-4770-b634-e07d2f3b8da2",
+              "section_id": "a3686c15-ecc2-4e8a-810e-667977c9fd5e",
+              "section_name": "标准配方",
+              "ingredient_name": "黄油",
+              "weight": "15.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "bd3c74d3-85ef-4f06-aa49-5a39fa0d6fab",
+              "section_id": "a3686c15-ecc2-4e8a-810e-667977c9fd5e",
+              "section_name": "标准配方",
+              "ingredient_name": "片状黄油",
+              "weight": "75.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "a6885d5f-fe8a-4650-9da0-627c07c1aeb0",
+              "section_id": "a3686c15-ecc2-4e8a-810e-667977c9fd5e",
+              "section_name": "标准配方",
+              "ingredient_name": "酵母",
+              "weight": "4.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            },
+            {
+              "id": "b35238c2-1afb-4760-8b3f-d2225d1f28ec",
+              "section_id": "a3686c15-ecc2-4e8a-810e-667977c9fd5e",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "3.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 7
+            },
+            {
+              "id": "51d9da3b-833a-48ac-b5f7-fc0275ba3778",
+              "section_id": "a3686c15-ecc2-4e8a-810e-667977c9fd5e",
+              "section_name": "标准配方",
+              "ingredient_name": "黑巧克力",
+              "weight": "48.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 8
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.0612",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.105858+01:00",
+    "updated_at": "2026-08-17T10:54:42.800491+01:00"
+  },
+  {
+    "id": "eb671d29-b578-4d93-9a47-ed2c0ce5a0de",
+    "code": "CHOCOLATE-STRAWBERRY-CROISSANT",
+    "name_zh": "巧克力草莓可颂",
+    "name_en": "Chocolate Strawberry Croissant",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "80519790-d215-4f2d-9a94-197d5821e63e",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "632.000",
+      "sections": [
+        {
+          "id": "a0584305-ec7a-485c-bc4f-650a27f5544b",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "da31f4c7-ba0f-42ee-9db7-8d22390f2d1c",
+              "section_id": "a0584305-ec7a-485c-bc4f-650a27f5544b",
+              "section_name": "标准配方",
+              "ingredient_name": "高筋面粉",
+              "weight": "180.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "08097577-5790-45e2-b0fd-8ecc95114e79",
+              "section_id": "a0584305-ec7a-485c-bc4f-650a27f5544b",
+              "section_name": "标准配方",
+              "ingredient_name": "牛奶",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "1b217c3d-c5b6-4b0f-a52c-303b9f565749",
+              "section_id": "a0584305-ec7a-485c-bc4f-650a27f5544b",
+              "section_name": "标准配方",
+              "ingredient_name": "水",
+              "weight": "35.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "9d4cbd79-706d-4484-aa30-b31a22b7b282",
+              "section_id": "a0584305-ec7a-485c-bc4f-650a27f5544b",
+              "section_name": "标准配方",
+              "ingredient_name": "砂糖",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "eac957bc-8f23-4a7f-bc1c-ea7ffe36634c",
+              "section_id": "a0584305-ec7a-485c-bc4f-650a27f5544b",
+              "section_name": "标准配方",
+              "ingredient_name": "黄油",
+              "weight": "15.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "7433076f-ae7d-4411-b7ef-9d93511f8ed0",
+              "section_id": "a0584305-ec7a-485c-bc4f-650a27f5544b",
+              "section_name": "标准配方",
+              "ingredient_name": "片状黄油",
+              "weight": "75.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "9541f6c9-b941-4759-ac76-9ab7a543c7ea",
+              "section_id": "a0584305-ec7a-485c-bc4f-650a27f5544b",
+              "section_name": "标准配方",
+              "ingredient_name": "酵母",
+              "weight": "4.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            },
+            {
+              "id": "cb84f0c9-278e-429f-8030-aa9435143d54",
+              "section_id": "a0584305-ec7a-485c-bc4f-650a27f5544b",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "3.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 7
+            },
+            {
+              "id": "3dd98ff9-be82-481a-9efa-2bfbead897d8",
+              "section_id": "a0584305-ec7a-485c-bc4f-650a27f5544b",
+              "section_name": "标准配方",
+              "ingredient_name": "巧克力",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 8
+            },
+            {
+              "id": "b19c073c-035f-4fc1-a127-9badd5b7121e",
+              "section_id": "a0584305-ec7a-485c-bc4f-650a27f5544b",
+              "section_name": "标准配方",
+              "ingredient_name": "草莓",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 9
+            },
+            {
+              "id": "82e0e62b-461c-4bc3-a01e-1460728dc8de",
+              "section_id": "a0584305-ec7a-485c-bc4f-650a27f5544b",
+              "section_name": "标准配方",
+              "ingredient_name": "淡奶油",
+              "weight": "80.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 10
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.6859",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.328679+01:00",
+    "updated_at": "2026-08-17T10:54:43.252766+01:00"
+  },
+  {
+    "id": "104daed1-9238-4bf7-ad2f-d8a161382c6d",
+    "code": "PISTACHIO-CROISSANT",
+    "name_zh": "开心果可颂",
+    "name_en": "Pistachio Croissant",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "e86c3bc5-6fc7-44b5-beb9-b24af172a68a",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "517.000",
+      "sections": [
+        {
+          "id": "28880571-a941-48f0-a7bb-a0924ac659fd",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "03706c12-ea8b-49ec-9c38-ba34922259b4",
+              "section_id": "28880571-a941-48f0-a7bb-a0924ac659fd",
+              "section_name": "标准配方",
+              "ingredient_name": "高筋面粉",
+              "weight": "180.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "3bedc49b-1af5-40e3-8e2b-63195959b4e1",
+              "section_id": "28880571-a941-48f0-a7bb-a0924ac659fd",
+              "section_name": "标准配方",
+              "ingredient_name": "牛奶",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "a457f2b8-6129-41af-a93a-3a76fc271c03",
+              "section_id": "28880571-a941-48f0-a7bb-a0924ac659fd",
+              "section_name": "标准配方",
+              "ingredient_name": "水",
+              "weight": "35.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "01c536d3-6d72-4665-bae8-0635d087b14d",
+              "section_id": "28880571-a941-48f0-a7bb-a0924ac659fd",
+              "section_name": "标准配方",
+              "ingredient_name": "砂糖",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "1938bde0-33d4-4dd1-9a78-abbfe623694a",
+              "section_id": "28880571-a941-48f0-a7bb-a0924ac659fd",
+              "section_name": "标准配方",
+              "ingredient_name": "黄油",
+              "weight": "15.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "7a36f7ed-61b5-47a5-80aa-9e8bc8ab3300",
+              "section_id": "28880571-a941-48f0-a7bb-a0924ac659fd",
+              "section_name": "标准配方",
+              "ingredient_name": "片状黄油",
+              "weight": "75.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "2fb85a3a-522b-4ff1-a03c-a88b2028ee3b",
+              "section_id": "28880571-a941-48f0-a7bb-a0924ac659fd",
+              "section_name": "标准配方",
+              "ingredient_name": "酵母",
+              "weight": "4.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            },
+            {
+              "id": "49e459c9-4c77-43e1-a9f5-4f622480062b",
+              "section_id": "28880571-a941-48f0-a7bb-a0924ac659fd",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "3.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 7
+            },
+            {
+              "id": "f6a40bfe-97a7-48ce-96ef-a3b5fe0adee2",
+              "section_id": "28880571-a941-48f0-a7bb-a0924ac659fd",
+              "section_name": "标准配方",
+              "ingredient_name": "开心果酱",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 8
+            },
+            {
+              "id": "3f04f49a-ad98-4f16-957f-af2182a74ca5",
+              "section_id": "28880571-a941-48f0-a7bb-a0924ac659fd",
+              "section_name": "标准配方",
+              "ingredient_name": "开心果碎",
+              "weight": "25.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 9
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "2.0197",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.291956+01:00",
+    "updated_at": "2026-08-17T10:54:43.164483+01:00"
+  },
+  {
+    "id": "4a0260a0-f9b1-4aa5-8d27-a77ac0c6a455",
+    "code": "ALMOND-CROISSANT",
+    "name_zh": "杏仁可颂",
+    "name_en": "Almond Croissant",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "37cbc7ea-0abc-4c79-99da-cdcf8646990e",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "562.000",
+      "sections": [
+        {
+          "id": "57d35441-b7a6-41f3-bdd0-417b2bd5cd6e",
+          "name": "可颂面团",
+          "position": 0,
+          "items": [
+            {
+              "id": "e6b43a47-e457-4749-850d-ff90807762e7",
+              "section_id": "57d35441-b7a6-41f3-bdd0-417b2bd5cd6e",
+              "section_name": "可颂面团",
+              "ingredient_name": "高筋面粉",
+              "weight": "180.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "eccbd05c-87f5-4145-938e-72a548e78b14",
+              "section_id": "57d35441-b7a6-41f3-bdd0-417b2bd5cd6e",
+              "section_name": "可颂面团",
+              "ingredient_name": "牛奶",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "7a6dcf23-2ad9-43c9-9d1a-0498251dbbd9",
+              "section_id": "57d35441-b7a6-41f3-bdd0-417b2bd5cd6e",
+              "section_name": "可颂面团",
+              "ingredient_name": "水",
+              "weight": "35.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "c60fc1ef-0abb-49d2-af79-1b550a9e9c41",
+              "section_id": "57d35441-b7a6-41f3-bdd0-417b2bd5cd6e",
+              "section_name": "可颂面团",
+              "ingredient_name": "砂糖",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "d901881b-9fc7-42fb-8aaa-044c0f3ca42b",
+              "section_id": "57d35441-b7a6-41f3-bdd0-417b2bd5cd6e",
+              "section_name": "可颂面团",
+              "ingredient_name": "黄油",
+              "weight": "15.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "5f179b6b-f95f-41ca-ba4f-e79a1f395b57",
+              "section_id": "57d35441-b7a6-41f3-bdd0-417b2bd5cd6e",
+              "section_name": "可颂面团",
+              "ingredient_name": "片状黄油",
+              "weight": "75.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "e01ce9fb-d1c7-4d8b-b0c6-9de992cb028b",
+              "section_id": "57d35441-b7a6-41f3-bdd0-417b2bd5cd6e",
+              "section_name": "可颂面团",
+              "ingredient_name": "酵母",
+              "weight": "4.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            },
+            {
+              "id": "e30376d9-79f0-4bee-bcdb-1ab39d907bce",
+              "section_id": "57d35441-b7a6-41f3-bdd0-417b2bd5cd6e",
+              "section_name": "可颂面团",
+              "ingredient_name": "盐",
+              "weight": "3.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 7
+            }
+          ]
+        },
+        {
+          "id": "572f4c5b-2b3e-4aa3-a8a1-c53912326fe0",
+          "name": "杏仁馅与装饰",
+          "position": 1,
+          "items": [
+            {
+              "id": "51292664-4ff6-448e-83e2-5c9099acd202",
+              "section_id": "572f4c5b-2b3e-4aa3-a8a1-c53912326fe0",
+              "section_name": "杏仁馅与装饰",
+              "ingredient_name": "杏仁粉",
+              "weight": "50.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "f8e97536-19e9-4150-9005-0823cc7c590e",
+              "section_id": "572f4c5b-2b3e-4aa3-a8a1-c53912326fe0",
+              "section_name": "杏仁馅与装饰",
+              "ingredient_name": "黄油",
+              "weight": "35.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "ba405bcf-d3b0-4cf5-9011-57366808abef",
+              "section_id": "572f4c5b-2b3e-4aa3-a8a1-c53912326fe0",
+              "section_name": "杏仁馅与装饰",
+              "ingredient_name": "砂糖",
+              "weight": "35.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "eabec246-a169-4529-aa8f-e97a831026f7",
+              "section_id": "572f4c5b-2b3e-4aa3-a8a1-c53912326fe0",
+              "section_name": "杏仁馅与装饰",
+              "ingredient_name": "鸡蛋",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "23544eeb-846e-40a0-8781-066ae9466538",
+              "section_id": "572f4c5b-2b3e-4aa3-a8a1-c53912326fe0",
+              "section_name": "杏仁馅与装饰",
+              "ingredient_name": "杏仁片",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.5908",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.114756+01:00",
+    "updated_at": "2026-08-17T10:54:42.829001+01:00"
+  },
+  {
+    "id": "83395fd2-1662-46fe-9d04-8100e181641c",
+    "code": "CHESTNUT-CROISSANT",
+    "name_zh": "栗子可颂",
+    "name_en": "Chestnut Croissant",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "d5764fd4-845d-41b2-be2b-ad2490464fc8",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "527.000",
+      "sections": [
+        {
+          "id": "afd0428c-990b-4580-961f-0c69dad70329",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "c225ea22-efe3-4ed2-8ce9-2d994b160053",
+              "section_id": "afd0428c-990b-4580-961f-0c69dad70329",
+              "section_name": "标准配方",
+              "ingredient_name": "高筋面粉",
+              "weight": "180.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "4e1dc804-464d-4752-ab95-959f2eb87526",
+              "section_id": "afd0428c-990b-4580-961f-0c69dad70329",
+              "section_name": "标准配方",
+              "ingredient_name": "牛奶",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "aaf6b80f-59f7-4f30-8992-bb3eba246cc3",
+              "section_id": "afd0428c-990b-4580-961f-0c69dad70329",
+              "section_name": "标准配方",
+              "ingredient_name": "水",
+              "weight": "35.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "caa36590-a962-4ac3-b4a8-0c962c198301",
+              "section_id": "afd0428c-990b-4580-961f-0c69dad70329",
+              "section_name": "标准配方",
+              "ingredient_name": "砂糖",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "cab138f1-e0cf-4207-acf4-42d927e45566",
+              "section_id": "afd0428c-990b-4580-961f-0c69dad70329",
+              "section_name": "标准配方",
+              "ingredient_name": "黄油",
+              "weight": "15.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "5ea4eab6-053c-4a92-a4c9-d98550cdfade",
+              "section_id": "afd0428c-990b-4580-961f-0c69dad70329",
+              "section_name": "标准配方",
+              "ingredient_name": "片状黄油",
+              "weight": "75.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "db4f5cf3-4b0b-4149-9d79-1679efac8c2b",
+              "section_id": "afd0428c-990b-4580-961f-0c69dad70329",
+              "section_name": "标准配方",
+              "ingredient_name": "酵母",
+              "weight": "4.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            },
+            {
+              "id": "09b6bafb-b9a0-429c-beca-6c60bdb3b3d6",
+              "section_id": "afd0428c-990b-4580-961f-0c69dad70329",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "3.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 7
+            },
+            {
+              "id": "d4491a6b-8ce2-4261-aba4-181acb24e1f1",
+              "section_id": "afd0428c-990b-4580-961f-0c69dad70329",
+              "section_name": "标准配方",
+              "ingredient_name": "栗子泥",
+              "weight": "120.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 8
+            },
+            {
+              "id": "983f291e-a850-4209-83d8-dd41f7a95191",
+              "section_id": "afd0428c-990b-4580-961f-0c69dad70329",
+              "section_name": "标准配方",
+              "ingredient_name": "糖粉",
+              "weight": "15.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 9
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "2.0308",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.283359+01:00",
+    "updated_at": "2026-08-17T10:54:43.142563+01:00"
+  },
+  {
+    "id": "5bfbeb52-da97-4448-808d-595bbb092d8f",
+    "code": "WALNUT-CRANBERRY-BREAD",
+    "name_zh": "核桃蔓越莓欧包",
+    "name_en": "Walnut Cranberry Bread",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "2b6de082-60c4-4481-9800-dc5c96e733bf",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "1776.000",
+      "sections": [
+        {
+          "id": "53722bc3-5b97-4a99-90e8-0e482244fe19",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "296776eb-4daf-4002-9129-c8c193ccc9a9",
+              "section_id": "53722bc3-5b97-4a99-90e8-0e482244fe19",
+              "section_name": "标准配方",
+              "ingredient_name": "高筋面粉",
+              "weight": "800.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "9031f56a-624d-4045-8140-ca7b30946991",
+              "section_id": "53722bc3-5b97-4a99-90e8-0e482244fe19",
+              "section_name": "标准配方",
+              "ingredient_name": "水",
+              "weight": "520.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "b2c749bb-d9b3-465b-b0a2-5eeaf30c6831",
+              "section_id": "53722bc3-5b97-4a99-90e8-0e482244fe19",
+              "section_name": "标准配方",
+              "ingredient_name": "酸种酵头",
+              "weight": "160.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "daaead70-7d1f-44ed-bc48-91d1aaf030fa",
+              "section_id": "53722bc3-5b97-4a99-90e8-0e482244fe19",
+              "section_name": "标准配方",
+              "ingredient_name": "核桃仁",
+              "weight": "120.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "da34efec-625b-476d-8dbd-e738355a5565",
+              "section_id": "53722bc3-5b97-4a99-90e8-0e482244fe19",
+              "section_name": "标准配方",
+              "ingredient_name": "蔓越莓干",
+              "weight": "120.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "3e60a643-9880-4b92-9f15-8ab277a43fee",
+              "section_id": "53722bc3-5b97-4a99-90e8-0e482244fe19",
+              "section_name": "标准配方",
+              "ingredient_name": "蜂蜜",
+              "weight": "40.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "b8cb58fb-1d67-44bb-a07c-0f29a3be46c6",
+              "section_id": "53722bc3-5b97-4a99-90e8-0e482244fe19",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "16.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "2.8435",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.152972+01:00",
+    "updated_at": "2026-08-17T10:54:42.889991+01:00"
+  },
+  {
+    "id": "a7c3196c-6717-4564-937e-dbc9bfb06597",
+    "code": "OSMANTHUS-LONGAN-EIGHT-TREASURE-PORRIDGE",
+    "name_zh": "桂花桂圆莲子八宝粥",
+    "name_en": "Osmanthus Longan Eight-Treasure Porridge",
+    "sale_status": "ON_SALE",
+    "notes": "约3.5kg基础批次，暂按12碗记录，实际单碗克重待确认。红薯、山药为可选加料；英国豆类名称对照属于采购参考，不计入当前配方。",
+    "active_recipe": {
+      "id": "f06bb3e8-4957-41eb-a8d1-21990e876dd5",
+      "version": 1,
+      "yield_quantity": 12,
+      "yield_unit": "碗",
+      "production_description": "1. 大米、小米、糯米、薏米、黑米、花生、百合和去芯莲子淘洗，无需浸泡。\n2. 干银耳撕成小块，与桂圆肉、去核红枣浸泡约4小时；浸泡步骤可按实际时间调整。\n3. 赤小豆、花芸豆和黑豆另加一碗水，大火熬煮并持续搅拌，直至水分基本收干。\n4. 将处理好的原料加入3000g清水，大火烧开后转小火煮60分钟。\n5. 加入冰糖继续煮15分钟，撒桂花后关火。\n6. 红薯和山药可作为可选加料，使用量待实际配方确认。",
+      "total_weight": "3590.000",
+      "sections": [
+        {
+          "id": "54d174c0-c41a-4d1d-aee3-6afc8b39e48b",
+          "name": "无需浸泡谷物与干料",
+          "position": 0,
+          "items": [
+            {
+              "id": "a9d4c7e8-423a-4ab7-9bb6-e49b510671f9",
+              "section_id": "54d174c0-c41a-4d1d-aee3-6afc8b39e48b",
+              "section_name": "无需浸泡谷物与干料",
+              "ingredient_name": "大米",
+              "weight": "25.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "淘洗",
+              "position": 0
+            },
+            {
+              "id": "176fd53c-75f9-4029-b3c4-93a770c09dad",
+              "section_id": "54d174c0-c41a-4d1d-aee3-6afc8b39e48b",
+              "section_name": "无需浸泡谷物与干料",
+              "ingredient_name": "小米",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "淘洗",
+              "position": 1
+            },
+            {
+              "id": "65132b28-26d8-4182-9c24-78d7293c673c",
+              "section_id": "54d174c0-c41a-4d1d-aee3-6afc8b39e48b",
+              "section_name": "无需浸泡谷物与干料",
+              "ingredient_name": "糯米",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "淘洗",
+              "position": 2
+            },
+            {
+              "id": "9a4cdf96-5ade-41d8-9e89-8d35c800bb1d",
+              "section_id": "54d174c0-c41a-4d1d-aee3-6afc8b39e48b",
+              "section_name": "无需浸泡谷物与干料",
+              "ingredient_name": "薏米",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "淘洗",
+              "position": 3
+            },
+            {
+              "id": "d429987b-6de0-4197-9831-d5a55dabfa39",
+              "section_id": "54d174c0-c41a-4d1d-aee3-6afc8b39e48b",
+              "section_name": "无需浸泡谷物与干料",
+              "ingredient_name": "黑米",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "淘洗",
+              "position": 4
+            },
+            {
+              "id": "f85a7a11-569d-498a-b92b-54fdd2bfb831",
+              "section_id": "54d174c0-c41a-4d1d-aee3-6afc8b39e48b",
+              "section_name": "无需浸泡谷物与干料",
+              "ingredient_name": "花生",
+              "weight": "50.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "淘洗",
+              "position": 5
+            },
+            {
+              "id": "68288e5b-1e11-4a45-a593-4b787780fd2e",
+              "section_id": "54d174c0-c41a-4d1d-aee3-6afc8b39e48b",
+              "section_name": "无需浸泡谷物与干料",
+              "ingredient_name": "百合",
+              "weight": "50.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "淘洗",
+              "position": 6
+            },
+            {
+              "id": "a0d51b93-1aa3-483d-b10e-7c3d9a79fad7",
+              "section_id": "54d174c0-c41a-4d1d-aee3-6afc8b39e48b",
+              "section_name": "无需浸泡谷物与干料",
+              "ingredient_name": "莲子",
+              "weight": "40.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "去芯后淘洗",
+              "position": 7
+            }
+          ]
+        },
+        {
+          "id": "8767c901-612d-47d7-a5f7-74c53fbb09a1",
+          "name": "浸泡原料",
+          "position": 1,
+          "items": [
+            {
+              "id": "80c01015-9b94-4198-9b8a-52d419132c23",
+              "section_id": "8767c901-612d-47d7-a5f7-74c53fbb09a1",
+              "section_name": "浸泡原料",
+              "ingredient_name": "干银耳",
+              "weight": "15.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "撕小块，浸泡约4小时可选",
+              "position": 0
+            },
+            {
+              "id": "80e942a2-0f17-4af1-be80-4bdcbf54ea5e",
+              "section_id": "8767c901-612d-47d7-a5f7-74c53fbb09a1",
+              "section_name": "浸泡原料",
+              "ingredient_name": "桂圆肉",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "浸泡约4小时可选",
+              "position": 1
+            },
+            {
+              "id": "42aeeb18-f6cb-4f89-af19-37f147fe0a1e",
+              "section_id": "8767c901-612d-47d7-a5f7-74c53fbb09a1",
+              "section_name": "浸泡原料",
+              "ingredient_name": "去核红枣",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "浸泡约4小时可选",
+              "position": 2
+            }
+          ]
+        },
+        {
+          "id": "7c396b4a-fff1-420a-9ed4-6763708d9695",
+          "name": "预煮豆类",
+          "position": 2,
+          "items": [
+            {
+              "id": "b8e0e372-4e85-427f-a5dd-6075ab234327",
+              "section_id": "7c396b4a-fff1-420a-9ed4-6763708d9695",
+              "section_name": "预煮豆类",
+              "ingredient_name": "赤小豆",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "另加一碗水煮至基本收干",
+              "position": 0
+            },
+            {
+              "id": "d6afae9b-30ae-4fd4-8454-62d6f6aa25ec",
+              "section_id": "7c396b4a-fff1-420a-9ed4-6763708d9695",
+              "section_name": "预煮豆类",
+              "ingredient_name": "花芸豆",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "另加一碗水煮至基本收干",
+              "position": 1
+            },
+            {
+              "id": "64182039-66f3-485a-a3fd-37532464cd6e",
+              "section_id": "7c396b4a-fff1-420a-9ed4-6763708d9695",
+              "section_name": "预煮豆类",
+              "ingredient_name": "黑豆",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "另加一碗水煮至基本收干",
+              "position": 2
+            }
+          ]
+        },
+        {
+          "id": "43cbe3f0-0a49-42d1-91ef-3ec2a7208fb9",
+          "name": "熬煮",
+          "position": 3,
+          "items": [
+            {
+              "id": "f259b8f3-2541-4107-aa8a-7d591ea8161b",
+              "section_id": "43cbe3f0-0a49-42d1-91ef-3ec2a7208fb9",
+              "section_name": "熬煮",
+              "ingredient_name": "水",
+              "weight": "3000.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "大火烧开后小火煮60分钟",
+              "position": 0
+            },
+            {
+              "id": "0e7e1249-5f40-4114-9791-bca4e0093527",
+              "section_id": "43cbe3f0-0a49-42d1-91ef-3ec2a7208fb9",
+              "section_name": "熬煮",
+              "ingredient_name": "冰糖",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "最后加入并继续煮15分钟",
+              "position": 1
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.7728",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-13T22:14:55.909820+01:00",
+    "updated_at": "2026-08-17T10:54:41.242418+01:00"
+  },
+  {
+    "id": "c3c3cd64-4f24-4c13-a014-c11dc3890c69",
+    "code": "BAGUETTE",
+    "name_zh": "法棍",
+    "name_en": "Baguette",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "4d0b06ad-7930-44a2-abe8-c78ec15dbad9",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "1382.000",
+      "sections": [
+        {
+          "id": "050709dd-6232-4bf6-bf00-f81e92365d32",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "f08e32e7-8793-46a1-8a52-2525f3a21201",
+              "section_id": "050709dd-6232-4bf6-bf00-f81e92365d32",
+              "section_name": "标准配方",
+              "ingredient_name": "高筋面粉",
+              "weight": "800.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "a3b44ce6-f3f5-4e39-bf9b-d599c9c390b5",
+              "section_id": "050709dd-6232-4bf6-bf00-f81e92365d32",
+              "section_name": "标准配方",
+              "ingredient_name": "水",
+              "weight": "560.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "00903809-1114-4d45-8173-d36cbd89e6ab",
+              "section_id": "050709dd-6232-4bf6-bf00-f81e92365d32",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "16.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "e1a7c63a-b6bc-4713-9a97-9ecfb35844d5",
+              "section_id": "050709dd-6232-4bf6-bf00-f81e92365d32",
+              "section_name": "标准配方",
+              "ingredient_name": "酵母",
+              "weight": "6.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.0855",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.140119+01:00",
+    "updated_at": "2026-08-17T10:54:42.865021+01:00"
+  },
+  {
+    "id": "a6720cdd-59ff-49b4-bbbe-0cfe02ed1151",
+    "code": "CUSTARD-MOONCAKE",
+    "name_zh": "流心月饼",
+    "name_en": "Custard Lava Mooncake",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "e1ddde21-961c-46c8-b9ee-e89bc3c3d095",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "577.000",
+      "sections": [
+        {
+          "id": "d9a8499d-90a3-449d-96c7-0e9ce2609641",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "b2a6fe4b-0979-47f3-abe4-de54b324ec44",
+              "section_id": "d9a8499d-90a3-449d-96c7-0e9ce2609641",
+              "section_name": "标准配方",
+              "ingredient_name": "中筋面粉",
+              "weight": "120.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "2eee09c0-184a-4660-b5a3-74e8f180abd6",
+              "section_id": "d9a8499d-90a3-449d-96c7-0e9ce2609641",
+              "section_name": "标准配方",
+              "ingredient_name": "转化糖浆",
+              "weight": "80.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "b8aba098-9689-458d-a4c1-d0bae467ae1d",
+              "section_id": "d9a8499d-90a3-449d-96c7-0e9ce2609641",
+              "section_name": "标准配方",
+              "ingredient_name": "花生油",
+              "weight": "35.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "d1dab8ca-d24a-49ee-a875-432b1266e546",
+              "section_id": "d9a8499d-90a3-449d-96c7-0e9ce2609641",
+              "section_name": "标准配方",
+              "ingredient_name": "枧水",
+              "weight": "2.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "73c0951b-db42-4fee-b73a-4996f843c8ad",
+              "section_id": "d9a8499d-90a3-449d-96c7-0e9ce2609641",
+              "section_name": "标准配方",
+              "ingredient_name": "莲蓉馅",
+              "weight": "200.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "d520c107-7234-4fa5-9391-bde02abf0006",
+              "section_id": "d9a8499d-90a3-449d-96c7-0e9ce2609641",
+              "section_name": "标准配方",
+              "ingredient_name": "流心奶黄馅",
+              "weight": "80.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "39530024-1b1e-4d85-a6f1-ca1394dc0e84",
+              "section_id": "d9a8499d-90a3-449d-96c7-0e9ce2609641",
+              "section_name": "标准配方",
+              "ingredient_name": "咸蛋黄",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.1595",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.310388+01:00",
+    "updated_at": "2026-08-17T10:54:43.218694+01:00"
+  },
+  {
+    "id": "deb2604d-2d36-41e1-94e3-db134dc7ee98",
+    "code": "HAM-CHEESE-SANDWICH",
+    "name_zh": "火腿芝士三明治",
+    "name_en": "Ham and Cheese Sandwich",
+    "sale_status": "ON_SALE",
+    "notes": "半成品先按吐司片原料记录；后续可升级为吐司半成品配方。",
+    "active_recipe": {
+      "id": "ac413a82-b7a5-4510-b245-bf93c635dbc5",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "680.000",
+      "sections": [
+        {
+          "id": "c5ca87ec-4a72-479f-826c-c311ae903a3d",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "3da0b63c-9fab-4e03-8bb3-148c6127d4cb",
+              "section_id": "c5ca87ec-4a72-479f-826c-c311ae903a3d",
+              "section_name": "标准配方",
+              "ingredient_name": "吐司片",
+              "weight": "240.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "4401af74-65a4-4dd2-8532-fffe5eebb553",
+              "section_id": "c5ca87ec-4a72-479f-826c-c311ae903a3d",
+              "section_name": "标准配方",
+              "ingredient_name": "火腿",
+              "weight": "160.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "84fb3c04-d93a-43a4-ba32-2a246a0a9a35",
+              "section_id": "c5ca87ec-4a72-479f-826c-c311ae903a3d",
+              "section_name": "标准配方",
+              "ingredient_name": "切达芝士",
+              "weight": "80.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "ab368760-fc13-42b7-a0d8-85c80600ee35",
+              "section_id": "c5ca87ec-4a72-479f-826c-c311ae903a3d",
+              "section_name": "标准配方",
+              "ingredient_name": "生菜",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "d65f58ab-9b20-4ff4-a7b4-9083e2734ba6",
+              "section_id": "c5ca87ec-4a72-479f-826c-c311ae903a3d",
+              "section_name": "标准配方",
+              "ingredient_name": "番茄",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "f3720584-495e-47a3-b907-14d08b2e5047",
+              "section_id": "c5ca87ec-4a72-479f-826c-c311ae903a3d",
+              "section_name": "标准配方",
+              "ingredient_name": "蛋黄酱",
+              "weight": "40.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.7556",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.219085+01:00",
+    "updated_at": "2026-08-17T10:54:43.008950+01:00"
+  },
+  {
+    "id": "a22c78a7-ec20-499c-9045-8e5126773ede",
+    "code": "MILK-TOAST",
+    "name_zh": "牛奶吐司",
+    "name_en": "Milk Toast",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "08784706-26a5-4ce9-a208-4f8c5e772662",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "2048.000",
+      "sections": [
+        {
+          "id": "f9453071-0a43-48d5-b35d-6487c9fa6da7",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "f83d053e-cdac-4365-af5f-95f9fc84cbae",
+              "section_id": "f9453071-0a43-48d5-b35d-6487c9fa6da7",
+              "section_name": "标准配方",
+              "ingredient_name": "高筋面粉",
+              "weight": "1000.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "9683a302-330f-46d6-8e14-72891a7cb333",
+              "section_id": "f9453071-0a43-48d5-b35d-6487c9fa6da7",
+              "section_name": "标准配方",
+              "ingredient_name": "牛奶",
+              "weight": "600.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "4fe1b0be-08cb-46a7-9489-d9aaf5eae8c0",
+              "section_id": "f9453071-0a43-48d5-b35d-6487c9fa6da7",
+              "section_name": "标准配方",
+              "ingredient_name": "淡奶油",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "c6e07bb3-4516-4329-951b-c12ba96d4ed9",
+              "section_id": "f9453071-0a43-48d5-b35d-6487c9fa6da7",
+              "section_name": "标准配方",
+              "ingredient_name": "鸡蛋",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "2de81f64-e13e-401c-a76d-3ecf8ba87f0f",
+              "section_id": "f9453071-0a43-48d5-b35d-6487c9fa6da7",
+              "section_name": "标准配方",
+              "ingredient_name": "砂糖",
+              "weight": "120.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "738553bd-db5f-4ed7-b920-d9ba64520aea",
+              "section_id": "f9453071-0a43-48d5-b35d-6487c9fa6da7",
+              "section_name": "标准配方",
+              "ingredient_name": "黄油",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "9623681a-a6a3-4d20-b428-b8964f2d9026",
+              "section_id": "f9453071-0a43-48d5-b35d-6487c9fa6da7",
+              "section_name": "标准配方",
+              "ingredient_name": "酵母",
+              "weight": "12.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            },
+            {
+              "id": "43f2837a-c46a-485e-9dec-949b299aaa18",
+              "section_id": "f9453071-0a43-48d5-b35d-6487c9fa6da7",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "16.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 7
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "4.6075",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.080394+01:00",
+    "updated_at": "2026-08-17T10:54:42.758623+01:00"
+  },
+  {
+    "id": "7442cbfe-1e5e-4f8c-b72b-3f6abae0f228",
+    "code": "BROWN-SUGAR-GINGER-MILK-EGG-CUSTARD",
+    "name_zh": "红糖姜奶鸡蛋羹",
+    "name_en": "Brown Sugar Ginger Milk Egg Custard",
+    "sale_status": "ON_SALE",
+    "notes": "采用最终步骤中的3个鸡蛋与150ml泽西全脂牛奶版本，暂按3份记录；前文2个鸡蛋配100ml牛奶作为等比例参考。生姜汁、碧根果碎和黑芝麻未提供准确重量，暂不进入成本用量。",
+    "active_recipe": {
+      "id": "ef474592-afbf-46f5-b9f9-1621d5c488b6",
+      "version": 1,
+      "yield_quantity": 3,
+      "yield_unit": "份",
+      "production_description": "1. 取1–2块生姜，去皮磨成姜蓉并挤出姜汁。\n2. 姜汁加入20g红糖，小火加热至完全溶解，放凉备用。\n3. 三个鸡蛋打匀，加入冷却的红糖姜汁和150ml泽西全脂牛奶，搅拌均匀。\n4. 容器顶部用锡纸封好，蒸笼上汽后蒸15分钟，关火焖5分钟。\n5. 出锅后可撒烤碧根果碎和少量黑芝麻；装饰用量待标准化。",
+      "total_weight": "340.000",
+      "sections": [
+        {
+          "id": "4c2e5df5-10f6-44a2-93f6-d238f6a985d7",
+          "name": "蛋奶液",
+          "position": 0,
+          "items": [
+            {
+              "id": "bae3fcd3-8056-4220-8daf-9fd2f5f66c45",
+              "section_id": "4c2e5df5-10f6-44a2-93f6-d238f6a985d7",
+              "section_name": "蛋奶液",
+              "ingredient_name": "鸡蛋",
+              "weight": "150.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "约3个rich yolk large鸡蛋，重量暂按每个50g估算",
+              "position": 0
+            },
+            {
+              "id": "1de7a0e4-0497-4a5f-ac44-bdee4c658061",
+              "section_id": "4c2e5df5-10f6-44a2-93f6-d238f6a985d7",
+              "section_name": "蛋奶液",
+              "ingredient_name": "泽西全脂牛奶",
+              "weight": "150.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "约150ml",
+              "position": 1
+            },
+            {
+              "id": "53c68ccc-097f-4e4b-99bf-3fb5f20a5d98",
+              "section_id": "4c2e5df5-10f6-44a2-93f6-d238f6a985d7",
+              "section_name": "蛋奶液",
+              "ingredient_name": "红糖",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "与姜汁小火加热溶解后冷却",
+              "position": 2
+            },
+            {
+              "id": "d40b8157-1cc8-4f2a-9d3e-0ff093aa508d",
+              "section_id": "4c2e5df5-10f6-44a2-93f6-d238f6a985d7",
+              "section_name": "蛋奶液",
+              "ingredient_name": "生姜",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "1–2块的临时估算重量，实际称重后更新",
+              "position": 3
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "0.9477",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-13T22:14:55.930246+01:00",
+    "updated_at": "2026-08-17T10:54:41.267098+01:00"
+  },
+  {
+    "id": "33f31fc1-7d00-4b39-9a3a-5db953230caf",
+    "code": "RED-BEAN-TOAST",
+    "name_zh": "红豆吐司",
+    "name_en": "Red Bean Toast",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "31331711-f108-4983-8e4f-dfd4c8aaef5e",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "2006.000",
+      "sections": [
+        {
+          "id": "d75d555d-8aa6-4369-bb71-6d067a61aab0",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "72322003-223d-469a-ab12-b9bce744c950",
+              "section_id": "d75d555d-8aa6-4369-bb71-6d067a61aab0",
+              "section_name": "标准配方",
+              "ingredient_name": "高筋面粉",
+              "weight": "900.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "04283af3-c0fa-43dc-8ffc-50d3e8ea026d",
+              "section_id": "d75d555d-8aa6-4369-bb71-6d067a61aab0",
+              "section_name": "标准配方",
+              "ingredient_name": "牛奶",
+              "weight": "480.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "8feb5b85-01cd-4da0-b39d-be41590bc7d4",
+              "section_id": "d75d555d-8aa6-4369-bb71-6d067a61aab0",
+              "section_name": "标准配方",
+              "ingredient_name": "鸡蛋",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "e85267df-b0a0-4682-9af2-252417d72b47",
+              "section_id": "d75d555d-8aa6-4369-bb71-6d067a61aab0",
+              "section_name": "标准配方",
+              "ingredient_name": "砂糖",
+              "weight": "90.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "df6ecd64-96d5-4cd1-9803-9ddd88aa828c",
+              "section_id": "d75d555d-8aa6-4369-bb71-6d067a61aab0",
+              "section_name": "标准配方",
+              "ingredient_name": "黄油",
+              "weight": "90.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "970bc363-4bbb-4e8a-9999-82204fcd8654",
+              "section_id": "d75d555d-8aa6-4369-bb71-6d067a61aab0",
+              "section_name": "标准配方",
+              "ingredient_name": "酵母",
+              "weight": "11.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "b261fec2-6e0d-4756-83a6-77de7988b227",
+              "section_id": "d75d555d-8aa6-4369-bb71-6d067a61aab0",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "15.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            },
+            {
+              "id": "1b2a252f-d8da-47ce-ba2d-b021da40c357",
+              "section_id": "d75d555d-8aa6-4369-bb71-6d067a61aab0",
+              "section_name": "标准配方",
+              "ingredient_name": "红豆馅",
+              "weight": "320.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 7
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "4.4420",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.089867+01:00",
+    "updated_at": "2026-08-17T10:54:42.770864+01:00"
+  },
+  {
+    "id": "78b83057-76c8-4660-96dd-66a6489cd1a9",
+    "code": "RED-BEAN-BUN",
+    "name_zh": "红豆面包",
+    "name_en": "Red Bean Bun",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "735bf78c-2f90-4754-b14f-c3845a9606ba",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "587.000",
+      "sections": [
+        {
+          "id": "7903c70c-856a-482b-a384-be90379106d2",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "15690888-1fec-4d9f-af55-e2ac513b9d09",
+              "section_id": "7903c70c-856a-482b-a384-be90379106d2",
+              "section_name": "标准配方",
+              "ingredient_name": "高筋面粉",
+              "weight": "220.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "bdbf4129-baa1-444f-9ddb-663fbca1d691",
+              "section_id": "7903c70c-856a-482b-a384-be90379106d2",
+              "section_name": "标准配方",
+              "ingredient_name": "牛奶",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "a782f147-1852-4fc9-ad63-8c10d6e92227",
+              "section_id": "7903c70c-856a-482b-a384-be90379106d2",
+              "section_name": "标准配方",
+              "ingredient_name": "鸡蛋",
+              "weight": "40.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "76d7bb85-ad23-467c-b83b-44a1e1066c52",
+              "section_id": "7903c70c-856a-482b-a384-be90379106d2",
+              "section_name": "标准配方",
+              "ingredient_name": "砂糖",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "e17a9763-6b8a-41bf-9cb0-78fdaee30c66",
+              "section_id": "7903c70c-856a-482b-a384-be90379106d2",
+              "section_name": "标准配方",
+              "ingredient_name": "黄油",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "636087a8-e9b8-4e02-b25c-d956353f1f27",
+              "section_id": "7903c70c-856a-482b-a384-be90379106d2",
+              "section_name": "标准配方",
+              "ingredient_name": "酵母",
+              "weight": "4.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "76bf36ca-321c-4b8c-bcc7-81379c5acde9",
+              "section_id": "7903c70c-856a-482b-a384-be90379106d2",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "3.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            },
+            {
+              "id": "4cc3df25-6441-48d0-ac98-534cb3798989",
+              "section_id": "7903c70c-856a-482b-a384-be90379106d2",
+              "section_name": "标准配方",
+              "ingredient_name": "红豆馅",
+              "weight": "160.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 7
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.4048",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.181506+01:00",
+    "updated_at": "2026-08-17T10:54:42.939877+01:00"
+  },
+  {
+    "id": "2ba8ee14-8455-4ef5-a335-192652ed995d",
+    "code": "PORK-FLOSS-BUN",
+    "name_zh": "肉松面包",
+    "name_en": "Pork Floss Bun",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "1afe8cdb-93eb-45f9-9125-b63a1167d62b",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "547.000",
+      "sections": [
+        {
+          "id": "8644feae-d29a-4ad9-841f-8d88cca1d9cc",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "bbb79fba-7735-4c48-a08b-0676750cbc8e",
+              "section_id": "8644feae-d29a-4ad9-841f-8d88cca1d9cc",
+              "section_name": "标准配方",
+              "ingredient_name": "高筋面粉",
+              "weight": "220.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "16dabd30-d876-45ed-8182-af4ac5aefac2",
+              "section_id": "8644feae-d29a-4ad9-841f-8d88cca1d9cc",
+              "section_name": "标准配方",
+              "ingredient_name": "牛奶",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "077fc286-3a87-4134-bc2f-10f61b4a07db",
+              "section_id": "8644feae-d29a-4ad9-841f-8d88cca1d9cc",
+              "section_name": "标准配方",
+              "ingredient_name": "鸡蛋",
+              "weight": "40.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "f1469307-bf76-424b-b362-bf7d16de9851",
+              "section_id": "8644feae-d29a-4ad9-841f-8d88cca1d9cc",
+              "section_name": "标准配方",
+              "ingredient_name": "砂糖",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "cd654131-1d19-4b2e-a5a2-bd1fa2858c77",
+              "section_id": "8644feae-d29a-4ad9-841f-8d88cca1d9cc",
+              "section_name": "标准配方",
+              "ingredient_name": "黄油",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "0cc98e63-9c38-4f77-865d-4a0a27e191c6",
+              "section_id": "8644feae-d29a-4ad9-841f-8d88cca1d9cc",
+              "section_name": "标准配方",
+              "ingredient_name": "酵母",
+              "weight": "4.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "12e81ae2-6ff8-4c0e-bd7f-475de75aa22f",
+              "section_id": "8644feae-d29a-4ad9-841f-8d88cca1d9cc",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "3.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            },
+            {
+              "id": "c43819d6-bfb7-4302-9f53-6299b15cddfb",
+              "section_id": "8644feae-d29a-4ad9-841f-8d88cca1d9cc",
+              "section_name": "标准配方",
+              "ingredient_name": "肉松",
+              "weight": "80.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 7
+            },
+            {
+              "id": "f64c037c-5276-48dc-b66d-913895dfc8d8",
+              "section_id": "8644feae-d29a-4ad9-841f-8d88cca1d9cc",
+              "section_name": "标准配方",
+              "ingredient_name": "蛋黄酱",
+              "weight": "40.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 8
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.0864",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.171851+01:00",
+    "updated_at": "2026-08-17T10:54:42.923371+01:00"
+  },
+  {
+    "id": "e9992f42-541f-4bee-b02f-8984b3288b30",
+    "code": "CINNAMON-ROLL",
+    "name_zh": "肉桂卷",
+    "name_en": "Cinnamon Roll",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "6fe8e571-2376-4299-9c89-f5919b89dc92",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "625.000",
+      "sections": [
+        {
+          "id": "f748c312-84cd-4351-9cb0-d4bfbd3ea725",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "a909ec8a-349d-417f-b787-3fa3ef2065cf",
+              "section_id": "f748c312-84cd-4351-9cb0-d4bfbd3ea725",
+              "section_name": "标准配方",
+              "ingredient_name": "高筋面粉",
+              "weight": "240.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "b221a103-0f87-49a6-b331-ee076c921692",
+              "section_id": "f748c312-84cd-4351-9cb0-d4bfbd3ea725",
+              "section_name": "标准配方",
+              "ingredient_name": "牛奶",
+              "weight": "120.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "ca247152-3c4d-4557-be4a-8de23bcde561",
+              "section_id": "f748c312-84cd-4351-9cb0-d4bfbd3ea725",
+              "section_name": "标准配方",
+              "ingredient_name": "鸡蛋",
+              "weight": "50.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "3d701969-0c2e-467d-8236-8fe2b5f79fdf",
+              "section_id": "f748c312-84cd-4351-9cb0-d4bfbd3ea725",
+              "section_name": "标准配方",
+              "ingredient_name": "黄油",
+              "weight": "35.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "e2fcff8a-4462-4a66-a7ab-0c386ec5872c",
+              "section_id": "f748c312-84cd-4351-9cb0-d4bfbd3ea725",
+              "section_name": "标准配方",
+              "ingredient_name": "砂糖",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "43218335-46d7-432f-8518-c5a8fcf4e217",
+              "section_id": "f748c312-84cd-4351-9cb0-d4bfbd3ea725",
+              "section_name": "标准配方",
+              "ingredient_name": "酵母",
+              "weight": "5.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "e8699a3f-aa7c-47b4-90bf-085962dfa6b7",
+              "section_id": "f748c312-84cd-4351-9cb0-d4bfbd3ea725",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "4.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            },
+            {
+              "id": "0b871745-22f1-4f11-8c39-8e1fd6d3a000",
+              "section_id": "f748c312-84cd-4351-9cb0-d4bfbd3ea725",
+              "section_name": "标准配方",
+              "ingredient_name": "红糖",
+              "weight": "45.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 7
+            },
+            {
+              "id": "f39d5261-6090-4e99-93fe-6a6fec295990",
+              "section_id": "f748c312-84cd-4351-9cb0-d4bfbd3ea725",
+              "section_name": "标准配方",
+              "ingredient_name": "肉桂粉",
+              "weight": "6.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 8
+            },
+            {
+              "id": "5cd2932f-a204-4827-ad11-7b9461470a37",
+              "section_id": "f748c312-84cd-4351-9cb0-d4bfbd3ea725",
+              "section_name": "标准配方",
+              "ingredient_name": "夹心黄油",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 9
+            },
+            {
+              "id": "bc0979ee-2f1a-46c6-ab31-17a1421f4075",
+              "section_id": "f748c312-84cd-4351-9cb0-d4bfbd3ea725",
+              "section_name": "标准配方",
+              "ingredient_name": "奶油奶酪",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 10
+            },
+            {
+              "id": "cdd2f25d-95dc-437f-a1fd-96e5bc62c913",
+              "section_id": "f748c312-84cd-4351-9cb0-d4bfbd3ea725",
+              "section_name": "标准配方",
+              "ingredient_name": "糖粉",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 11
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.5376",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.128395+01:00",
+    "updated_at": "2026-08-17T10:54:42.849214+01:00"
+  },
+  {
+    "id": "a1ca6123-5ede-412b-9fb4-3bf38e15c8fa",
+    "code": "PROD-0F0EAFACE0",
+    "name_zh": "胡辣汤",
+    "name_en": "Hu La Tang",
+    "sale_status": "ON_SALE",
+    "notes": "18碗测试批次，后续等比例缩量。当前采用90g核心香料粉＋6L水；清单另写6桶1.5L即9L，存在冲突，待实际试做确认。虫草花仅记录约50根但无重量，暂不计成本；粉条、豆腐丝和葱花为可选探索项。",
+    "active_recipe": {
+      "id": "2577408e-6068-41c2-b458-37eaf3a761d3",
+      "version": 1,
+      "yield_quantity": 18,
+      "yield_unit": "碗",
+      "production_description": "前置准备：\n1. 干木耳泡发后切丝；黄花菜泡发后切小段。\n2. 牛肉加入葱、姜、八角和香叶，高压约25分钟，放凉后切小片。\n\n熬煮：\n1. 6000g水烧开，加入牛油和核心混合香料粉。\n2. 加入木耳丝、黄花菜，再次烧开。\n3. 加入卤好切片的牛肉和面筋丁。\n4. 加入盐和味精；家庭版本可减少味精或取消。\n5. 无筋淀粉加水调匀，分三次倒入锅中并持续搅拌至合适稠度。\n6. 后续试做可探索加入粉条、豆腐丝和葱花；核心香料粉成分与配比仍待研发。",
+      "total_weight": "8585.000",
+      "sections": [
+        {
+          "id": "7d86b5bf-cda4-4d59-a320-52aa39a0be2e",
+          "name": "汤底",
+          "position": 0,
+          "items": [
+            {
+              "id": "8d05a3e6-eb22-4925-a030-3d084fda6ffc",
+              "section_id": "7d86b5bf-cda4-4d59-a320-52aa39a0be2e",
+              "section_name": "汤底",
+              "ingredient_name": "水",
+              "weight": "6000.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "采用90g香料粉配6L水版本；与清单9L记录冲突待确认",
+              "position": 0
+            },
+            {
+              "id": "1dc1fd02-4580-4911-aece-20122b2b1dea",
+              "section_id": "7d86b5bf-cda4-4d59-a320-52aa39a0be2e",
+              "section_name": "汤底",
+              "ingredient_name": "牛油",
+              "weight": "160.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "可减量或去掉",
+              "position": 1
+            },
+            {
+              "id": "53dfe07d-6b01-451a-b55a-1df0ed8182a7",
+              "section_id": "7d86b5bf-cda4-4d59-a320-52aa39a0be2e",
+              "section_name": "汤底",
+              "ingredient_name": "胡辣汤核心混合香料粉",
+              "weight": "90.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "成分及配比待探索",
+              "position": 2
+            },
+            {
+              "id": "da821784-7324-414f-9dd3-ae594223e477",
+              "section_id": "7d86b5bf-cda4-4d59-a320-52aa39a0be2e",
+              "section_name": "汤底",
+              "ingredient_name": "盐",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "可减量",
+              "position": 3
+            },
+            {
+              "id": "48d925e6-f17a-4fa8-ac8d-314d9dbf7db6",
+              "section_id": "7d86b5bf-cda4-4d59-a320-52aa39a0be2e",
+              "section_name": "汤底",
+              "ingredient_name": "味精",
+              "weight": "75.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "家庭版本可减量或取消",
+              "position": 4
+            }
+          ]
+        },
+        {
+          "id": "3efe50fe-6121-4540-974c-7c03bd99c7df",
+          "name": "配料",
+          "position": 1,
+          "items": [
+            {
+              "id": "07b34052-511b-4915-8411-d83b97bfd1cd",
+              "section_id": "3efe50fe-6121-4540-974c-7c03bd99c7df",
+              "section_name": "配料",
+              "ingredient_name": "干木耳",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "泡发后切丝",
+              "position": 0
+            },
+            {
+              "id": "d1e9d46e-e421-41b6-8c98-396c60b461f5",
+              "section_id": "3efe50fe-6121-4540-974c-7c03bd99c7df",
+              "section_name": "配料",
+              "ingredient_name": "干黄花菜",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "泡发后切小段",
+              "position": 1
+            },
+            {
+              "id": "b32be16d-56c1-4520-bb4d-460e650591b7",
+              "section_id": "3efe50fe-6121-4540-974c-7c03bd99c7df",
+              "section_name": "配料",
+              "ingredient_name": "卤牛肉",
+              "weight": "1000.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "高压约25分钟后切小片",
+              "position": 2
+            },
+            {
+              "id": "3424a088-eb6f-4224-91ee-baa37ce02878",
+              "section_id": "3efe50fe-6121-4540-974c-7c03bd99c7df",
+              "section_name": "配料",
+              "ingredient_name": "面筋丁",
+              "weight": "500.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            }
+          ]
+        },
+        {
+          "id": "c9f02539-7ab8-43e5-87c4-b8e284147d27",
+          "name": "勾芡",
+          "position": 2,
+          "items": [
+            {
+              "id": "58d6f221-2590-40bc-a6b7-ea2f7509859c",
+              "section_id": "c9f02539-7ab8-43e5-87c4-b8e284147d27",
+              "section_name": "勾芡",
+              "ingredient_name": "无筋淀粉",
+              "weight": "500.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "加水调匀后分三次倒入",
+              "position": 0
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "6.1868",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-13T21:41:30.327550+01:00",
+    "updated_at": "2026-08-17T10:54:41.275975+01:00"
+  },
+  {
+    "id": "e8b3a9d2-9f46-4fe5-9b44-36b18209565d",
+    "code": "APPLE-CINNAMON-DANISH",
+    "name_zh": "苹果肉桂丹麦",
+    "name_en": "Apple Cinnamon Danish",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "fd65f2c9-a5cf-42d3-b217-067a31b7144b",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "703.000",
+      "sections": [
+        {
+          "id": "f68b08dc-6beb-4b95-8881-362455ec7814",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "4453076b-5187-4070-b39f-0e174725b597",
+              "section_id": "f68b08dc-6beb-4b95-8881-362455ec7814",
+              "section_name": "标准配方",
+              "ingredient_name": "高筋面粉",
+              "weight": "220.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "3ea67994-f256-4ac7-9e4f-d82b06df2d5b",
+              "section_id": "f68b08dc-6beb-4b95-8881-362455ec7814",
+              "section_name": "标准配方",
+              "ingredient_name": "牛奶",
+              "weight": "80.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "5c787065-39af-409e-8d65-8db51de271e7",
+              "section_id": "f68b08dc-6beb-4b95-8881-362455ec7814",
+              "section_name": "标准配方",
+              "ingredient_name": "水",
+              "weight": "40.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "38bd9ec6-3030-440c-b654-51340b42d75d",
+              "section_id": "f68b08dc-6beb-4b95-8881-362455ec7814",
+              "section_name": "标准配方",
+              "ingredient_name": "砂糖",
+              "weight": "25.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "6ea50bdb-93b1-4c3d-83b5-5c0a96f42fb0",
+              "section_id": "f68b08dc-6beb-4b95-8881-362455ec7814",
+              "section_name": "标准配方",
+              "ingredient_name": "黄油",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "0c29305b-42f1-4a23-9bcd-48449fe1cdf1",
+              "section_id": "f68b08dc-6beb-4b95-8881-362455ec7814",
+              "section_name": "标准配方",
+              "ingredient_name": "片状黄油",
+              "weight": "90.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "75a50ba8-a1bf-4012-a26f-4bf396628a4a",
+              "section_id": "f68b08dc-6beb-4b95-8881-362455ec7814",
+              "section_name": "标准配方",
+              "ingredient_name": "酵母",
+              "weight": "4.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            },
+            {
+              "id": "84fc4cd1-0a5e-45f4-a976-c62f07a29dc5",
+              "section_id": "f68b08dc-6beb-4b95-8881-362455ec7814",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "4.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 7
+            },
+            {
+              "id": "0e8d70ed-593a-488c-a13c-34b794741069",
+              "section_id": "f68b08dc-6beb-4b95-8881-362455ec7814",
+              "section_name": "标准配方",
+              "ingredient_name": "苹果",
+              "weight": "180.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 8
+            },
+            {
+              "id": "24133e90-fcf0-4dd7-a248-75922a4bbae9",
+              "section_id": "f68b08dc-6beb-4b95-8881-362455ec7814",
+              "section_name": "标准配方",
+              "ingredient_name": "红糖",
+              "weight": "35.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 9
+            },
+            {
+              "id": "8bf692a0-4896-4258-8f1f-97f2c5505192",
+              "section_id": "f68b08dc-6beb-4b95-8881-362455ec7814",
+              "section_name": "标准配方",
+              "ingredient_name": "肉桂粉",
+              "weight": "5.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 10
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.9456",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.263065+01:00",
+    "updated_at": "2026-08-17T10:54:43.098390+01:00"
+  },
+  {
+    "id": "4f291348-2bfe-4b67-8ba0-165ec1765bcb",
+    "code": "STRAWBERRY-DANISH",
+    "name_zh": "草莓丹麦",
+    "name_en": "Strawberry Danish",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "80dff136-152a-45fd-b56d-026d9bc4f762",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "723.000",
+      "sections": [
+        {
+          "id": "c6277baa-c709-456b-9bb0-0b451589d6a2",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "2135aa6f-977b-45d6-8f59-a3f86f72d4d5",
+              "section_id": "c6277baa-c709-456b-9bb0-0b451589d6a2",
+              "section_name": "标准配方",
+              "ingredient_name": "高筋面粉",
+              "weight": "220.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "fbe6fbc5-e312-43d1-a5b7-0a2a5a6da883",
+              "section_id": "c6277baa-c709-456b-9bb0-0b451589d6a2",
+              "section_name": "标准配方",
+              "ingredient_name": "牛奶",
+              "weight": "80.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "f1f73095-cbc6-40f0-a246-5b1edfbdf837",
+              "section_id": "c6277baa-c709-456b-9bb0-0b451589d6a2",
+              "section_name": "标准配方",
+              "ingredient_name": "水",
+              "weight": "40.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "93b7e536-61df-49af-af2f-bf98116208d8",
+              "section_id": "c6277baa-c709-456b-9bb0-0b451589d6a2",
+              "section_name": "标准配方",
+              "ingredient_name": "砂糖",
+              "weight": "25.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "3a36b3f3-a871-4d91-ba76-c6deb2664df0",
+              "section_id": "c6277baa-c709-456b-9bb0-0b451589d6a2",
+              "section_name": "标准配方",
+              "ingredient_name": "黄油",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "39186aa4-dff5-4f19-8162-6109d2db2c62",
+              "section_id": "c6277baa-c709-456b-9bb0-0b451589d6a2",
+              "section_name": "标准配方",
+              "ingredient_name": "片状黄油",
+              "weight": "90.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "8df4bbdd-e08e-420d-8128-c7f88bee4ba1",
+              "section_id": "c6277baa-c709-456b-9bb0-0b451589d6a2",
+              "section_name": "标准配方",
+              "ingredient_name": "酵母",
+              "weight": "4.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            },
+            {
+              "id": "4a3f4369-1acf-4f75-99fa-f37ccc75e9ef",
+              "section_id": "c6277baa-c709-456b-9bb0-0b451589d6a2",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "4.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 7
+            },
+            {
+              "id": "9f3c4383-ff1a-4434-84a0-7b05e94ba7fa",
+              "section_id": "c6277baa-c709-456b-9bb0-0b451589d6a2",
+              "section_name": "标准配方",
+              "ingredient_name": "卡仕达酱",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 8
+            },
+            {
+              "id": "5b174fb2-42a5-4868-9679-2c809ec3e80c",
+              "section_id": "c6277baa-c709-456b-9bb0-0b451589d6a2",
+              "section_name": "标准配方",
+              "ingredient_name": "草莓",
+              "weight": "120.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 9
+            },
+            {
+              "id": "c691237f-6232-446d-81cd-8c9cfe550312",
+              "section_id": "c6277baa-c709-456b-9bb0-0b451589d6a2",
+              "section_name": "标准配方",
+              "ingredient_name": "果胶",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 10
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.6445",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.244377+01:00",
+    "updated_at": "2026-08-17T10:54:43.054147+01:00"
+  },
+  {
+    "id": "8e6b2a4d-68cd-4854-a985-81cbce120ac8",
+    "code": "PINEAPPLE-BUN",
+    "name_zh": "菠萝包",
+    "name_en": "Pineapple Bun",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "94d628ce-5912-4ba5-959c-ee29c65ab830",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "617.000",
+      "sections": [
+        {
+          "id": "bcb9ce56-e789-4af0-999a-1381129abffd",
+          "name": "面包体",
+          "position": 0,
+          "items": [
+            {
+              "id": "f7ba58f2-2d5e-42aa-bc9d-f469cccd43dc",
+              "section_id": "bcb9ce56-e789-4af0-999a-1381129abffd",
+              "section_name": "面包体",
+              "ingredient_name": "高筋面粉",
+              "weight": "220.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "120110a4-78ea-4da9-bc88-47131c6e6476",
+              "section_id": "bcb9ce56-e789-4af0-999a-1381129abffd",
+              "section_name": "面包体",
+              "ingredient_name": "牛奶",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "02fc17f5-0d60-4485-87b5-7e4395b822c8",
+              "section_id": "bcb9ce56-e789-4af0-999a-1381129abffd",
+              "section_name": "面包体",
+              "ingredient_name": "鸡蛋",
+              "weight": "40.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "9e7dc63d-c742-457d-ac08-18bbea330632",
+              "section_id": "bcb9ce56-e789-4af0-999a-1381129abffd",
+              "section_name": "面包体",
+              "ingredient_name": "砂糖",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "c2785541-def6-4bdc-a544-bbc256625be6",
+              "section_id": "bcb9ce56-e789-4af0-999a-1381129abffd",
+              "section_name": "面包体",
+              "ingredient_name": "黄油",
+              "weight": "30.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "18493aa1-537a-4f1e-bd39-4a5b0303a0df",
+              "section_id": "bcb9ce56-e789-4af0-999a-1381129abffd",
+              "section_name": "面包体",
+              "ingredient_name": "酵母",
+              "weight": "4.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "13de831f-8803-4b22-a90d-dda49f35f0c5",
+              "section_id": "bcb9ce56-e789-4af0-999a-1381129abffd",
+              "section_name": "面包体",
+              "ingredient_name": "盐",
+              "weight": "3.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            }
+          ]
+        },
+        {
+          "id": "1a453fee-03eb-43ad-868b-c06a7a3b2560",
+          "name": "酥皮",
+          "position": 1,
+          "items": [
+            {
+              "id": "a998129c-a453-4214-b594-070ade0fb153",
+              "section_id": "1a453fee-03eb-43ad-868b-c06a7a3b2560",
+              "section_name": "酥皮",
+              "ingredient_name": "低筋面粉",
+              "weight": "80.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "c2b6177b-201d-4a36-9ef0-6afc78baa479",
+              "section_id": "1a453fee-03eb-43ad-868b-c06a7a3b2560",
+              "section_name": "酥皮",
+              "ingredient_name": "黄油",
+              "weight": "45.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "229bdd6d-a710-44a8-9fff-d4590af43639",
+              "section_id": "1a453fee-03eb-43ad-868b-c06a7a3b2560",
+              "section_name": "酥皮",
+              "ingredient_name": "砂糖",
+              "weight": "40.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "23724c48-3e9b-4315-8e2f-7281719c74ca",
+              "section_id": "1a453fee-03eb-43ad-868b-c06a7a3b2560",
+              "section_name": "酥皮",
+              "ingredient_name": "鸡蛋",
+              "weight": "25.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.4738",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.161274+01:00",
+    "updated_at": "2026-08-17T10:54:42.904948+01:00"
+  },
+  {
+    "id": "80b24b04-d2a6-4b4d-96bd-ad31d6a84b8a",
+    "code": "SAQIMA",
+    "name_zh": "萨其马",
+    "name_en": "Sachima",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "7aada429-75e7-43f3-ba41-0b4ffe7ca9ad",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "543.000",
+      "sections": [
+        {
+          "id": "cb4ab45f-2466-4775-92e0-acd670870ba4",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "79a60746-d471-445e-8a12-f34f35798a20",
+              "section_id": "cb4ab45f-2466-4775-92e0-acd670870ba4",
+              "section_name": "标准配方",
+              "ingredient_name": "中筋面粉",
+              "weight": "180.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "f4dab30a-9843-4135-b17e-2b6eba6b7118",
+              "section_id": "cb4ab45f-2466-4775-92e0-acd670870ba4",
+              "section_name": "标准配方",
+              "ingredient_name": "鸡蛋",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "3362974b-d730-4cf7-bf0d-3982049d7912",
+              "section_id": "cb4ab45f-2466-4775-92e0-acd670870ba4",
+              "section_name": "标准配方",
+              "ingredient_name": "泡打粉",
+              "weight": "3.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "a9e6c40d-67e7-41b5-8d9e-4932f6c0b0f9",
+              "section_id": "cb4ab45f-2466-4775-92e0-acd670870ba4",
+              "section_name": "标准配方",
+              "ingredient_name": "炸制实际耗油",
+              "weight": "35.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "85fa4f4c-7701-4515-81b2-af9aa9653475",
+              "section_id": "cb4ab45f-2466-4775-92e0-acd670870ba4",
+              "section_name": "标准配方",
+              "ingredient_name": "麦芽糖",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "5a9268c7-2c95-4b4a-8fb4-bec4eda049a4",
+              "section_id": "cb4ab45f-2466-4775-92e0-acd670870ba4",
+              "section_name": "标准配方",
+              "ingredient_name": "砂糖",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "f5b65309-fef2-4cb5-928d-22416dc1809b",
+              "section_id": "cb4ab45f-2466-4775-92e0-acd670870ba4",
+              "section_name": "标准配方",
+              "ingredient_name": "水",
+              "weight": "35.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            },
+            {
+              "id": "7b472e53-cd48-4891-b401-370c4a3fe4be",
+              "section_id": "cb4ab45f-2466-4775-92e0-acd670870ba4",
+              "section_name": "标准配方",
+              "ingredient_name": "葡萄干",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 7
+            },
+            {
+              "id": "b0fc2b1e-e2b6-45a8-95d5-125ea7e31107",
+              "section_id": "cb4ab45f-2466-4775-92e0-acd670870ba4",
+              "section_name": "标准配方",
+              "ingredient_name": "芝麻",
+              "weight": "10.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 8
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.0401",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.198350+01:00",
+    "updated_at": "2026-08-17T10:54:42.975298+01:00"
+  },
+  {
+    "id": "21cfa4f2-034f-47cb-927a-ea318786579f",
+    "code": "STEAMED-MANTOU",
+    "name_zh": "蒸馒头",
+    "name_en": "Steamed Mantou",
+    "sale_status": "ON_SALE",
+    "notes": "初始规格采用中等馒头，每个约75g，基础配方约10个；大馒头100g、小馒头50g。原步骤中的80g分剂作为待确认记录。",
+    "active_recipe": {
+      "id": "04a2d6b7-78e4-42da-a9ee-5062030648db",
+      "version": 1,
+      "yield_quantity": 10,
+      "yield_unit": "个",
+      "production_description": "1. 酵母倒入30–35°C温水搅匀，静置5分钟；表面起泡表示活化成功。\n2. 中筋面粉与白砂糖拌匀，边倒酵母水边搅拌至无明显干粉的絮状。\n3. 揉成团后移到案板，加入食用油，继续揉10–15分钟至表面光滑、有弹性，切面无大气孔。\n4. 面团盖好，在28–30°C环境发酵约1.5–2小时至2倍大；手指蘸粉戳洞，不回缩、不塌陷即完成。\n5. 轻揉均匀排气，搓长并按当前规格分成约75g剂子，逐个滚圆。\n6. 放在蒸笼布或油纸上二次醒发15–20分钟，至明显变大、按压缓慢回弹。\n7. 冷水入锅并留足间距，大火上汽后转中火蒸20分钟；关火焖3–5分钟后开盖。",
+      "total_weight": "770.000",
+      "sections": [
+        {
+          "id": "f573978b-103d-4267-9eda-17fc20348e69",
+          "name": "面团",
+          "position": 0,
+          "items": [
+            {
+              "id": "fa3e37f1-e152-45b4-b95c-e3122868288e",
+              "section_id": "f573978b-103d-4267-9eda-17fc20348e69",
+              "section_name": "面团",
+              "ingredient_name": "中筋面粉",
+              "weight": "500.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "6e908cc9-c6a5-4807-8a3e-eb3cfd0810f1",
+              "section_id": "f573978b-103d-4267-9eda-17fc20348e69",
+              "section_name": "面团",
+              "ingredient_name": "水",
+              "weight": "250.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "30–35°C温水",
+              "position": 1
+            },
+            {
+              "id": "a0866158-0dc1-48f1-b7e8-818698d7a22f",
+              "section_id": "f573978b-103d-4267-9eda-17fc20348e69",
+              "section_name": "面团",
+              "ingredient_name": "干酵母",
+              "weight": "5.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "先在温水中活化5分钟",
+              "position": 2
+            },
+            {
+              "id": "b1799430-465c-4254-add3-a5a8baebbf62",
+              "section_id": "f573978b-103d-4267-9eda-17fc20348e69",
+              "section_name": "面团",
+              "ingredient_name": "白砂糖",
+              "weight": "10.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "403f0450-62e7-45de-9220-a1422e8508a0",
+              "section_id": "f573978b-103d-4267-9eda-17fc20348e69",
+              "section_name": "面团",
+              "ingredient_name": "食用油",
+              "weight": "5.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "约5ml，揉成团后加入",
+              "position": 4
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "0.6559",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-13T22:14:55.891052+01:00",
+    "updated_at": "2026-08-17T10:54:41.221459+01:00"
+  },
+  {
+    "id": "797d2aed-bf83-4d85-aebd-b55642203981",
+    "code": "BLUEBERRY-CHEESE-DANISH",
+    "name_zh": "蓝莓奶酪丹麦",
+    "name_en": "Blueberry Cheese Danish",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "51cb2d81-73dc-46a1-b05c-2486e4873db3",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "703.000",
+      "sections": [
+        {
+          "id": "cc4eacd2-5e00-426c-8055-cffd22468cfb",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "1e8ea64a-b2ef-4b4b-8791-c515243e35ad",
+              "section_id": "cc4eacd2-5e00-426c-8055-cffd22468cfb",
+              "section_name": "标准配方",
+              "ingredient_name": "高筋面粉",
+              "weight": "220.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "6a6ac7de-e7ea-491a-8343-c82a50567f3a",
+              "section_id": "cc4eacd2-5e00-426c-8055-cffd22468cfb",
+              "section_name": "标准配方",
+              "ingredient_name": "牛奶",
+              "weight": "80.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "67304942-6bca-49fc-a303-c5a1b80b89cf",
+              "section_id": "cc4eacd2-5e00-426c-8055-cffd22468cfb",
+              "section_name": "标准配方",
+              "ingredient_name": "水",
+              "weight": "40.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "3b081319-b99f-41f2-b1e8-77851e47d839",
+              "section_id": "cc4eacd2-5e00-426c-8055-cffd22468cfb",
+              "section_name": "标准配方",
+              "ingredient_name": "砂糖",
+              "weight": "45.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "6b51480d-f465-439c-b049-65df220e9700",
+              "section_id": "cc4eacd2-5e00-426c-8055-cffd22468cfb",
+              "section_name": "标准配方",
+              "ingredient_name": "黄油",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "9680c3f2-15d1-4fce-99e8-b6cde888db37",
+              "section_id": "cc4eacd2-5e00-426c-8055-cffd22468cfb",
+              "section_name": "标准配方",
+              "ingredient_name": "片状黄油",
+              "weight": "90.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "d9ff7f85-a344-45a0-9ece-d63ead6c0567",
+              "section_id": "cc4eacd2-5e00-426c-8055-cffd22468cfb",
+              "section_name": "标准配方",
+              "ingredient_name": "酵母",
+              "weight": "4.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            },
+            {
+              "id": "2933a268-b5b3-454b-b546-2f88da21fd6e",
+              "section_id": "cc4eacd2-5e00-426c-8055-cffd22468cfb",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "4.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 7
+            },
+            {
+              "id": "eba0010f-d990-416d-87ec-fbceca5fa363",
+              "section_id": "cc4eacd2-5e00-426c-8055-cffd22468cfb",
+              "section_name": "标准配方",
+              "ingredient_name": "奶油奶酪",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 8
+            },
+            {
+              "id": "0a1e88f7-8501-495e-bffe-a328c5d4e07e",
+              "section_id": "cc4eacd2-5e00-426c-8055-cffd22468cfb",
+              "section_name": "标准配方",
+              "ingredient_name": "蓝莓",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 9
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "2.1354",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.254020+01:00",
+    "updated_at": "2026-08-17T10:54:43.076629+01:00"
+  },
+  {
+    "id": "88d78754-87a8-4d9f-af8d-30d1feb55499",
+    "code": "CRANBERRY-PECAN-BREAD",
+    "name_zh": "蔓越莓山核桃面包",
+    "name_en": "Cranberry Pecan Bread",
+    "sale_status": "ON_SALE",
+    "notes": "测试配方；基础批次分4份。预估价格待采购数据接入。",
+    "active_recipe": {
+      "id": "6e0d26f8-bcf8-45b7-b443-95fa77ad4e48",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "个",
+      "production_description": "预发酵面团：\n1. 高筋面粉、30°C温水和干酵母混合成团，发酵约2小时。\n2. 可将烤箱预热至30°C后关闭，放入一碗开水增加温度与湿度，再放入面团发酵。\n\n主面团与加料：\n1. 将全部预发酵面团加入高筋面粉、全脂牛奶、砂糖、干酵母、盐和软化黄油。\n2. 搅拌至可以拉出薄膜。\n3. 蔓越莓干用温水泡软15分钟，沥干后切小块。\n4. 加入蔓越莓干和咸味烤山核桃，手动折叠拌匀，避免打断面筋。\n\n整形与烘烤：\n1. 发酵至约2倍大，轻擀排气，分成4份并滚圆。\n2. 醒面15分钟，擀成长方形后卷起，捏紧收口，顶部斜划4刀。\n3. 放一杯热水增加湿度，继续发酵至明显增大。\n4. 烤箱预热至180°C，烘烤25分钟。",
+      "total_weight": "540.000",
+      "sections": [
+        {
+          "id": "e18d8e38-a773-49d4-83f7-53435527c0d2",
+          "name": "预发酵面团",
+          "position": 0,
+          "items": [
+            {
+              "id": "586c2d47-744b-4747-a85c-17a7580eb521",
+              "section_id": "e18d8e38-a773-49d4-83f7-53435527c0d2",
+              "section_name": "预发酵面团",
+              "ingredient_name": "高筋面粉",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "91bffaad-151a-47c8-b8c7-85947186adf8",
+              "section_id": "e18d8e38-a773-49d4-83f7-53435527c0d2",
+              "section_name": "预发酵面团",
+              "ingredient_name": "水",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "约30°C温水",
+              "position": 1
+            },
+            {
+              "id": "a01676f4-ac39-4897-8973-6c8d10f2e873",
+              "section_id": "e18d8e38-a773-49d4-83f7-53435527c0d2",
+              "section_name": "预发酵面团",
+              "ingredient_name": "干酵母",
+              "weight": "1.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "混合少量温水",
+              "position": 2
+            }
+          ]
+        },
+        {
+          "id": "71528294-5072-44a8-9401-adab3135e723",
+          "name": "主面团",
+          "position": 1,
+          "items": [
+            {
+              "id": "b48ccce3-8a90-4dab-bdb1-7e2d46486912",
+              "section_id": "71528294-5072-44a8-9401-adab3135e723",
+              "section_name": "主面团",
+              "ingredient_name": "高筋面粉",
+              "weight": "145.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "c211ce59-49a9-4c1e-9d6d-6d52421a4cbc",
+              "section_id": "71528294-5072-44a8-9401-adab3135e723",
+              "section_name": "主面团",
+              "ingredient_name": "全脂牛奶",
+              "weight": "65.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "ceee85e5-df3f-40c3-82c6-5fc881835e00",
+              "section_id": "71528294-5072-44a8-9401-adab3135e723",
+              "section_name": "主面团",
+              "ingredient_name": "白砂糖",
+              "weight": "10.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "d8d798cd-4a17-48ab-8ec0-704205840926",
+              "section_id": "71528294-5072-44a8-9401-adab3135e723",
+              "section_name": "主面团",
+              "ingredient_name": "干酵母",
+              "weight": "2.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "混合少量温水",
+              "position": 3
+            },
+            {
+              "id": "729382a2-8b78-4e5e-a1de-b2e4b3c613ee",
+              "section_id": "71528294-5072-44a8-9401-adab3135e723",
+              "section_name": "主面团",
+              "ingredient_name": "盐",
+              "weight": "2.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "7b39f5b0-7b42-4d16-8861-8d46bfffea80",
+              "section_id": "71528294-5072-44a8-9401-adab3135e723",
+              "section_name": "主面团",
+              "ingredient_name": "黄油",
+              "weight": "15.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "软化",
+              "position": 5
+            }
+          ]
+        },
+        {
+          "id": "3f6c96cc-5e21-4bc8-9c86-55173dbcd773",
+          "name": "加料",
+          "position": 2,
+          "items": [
+            {
+              "id": "fa62fd48-e32c-46a1-b6de-33ebe9b9540d",
+              "section_id": "3f6c96cc-5e21-4bc8-9c86-55173dbcd773",
+              "section_name": "加料",
+              "ingredient_name": "蔓越莓干",
+              "weight": "50.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "温水泡软15分钟后沥干切小块",
+              "position": 0
+            },
+            {
+              "id": "b46ccb3c-4410-420a-95c1-661076c880c2",
+              "section_id": "3f6c96cc-5e21-4bc8-9c86-55173dbcd773",
+              "section_name": "加料",
+              "ingredient_name": "咸味烤山核桃",
+              "weight": "50.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "手动折叠拌入",
+              "position": 1
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "0.9995",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-13T21:17:02.813158+01:00",
+    "updated_at": "2026-08-17T10:54:41.203641+01:00"
+  },
+  {
+    "id": "95a59349-d926-4eda-ae4e-f13d83d051f0",
+    "code": "EGG-TART",
+    "name_zh": "蛋挞",
+    "name_en": "Egg Tart",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "afe2a490-c1f9-436a-acaa-cf654f897a19",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "475.000",
+      "sections": [
+        {
+          "id": "d9415924-1242-49c5-97bc-6def789f28e0",
+          "name": "挞皮",
+          "position": 0,
+          "items": [
+            {
+              "id": "83f433ec-0069-4741-a6b8-83a1a6f66b77",
+              "section_id": "d9415924-1242-49c5-97bc-6def789f28e0",
+              "section_name": "挞皮",
+              "ingredient_name": "低筋面粉",
+              "weight": "90.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "2af623b2-d38b-4f7b-bab9-fdf87860427f",
+              "section_id": "d9415924-1242-49c5-97bc-6def789f28e0",
+              "section_name": "挞皮",
+              "ingredient_name": "黄油",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "27087f00-7717-4d8d-96dd-542a94910bc9",
+              "section_id": "d9415924-1242-49c5-97bc-6def789f28e0",
+              "section_name": "挞皮",
+              "ingredient_name": "砂糖",
+              "weight": "10.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            }
+          ]
+        },
+        {
+          "id": "02d9f3a5-0d70-49f0-9527-f97acd4edcd4",
+          "name": "蛋液",
+          "position": 1,
+          "items": [
+            {
+              "id": "605e5275-f922-4955-b0dd-6eaec7c49c71",
+              "section_id": "02d9f3a5-0d70-49f0-9527-f97acd4edcd4",
+              "section_name": "蛋液",
+              "ingredient_name": "鸡蛋",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "7357b1d7-f6e8-417b-9472-7c6197d40fc3",
+              "section_id": "02d9f3a5-0d70-49f0-9527-f97acd4edcd4",
+              "section_name": "蛋液",
+              "ingredient_name": "牛奶",
+              "weight": "120.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "e6f8b1b2-5dec-4b80-831a-e568c02aa46c",
+              "section_id": "02d9f3a5-0d70-49f0-9527-f97acd4edcd4",
+              "section_name": "蛋液",
+              "ingredient_name": "淡奶油",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "7f9efbde-152f-4e1f-90aa-8bc2eeb95ae1",
+              "section_id": "02d9f3a5-0d70-49f0-9527-f97acd4edcd4",
+              "section_name": "蛋液",
+              "ingredient_name": "砂糖",
+              "weight": "35.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.6004",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.189843+01:00",
+    "updated_at": "2026-08-17T10:54:42.963506+01:00"
+  },
+  {
+    "id": "347f90c6-719c-4143-9b8e-ab14d6cf2975",
+    "code": "EGG-YOLK-PASTRY",
+    "name_zh": "蛋黄酥",
+    "name_en": "Salted Egg Yolk Pastry",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "a5ae8032-977d-485e-9bbf-f40b1488fca1",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "545.000",
+      "sections": [
+        {
+          "id": "eced7d76-9fa9-4437-822f-6112ee64b35f",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "32005a35-018b-4c70-9d3b-02430605748b",
+              "section_id": "eced7d76-9fa9-4437-822f-6112ee64b35f",
+              "section_name": "标准配方",
+              "ingredient_name": "中筋面粉",
+              "weight": "160.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "43d5474e-eae8-46b6-bfc3-1986c55a65d1",
+              "section_id": "eced7d76-9fa9-4437-822f-6112ee64b35f",
+              "section_name": "标准配方",
+              "ingredient_name": "猪油",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "7e40b37b-819a-4e6c-914d-6b874f022885",
+              "section_id": "eced7d76-9fa9-4437-822f-6112ee64b35f",
+              "section_name": "标准配方",
+              "ingredient_name": "水",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "4a876215-90b9-4e6c-af3d-f58d7ed61b0d",
+              "section_id": "eced7d76-9fa9-4437-822f-6112ee64b35f",
+              "section_name": "标准配方",
+              "ingredient_name": "砂糖",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "8dce8fb8-bcd3-4d78-af3d-e4a115e45514",
+              "section_id": "eced7d76-9fa9-4437-822f-6112ee64b35f",
+              "section_name": "标准配方",
+              "ingredient_name": "红豆沙",
+              "weight": "160.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "be5306ee-dafe-4274-b468-5413cf247b1b",
+              "section_id": "eced7d76-9fa9-4437-822f-6112ee64b35f",
+              "section_name": "标准配方",
+              "ingredient_name": "咸蛋黄",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "b2a0f989-4877-4d56-b2f9-6315ec9b44e4",
+              "section_id": "eced7d76-9fa9-4437-822f-6112ee64b35f",
+              "section_name": "标准配方",
+              "ingredient_name": "蛋液",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            },
+            {
+              "id": "10a6f8b7-0979-4127-a7d0-1f93fb5c4d9e",
+              "section_id": "eced7d76-9fa9-4437-822f-6112ee64b35f",
+              "section_name": "标准配方",
+              "ingredient_name": "芝麻",
+              "weight": "5.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 7
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "0.7966",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.301643+01:00",
+    "updated_at": "2026-08-17T10:54:43.190764+01:00"
+  },
+  {
+    "id": "6fd808cd-1f27-4b3a-a35c-ee3c3aa693ad",
+    "code": "SOURDOUGH",
+    "name_zh": "酸种面包",
+    "name_en": "Sourdough Bread",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "e17f9bf2-b32b-4378-ab74-bf8a52bc9645",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "1920.000",
+      "sections": [
+        {
+          "id": "75abd626-8564-4750-90ae-dba2cb20a40a",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "c9b69c62-ddc9-49e9-bf04-cbfc92fa46aa",
+              "section_id": "75abd626-8564-4750-90ae-dba2cb20a40a",
+              "section_name": "标准配方",
+              "ingredient_name": "高筋面粉",
+              "weight": "1000.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "cfe5490e-7a24-4125-8569-1fe43381912f",
+              "section_id": "75abd626-8564-4750-90ae-dba2cb20a40a",
+              "section_name": "标准配方",
+              "ingredient_name": "水",
+              "weight": "700.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "78eb9d4b-567c-415f-be44-2de1b3a57e55",
+              "section_id": "75abd626-8564-4750-90ae-dba2cb20a40a",
+              "section_name": "标准配方",
+              "ingredient_name": "酸种酵头",
+              "weight": "200.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "381347dd-92ce-4986-8076-d45d732bf6f8",
+              "section_id": "75abd626-8564-4750-90ae-dba2cb20a40a",
+              "section_name": "标准配方",
+              "ingredient_name": "盐",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.6939",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.146913+01:00",
+    "updated_at": "2026-08-17T10:54:42.877880+01:00"
+  },
+  {
+    "id": "d32ebf77-5237-4479-bc41-2fbb3e3c8abd",
+    "code": "ROSE-PASTRY",
+    "name_zh": "鲜花饼",
+    "name_en": "Rose Pastry",
+    "sale_status": "ON_SALE",
+    "notes": "领导提供的第一版模拟标准配方；一次生产4个可销售单位。",
+    "active_recipe": {
+      "id": "c20e4df4-7b37-4b03-b6b8-9b2c6bbc45de",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "500.000",
+      "sections": [
+        {
+          "id": "23102f0a-cd72-4788-be11-df24046a2a33",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "3a071477-8d9a-4ef7-941d-f3eb6441a036",
+              "section_id": "23102f0a-cd72-4788-be11-df24046a2a33",
+              "section_name": "标准配方",
+              "ingredient_name": "中筋面粉",
+              "weight": "200.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "08dca19e-80dc-4adc-b82c-d8ae767015f1",
+              "section_id": "23102f0a-cd72-4788-be11-df24046a2a33",
+              "section_name": "标准配方",
+              "ingredient_name": "猪油",
+              "weight": "70.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "8a5a92c6-064f-496b-8914-2606b862e85f",
+              "section_id": "23102f0a-cd72-4788-be11-df24046a2a33",
+              "section_name": "标准配方",
+              "ingredient_name": "水",
+              "weight": "70.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "83fdada5-6a06-42b3-abcf-355360837c40",
+              "section_id": "23102f0a-cd72-4788-be11-df24046a2a33",
+              "section_name": "标准配方",
+              "ingredient_name": "砂糖",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "9d217229-87db-418f-b783-399015104709",
+              "section_id": "23102f0a-cd72-4788-be11-df24046a2a33",
+              "section_name": "标准配方",
+              "ingredient_name": "玫瑰鲜花馅",
+              "weight": "120.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "85c985eb-734e-43b3-b33e-b61984aa28c7",
+              "section_id": "23102f0a-cd72-4788-be11-df24046a2a33",
+              "section_name": "标准配方",
+              "ingredient_name": "熟芝麻",
+              "weight": "20.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "0.6708",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.210632+01:00",
+    "updated_at": "2026-08-17T10:54:42.994572+01:00"
+  },
+  {
+    "id": "d306e005-41cc-43e3-a057-ca45f5df3586",
+    "code": "CHICKEN-SALAD-SANDWICH",
+    "name_zh": "鸡肉沙拉三明治",
+    "name_en": "Chicken Salad Sandwich",
+    "sale_status": "ON_SALE",
+    "notes": "半成品先按吐司片原料记录；后续可升级为吐司半成品配方。",
+    "active_recipe": {
+      "id": "ea966174-4397-44f0-a70a-fde2e4796c34",
+      "version": 1,
+      "yield_quantity": 4,
+      "yield_unit": "份",
+      "production_description": "",
+      "total_weight": "722.000",
+      "sections": [
+        {
+          "id": "1cff9330-de9f-4b5f-9537-6427f853b4d1",
+          "name": "标准配方",
+          "position": 0,
+          "items": [
+            {
+              "id": "5a3dff1b-ab2b-4f05-95c3-95377c575b76",
+              "section_id": "1cff9330-de9f-4b5f-9537-6427f853b4d1",
+              "section_name": "标准配方",
+              "ingredient_name": "吐司片",
+              "weight": "240.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 0
+            },
+            {
+              "id": "b965a0a2-83bc-4321-8607-46d1c9d12655",
+              "section_id": "1cff9330-de9f-4b5f-9537-6427f853b4d1",
+              "section_name": "标准配方",
+              "ingredient_name": "熟鸡胸肉",
+              "weight": "200.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 1
+            },
+            {
+              "id": "a7785c33-d42e-447d-8568-db8865a74153",
+              "section_id": "1cff9330-de9f-4b5f-9537-6427f853b4d1",
+              "section_name": "标准配方",
+              "ingredient_name": "生菜",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 2
+            },
+            {
+              "id": "388c2de3-32f7-4797-b645-b048db49129a",
+              "section_id": "1cff9330-de9f-4b5f-9537-6427f853b4d1",
+              "section_name": "标准配方",
+              "ingredient_name": "番茄",
+              "weight": "100.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 3
+            },
+            {
+              "id": "1cb8b5d9-166f-4b26-b727-40af0a83e45f",
+              "section_id": "1cff9330-de9f-4b5f-9537-6427f853b4d1",
+              "section_name": "标准配方",
+              "ingredient_name": "黄瓜",
+              "weight": "60.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 4
+            },
+            {
+              "id": "56f6dcab-1382-427c-88e4-ebcff747b8a8",
+              "section_id": "1cff9330-de9f-4b5f-9537-6427f853b4d1",
+              "section_name": "标准配方",
+              "ingredient_name": "蛋黄酱",
+              "weight": "50.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 5
+            },
+            {
+              "id": "4f13db9a-eef8-4820-9216-101634220117",
+              "section_id": "1cff9330-de9f-4b5f-9537-6427f853b4d1",
+              "section_name": "标准配方",
+              "ingredient_name": "芥末酱",
+              "weight": "12.000",
+              "unit": "g",
+              "estimated_price": null,
+              "preparation_note": "",
+              "position": 6
+            }
+          ]
+        }
+      ]
+    },
+    "current_estimated_cost": {
+      "amount": "1.8098",
+      "currency": "GBP",
+      "is_complete": true,
+      "missing_ingredient_count": 0,
+      "missing_ingredients": []
+    },
+    "created_at": "2026-08-14T22:03:19.228945+01:00",
+    "updated_at": "2026-08-17T10:54:43.021921+01:00"
+  }
+]

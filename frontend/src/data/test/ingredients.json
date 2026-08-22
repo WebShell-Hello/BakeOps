@@ -1,0 +1,517 @@
+[
+  {
+    "id": "edad2b5a-45c4-434d-b01b-9beb3606f932",
+    "name": "中筋面粉",
+    "base_unit": "g"
+  },
+  {
+    "id": "a18b80c2-f046-4d68-8884-a9042854f49d",
+    "name": "低筋面粉",
+    "base_unit": "g"
+  },
+  {
+    "id": "ca150bac-1e2c-4093-a3ff-6dd53c0b740a",
+    "name": "全脂牛奶",
+    "base_unit": "g"
+  },
+  {
+    "id": "a3a5d9c6-e87b-413a-9510-bb8b51cf9b15",
+    "name": "全麦面粉",
+    "base_unit": "g"
+  },
+  {
+    "id": "3d2829b8-4b2a-490b-acbf-c0f7b32b2450",
+    "name": "冰糖",
+    "base_unit": "g"
+  },
+  {
+    "id": "d5571c0d-c0fa-448c-b30c-7cdb1f14cfbd",
+    "name": "切达芝士",
+    "base_unit": "g"
+  },
+  {
+    "id": "b74e88fa-da13-49bb-a464-7d85b3638ae0",
+    "name": "南瓜泥",
+    "base_unit": "g"
+  },
+  {
+    "id": "aa109890-ac44-4fa0-a4e4-73c465eea9b8",
+    "name": "卡仕达酱",
+    "base_unit": "g"
+  },
+  {
+    "id": "cc2965fd-006b-4dc7-b345-7ad24aa6e266",
+    "name": "卤牛肉",
+    "base_unit": "g"
+  },
+  {
+    "id": "0537dd4e-deef-42c7-8696-6188892a8912",
+    "name": "原味可颂",
+    "base_unit": "g"
+  },
+  {
+    "id": "10fff4bd-0e84-436b-be19-62fb8e3a6bc0",
+    "name": "去核红枣",
+    "base_unit": "g"
+  },
+  {
+    "id": "a5ad8bd2-81a3-4ba3-8648-eafa4912492c",
+    "name": "吐司片",
+    "base_unit": "g"
+  },
+  {
+    "id": "ccef82d5-3e89-4b14-91d2-70bf55fb58a5",
+    "name": "味精",
+    "base_unit": "g"
+  },
+  {
+    "id": "2ef4cd01-38a9-4b9f-8fe1-b546a31d42a1",
+    "name": "咸味烤山核桃",
+    "base_unit": "g"
+  },
+  {
+    "id": "535c3948-163b-403b-b5b6-cdb2a4945c07",
+    "name": "咸蛋黄",
+    "base_unit": "g"
+  },
+  {
+    "id": "b761adfe-f64c-4acb-b0c7-4b593995d327",
+    "name": "大米",
+    "base_unit": "g"
+  },
+  {
+    "id": "3c699a71-cc9a-40b7-9c4d-db2209c64542",
+    "name": "夹心黄油",
+    "base_unit": "g"
+  },
+  {
+    "id": "573a8e03-fa12-4284-9701-ff8ea17142be",
+    "name": "奶油奶酪",
+    "base_unit": "g"
+  },
+  {
+    "id": "67a78b69-d286-403a-bd87-441cd1733cdc",
+    "name": "姜粉",
+    "base_unit": "g"
+  },
+  {
+    "id": "6127e5b8-6cbf-40b7-a38b-5181a1c0cf82",
+    "name": "小米",
+    "base_unit": "g"
+  },
+  {
+    "id": "d3001490-c4d4-440c-9647-b2d2f4fdad07",
+    "name": "巧克力",
+    "base_unit": "g"
+  },
+  {
+    "id": "aeb0047a-5d3e-4572-b849-51686a7109d3",
+    "name": "干木耳",
+    "base_unit": "g"
+  },
+  {
+    "id": "16f5fba9-18c6-4414-af45-0988ba8b9e73",
+    "name": "干酵母",
+    "base_unit": "g"
+  },
+  {
+    "id": "6ac73397-2598-4f73-8073-bcfefd3be2f8",
+    "name": "干银耳",
+    "base_unit": "g"
+  },
+  {
+    "id": "1e44706a-28fb-4052-8379-b941481dbb71",
+    "name": "干黄花菜",
+    "base_unit": "g"
+  },
+  {
+    "id": "417feaae-335e-49ba-a2eb-ba80374c85f9",
+    "name": "开心果碎",
+    "base_unit": "g"
+  },
+  {
+    "id": "a30c57e0-2aa9-4677-aaee-07fbf64b46a3",
+    "name": "开心果酱",
+    "base_unit": "g"
+  },
+  {
+    "id": "769b7e75-b5d0-44c8-bda1-0e7cb88d62ec",
+    "name": "无筋淀粉",
+    "base_unit": "g"
+  },
+  {
+    "id": "d50cce9f-eac6-4ee2-8b07-04618181ed80",
+    "name": "杏仁片",
+    "base_unit": "g"
+  },
+  {
+    "id": "e3e9c6e7-e5e0-4e75-8015-de251dfc3056",
+    "name": "杏仁粉",
+    "base_unit": "g"
+  },
+  {
+    "id": "5f14f3b4-1f2d-49bc-815e-dfe717554d58",
+    "name": "果胶",
+    "base_unit": "g"
+  },
+  {
+    "id": "67b5ef55-f1f1-4f68-8273-a6d0c5098dcc",
+    "name": "枧水",
+    "base_unit": "g"
+  },
+  {
+    "id": "2620701d-d088-4567-8019-5c886786d2ad",
+    "name": "栗子泥",
+    "base_unit": "g"
+  },
+  {
+    "id": "57e49583-deae-48d9-a21e-97eb04c04a01",
+    "name": "核桃仁",
+    "base_unit": "g"
+  },
+  {
+    "id": "bda835c0-c010-40a8-b6ef-eda8c551003a",
+    "name": "桂圆肉",
+    "base_unit": "g"
+  },
+  {
+    "id": "06dc06dd-d405-42c0-aac8-cda13ff68e81",
+    "name": "植物油",
+    "base_unit": "g"
+  },
+  {
+    "id": "df9cf66b-1f50-44fd-a0b0-5d8c31787df1",
+    "name": "椰浆",
+    "base_unit": "g"
+  },
+  {
+    "id": "4c0ed77b-5a6d-4852-9a20-4d435052da82",
+    "name": "水",
+    "base_unit": "g"
+  },
+  {
+    "id": "bcd5e309-6d2a-426d-af8a-5fc827b3f21c",
+    "name": "泡打粉",
+    "base_unit": "g"
+  },
+  {
+    "id": "13f1cd26-8042-400b-97be-124280d5fca3",
+    "name": "泽西全脂牛奶",
+    "base_unit": "g"
+  },
+  {
+    "id": "709eeb0d-e418-4ec1-8809-4411e8a872b5",
+    "name": "流心奶黄馅",
+    "base_unit": "g"
+  },
+  {
+    "id": "42e37987-e1ca-43d9-af47-53b46e0b3ad1",
+    "name": "淡奶油",
+    "base_unit": "g"
+  },
+  {
+    "id": "e1cfe591-610b-4713-8fd7-3b02942139b0",
+    "name": "澄粉",
+    "base_unit": "g"
+  },
+  {
+    "id": "2c68e928-acc1-47f6-b7ae-0119e691d203",
+    "name": "火腿",
+    "base_unit": "g"
+  },
+  {
+    "id": "1b4a79d1-3374-4f27-a05e-f9d0cf085c42",
+    "name": "炸制实际耗油",
+    "base_unit": "g"
+  },
+  {
+    "id": "283dec39-c838-419b-8a63-54a3a11b27b8",
+    "name": "熟芝麻",
+    "base_unit": "g"
+  },
+  {
+    "id": "0f593dd6-2e0f-45f4-93f2-a3eb811b34da",
+    "name": "熟鸡胸肉",
+    "base_unit": "g"
+  },
+  {
+    "id": "d8913df5-a6bc-4034-932c-dea710f79c00",
+    "name": "片状黄油",
+    "base_unit": "g"
+  },
+  {
+    "id": "b78e2012-7622-4247-afb9-dd2886ed6e98",
+    "name": "牛奶",
+    "base_unit": "g"
+  },
+  {
+    "id": "aeb13a2c-f3bf-4699-9686-8187c8657206",
+    "name": "牛油",
+    "base_unit": "g"
+  },
+  {
+    "id": "8dd54aff-1a0d-4155-9948-e8064b07a952",
+    "name": "猪油",
+    "base_unit": "g"
+  },
+  {
+    "id": "0787d41a-bc62-4fca-a82d-4209f577fdb9",
+    "name": "玉米淀粉",
+    "base_unit": "g"
+  },
+  {
+    "id": "87e6edc2-7e7e-476b-8bd2-7edd0f57be25",
+    "name": "玫瑰鲜花馅",
+    "base_unit": "g"
+  },
+  {
+    "id": "000f5ffb-1cbf-41fb-a10c-f3844786b3a7",
+    "name": "生姜",
+    "base_unit": "g"
+  },
+  {
+    "id": "c8e9859d-39ba-49fd-9461-61c462435b6f",
+    "name": "生菜",
+    "base_unit": "g"
+  },
+  {
+    "id": "26232f9e-6cea-4544-a447-654c4faf2407",
+    "name": "番茄",
+    "base_unit": "g"
+  },
+  {
+    "id": "142d1efa-f890-4860-b44d-773fdc3819c8",
+    "name": "白砂糖",
+    "base_unit": "g"
+  },
+  {
+    "id": "340b9e75-813a-4881-ba00-1e23ad879e6c",
+    "name": "百合",
+    "base_unit": "g"
+  },
+  {
+    "id": "eefd2d74-82f4-4220-b4dd-16215d9be756",
+    "name": "盐",
+    "base_unit": "g"
+  },
+  {
+    "id": "c7bb9f90-9d78-47ed-bb74-adcba589c561",
+    "name": "砂糖",
+    "base_unit": "g"
+  },
+  {
+    "id": "46ecd9be-5757-4a45-a565-f871f6343c15",
+    "name": "糖渍橙皮",
+    "base_unit": "g"
+  },
+  {
+    "id": "2a08816f-f34d-432c-84d0-8f8b8c2e6e39",
+    "name": "糖粉",
+    "base_unit": "g"
+  },
+  {
+    "id": "ef2f235e-f669-43e5-8361-754ac1bd2ee1",
+    "name": "糯米",
+    "base_unit": "g"
+  },
+  {
+    "id": "783b5624-ce82-487c-b662-a5d8f90dc337",
+    "name": "红糖",
+    "base_unit": "g"
+  },
+  {
+    "id": "163c23c5-d016-4f48-9105-20e453227ed8",
+    "name": "红豆沙",
+    "base_unit": "g"
+  },
+  {
+    "id": "8514cb44-ba82-40d3-9013-1260a7444535",
+    "name": "红豆馅",
+    "base_unit": "g"
+  },
+  {
+    "id": "69165aa5-4451-4535-97cd-020fecdab864",
+    "name": "绵白糖",
+    "base_unit": "g"
+  },
+  {
+    "id": "5a739ba9-8576-4d94-8d9a-a3a9d7195654",
+    "name": "肉松",
+    "base_unit": "g"
+  },
+  {
+    "id": "498f9e79-afed-40e3-8444-3b8702279b03",
+    "name": "肉桂粉",
+    "base_unit": "g"
+  },
+  {
+    "id": "d94ce054-54d7-42e2-9963-b05de472ea5d",
+    "name": "肉豆蔻粉",
+    "base_unit": "g"
+  },
+  {
+    "id": "b17f5c77-321c-42ca-8fe5-0e2815f28230",
+    "name": "胡辣汤核心混合香料粉",
+    "base_unit": "g"
+  },
+  {
+    "id": "847ec9d1-7514-49e7-801d-24d8ebc701d8",
+    "name": "芝麻",
+    "base_unit": "g"
+  },
+  {
+    "id": "2cf96ac4-9ca9-4e9a-8845-c25cfaeffc5a",
+    "name": "芥末酱",
+    "base_unit": "g"
+  },
+  {
+    "id": "2727d441-fe1d-4c76-92f3-63ddd065153b",
+    "name": "花生",
+    "base_unit": "g"
+  },
+  {
+    "id": "5d642274-fedd-4b86-a3c6-a3ca9105889d",
+    "name": "花生油",
+    "base_unit": "g"
+  },
+  {
+    "id": "e3107ae3-fa7e-403c-9d13-0fb5e2dcbf64",
+    "name": "花芸豆",
+    "base_unit": "g"
+  },
+  {
+    "id": "3330e7ed-fa1f-4657-b62f-d012977ce08a",
+    "name": "苹果",
+    "base_unit": "g"
+  },
+  {
+    "id": "54629835-aa27-46dd-bcc7-49c77a2a95a9",
+    "name": "草莓",
+    "base_unit": "g"
+  },
+  {
+    "id": "54d8bd07-afbc-42fe-853a-f965d1d38396",
+    "name": "莲子",
+    "base_unit": "g"
+  },
+  {
+    "id": "c2c2de55-d97a-4330-bba7-60461bd05845",
+    "name": "莲蓉馅",
+    "base_unit": "g"
+  },
+  {
+    "id": "1ca88b6d-602e-4312-8a71-a45c914765d4",
+    "name": "葡萄干",
+    "base_unit": "g"
+  },
+  {
+    "id": "3fcc8c88-52cc-41f6-a5ad-5804589bf2a3",
+    "name": "蓝莓",
+    "base_unit": "g"
+  },
+  {
+    "id": "6c32717c-286d-4277-9cdd-1adbc7273b91",
+    "name": "蔓越莓干",
+    "base_unit": "g"
+  },
+  {
+    "id": "4395375f-9622-4464-8cb5-6f56eb2348a5",
+    "name": "薏米",
+    "base_unit": "g"
+  },
+  {
+    "id": "e6bec487-6f02-43f0-a6cb-cfb723f5a990",
+    "name": "蛋液",
+    "base_unit": "g"
+  },
+  {
+    "id": "0e8e6bf0-9337-490c-91d4-375e400f407c",
+    "name": "蛋黄酱",
+    "base_unit": "g"
+  },
+  {
+    "id": "00537d2b-5930-4adb-9d0a-1f6237dc4f7a",
+    "name": "蜂蜜",
+    "base_unit": "g"
+  },
+  {
+    "id": "94867c25-cc88-4b00-8277-79ffd41dcd99",
+    "name": "赤小豆",
+    "base_unit": "g"
+  },
+  {
+    "id": "331b7c68-efde-4f4c-a244-84a4af5e0884",
+    "name": "转化糖浆",
+    "base_unit": "g"
+  },
+  {
+    "id": "e5e0fb59-5049-4342-aa2d-912d13facab7",
+    "name": "酵母",
+    "base_unit": "g"
+  },
+  {
+    "id": "122fbe59-f178-4da7-acb9-8e0c05c57e38",
+    "name": "酸种酵头",
+    "base_unit": "g"
+  },
+  {
+    "id": "bf2e4287-d8ed-4e4d-a429-a713a32272fb",
+    "name": "雀巢炼乳",
+    "base_unit": "g"
+  },
+  {
+    "id": "c7f6699b-d343-4046-b963-f503295e86c2",
+    "name": "面筋丁",
+    "base_unit": "g"
+  },
+  {
+    "id": "6d6b8f83-f85a-423a-8f65-46c290a05587",
+    "name": "食用油",
+    "base_unit": "g"
+  },
+  {
+    "id": "e66c9714-fe0f-43d9-8da3-1145b0cfc0f2",
+    "name": "高筋面粉",
+    "base_unit": "g"
+  },
+  {
+    "id": "4feca72d-34f4-4f87-ae85-6551ed73943e",
+    "name": "鸡蛋",
+    "base_unit": "g"
+  },
+  {
+    "id": "5e02492e-fbbd-4198-92a0-8c7fd378c252",
+    "name": "鸡蛋黄",
+    "base_unit": "g"
+  },
+  {
+    "id": "25ac55f8-5d35-42ac-a84b-c6c505f76318",
+    "name": "麦芽糖",
+    "base_unit": "g"
+  },
+  {
+    "id": "59a9eb55-abb9-4a17-abb6-8b68a7403979",
+    "name": "黄油",
+    "base_unit": "g"
+  },
+  {
+    "id": "13acaaf1-f9f0-45d5-8bb6-c5b80a54e62b",
+    "name": "黄瓜",
+    "base_unit": "g"
+  },
+  {
+    "id": "991e403a-0640-4004-bee3-7e46e8936bed",
+    "name": "黑巧克力",
+    "base_unit": "g"
+  },
+  {
+    "id": "c708d7f8-a5a5-49bf-a16d-e1638083af93",
+    "name": "黑米",
+    "base_unit": "g"
+  },
+  {
+    "id": "ee927cf3-e184-455d-9fd6-c2ae189ec0fc",
+    "name": "黑豆",
+    "base_unit": "g"
+  }
+]

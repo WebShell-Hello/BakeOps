@@ -1,0 +1,372 @@
+[
+  {
+    "id": "33a29199-8e5f-4fb4-b05e-cba0e3bdd4d0",
+    "product_id": "224d4535-3eab-45fa-9a7d-30ca3f852b6f",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "1770.000",
+    "is_active": true
+  },
+  {
+    "id": "ca50e819-1933-4b2b-bf3e-46b4a60f5766",
+    "product_id": "432f9d0f-b663-41ab-8aab-daf6ac782a7b",
+    "version": 1,
+    "yield_quantity": 1,
+    "yield_unit": "批",
+    "production_description": "1. 澄粉、中筋面粉、盐和水搅拌均匀，过筛成细腻面糊。\n2. 蒸盘均匀刷薄油，倒入适量面糊。\n3. 水开后上锅，大火蒸；约3秒时轻轻摇匀蒸盘中的面糊，然后盖盖继续蒸。\n4. 蒸至表面鼓起大泡，约2分钟，取出蒸盘过凉水。\n5. 成品可搭配豆芽、面筋和黄瓜丝；配菜重量待实际出品标准确认。",
+    "total_weight": "523.000",
+    "is_active": true
+  },
+  {
+    "id": "8b5d1880-71ca-4af8-ba19-2a419850e0a4",
+    "product_id": "12253dd3-7802-4998-bfed-4dbdc64a3d49",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "704.000",
+    "is_active": true
+  },
+  {
+    "id": "f4926264-d0b2-4c75-9ee4-b15f7814d282",
+    "product_id": "7bf6834f-b8ab-4f42-ba43-ebeb6e6e6646",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "1828.000",
+    "is_active": true
+  },
+  {
+    "id": "09e292ed-eb0f-4d37-8b54-4b409252c0ad",
+    "product_id": "05a36672-d643-4fb7-88cd-27ad5474a48b",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "392.000",
+    "is_active": true
+  },
+  {
+    "id": "1b1750f4-bea6-4ceb-beba-7c19a3ec0ba8",
+    "product_id": "2f074958-66c0-49e5-abc1-2fb849ec7a64",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "765.000",
+    "is_active": true
+  },
+  {
+    "id": "b44efb62-25ca-454d-b4f5-f2364b92d2ad",
+    "product_id": "905a013d-002a-4222-8b75-5bb00b5ca5ba",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "1076.000",
+    "is_active": true
+  },
+  {
+    "id": "78b899ba-6131-4b7e-8382-65364969ca53",
+    "product_id": "5ee6bf08-7a3c-48a8-bd9a-edb0f378e4df",
+    "version": 1,
+    "yield_quantity": 9,
+    "yield_unit": "个",
+    "production_description": "奶黄馅：\n1. 绵白糖、炼乳和软化黄油搅拌均匀。\n2. 低筋面粉、玉米淀粉和全脂牛奶搅拌均匀。\n3. 将前两部分混合并加入蛋黄液，搅拌均匀。\n4. 小火加热，持续搅拌至馅料抱团，放凉备用。\n\n面皮与成型：\n1. 中筋面粉、全脂牛奶、白砂糖和酵母混合成絮，揉成面团。\n2. 盖保鲜膜进行一次发酵，至约1.5倍大。\n3. 排气后揉搓约5分钟至光滑，分成9个面皮剂子。\n4. 包入奶黄馅，二次醒发15–20分钟，至表面光滑且按压回弹。\n5. 水开后中小火蒸15分钟，关火焖3分钟。",
+    "total_weight": "814.500",
+    "is_active": true
+  },
+  {
+    "id": "0c735cda-1832-4341-9932-974286df8f06",
+    "product_id": "f0dffdd9-f9c1-4c60-8db6-1d03c55b32ff",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "440.000",
+    "is_active": true
+  },
+  {
+    "id": "80519790-d215-4f2d-9a94-197d5821e63e",
+    "product_id": "eb671d29-b578-4d93-9a47-ed2c0ce5a0de",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "632.000",
+    "is_active": true
+  },
+  {
+    "id": "e86c3bc5-6fc7-44b5-beb9-b24af172a68a",
+    "product_id": "104daed1-9238-4bf7-ad2f-d8a161382c6d",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "517.000",
+    "is_active": true
+  },
+  {
+    "id": "37cbc7ea-0abc-4c79-99da-cdcf8646990e",
+    "product_id": "4a0260a0-f9b1-4aa5-8d27-a77ac0c6a455",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "562.000",
+    "is_active": true
+  },
+  {
+    "id": "d5764fd4-845d-41b2-be2b-ad2490464fc8",
+    "product_id": "83395fd2-1662-46fe-9d04-8100e181641c",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "527.000",
+    "is_active": true
+  },
+  {
+    "id": "2b6de082-60c4-4481-9800-dc5c96e733bf",
+    "product_id": "5bfbeb52-da97-4448-808d-595bbb092d8f",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "1776.000",
+    "is_active": true
+  },
+  {
+    "id": "f06bb3e8-4957-41eb-a8d1-21990e876dd5",
+    "product_id": "a7c3196c-6717-4564-937e-dbc9bfb06597",
+    "version": 1,
+    "yield_quantity": 12,
+    "yield_unit": "碗",
+    "production_description": "1. 大米、小米、糯米、薏米、黑米、花生、百合和去芯莲子淘洗，无需浸泡。\n2. 干银耳撕成小块，与桂圆肉、去核红枣浸泡约4小时；浸泡步骤可按实际时间调整。\n3. 赤小豆、花芸豆和黑豆另加一碗水，大火熬煮并持续搅拌，直至水分基本收干。\n4. 将处理好的原料加入3000g清水，大火烧开后转小火煮60分钟。\n5. 加入冰糖继续煮15分钟，撒桂花后关火。\n6. 红薯和山药可作为可选加料，使用量待实际配方确认。",
+    "total_weight": "3590.000",
+    "is_active": true
+  },
+  {
+    "id": "4d0b06ad-7930-44a2-abe8-c78ec15dbad9",
+    "product_id": "c3c3cd64-4f24-4c13-a014-c11dc3890c69",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "1382.000",
+    "is_active": true
+  },
+  {
+    "id": "e1ddde21-961c-46c8-b9ee-e89bc3c3d095",
+    "product_id": "a6720cdd-59ff-49b4-bbbe-0cfe02ed1151",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "577.000",
+    "is_active": true
+  },
+  {
+    "id": "ac413a82-b7a5-4510-b245-bf93c635dbc5",
+    "product_id": "deb2604d-2d36-41e1-94e3-db134dc7ee98",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "680.000",
+    "is_active": true
+  },
+  {
+    "id": "08784706-26a5-4ce9-a208-4f8c5e772662",
+    "product_id": "a22c78a7-ec20-499c-9045-8e5126773ede",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "2048.000",
+    "is_active": true
+  },
+  {
+    "id": "ef474592-afbf-46f5-b9f9-1621d5c488b6",
+    "product_id": "7442cbfe-1e5e-4f8c-b72b-3f6abae0f228",
+    "version": 1,
+    "yield_quantity": 3,
+    "yield_unit": "份",
+    "production_description": "1. 取1–2块生姜，去皮磨成姜蓉并挤出姜汁。\n2. 姜汁加入20g红糖，小火加热至完全溶解，放凉备用。\n3. 三个鸡蛋打匀，加入冷却的红糖姜汁和150ml泽西全脂牛奶，搅拌均匀。\n4. 容器顶部用锡纸封好，蒸笼上汽后蒸15分钟，关火焖5分钟。\n5. 出锅后可撒烤碧根果碎和少量黑芝麻；装饰用量待标准化。",
+    "total_weight": "340.000",
+    "is_active": true
+  },
+  {
+    "id": "31331711-f108-4983-8e4f-dfd4c8aaef5e",
+    "product_id": "33f31fc1-7d00-4b39-9a3a-5db953230caf",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "2006.000",
+    "is_active": true
+  },
+  {
+    "id": "735bf78c-2f90-4754-b14f-c3845a9606ba",
+    "product_id": "78b83057-76c8-4660-96dd-66a6489cd1a9",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "587.000",
+    "is_active": true
+  },
+  {
+    "id": "1afe8cdb-93eb-45f9-9125-b63a1167d62b",
+    "product_id": "2ba8ee14-8455-4ef5-a335-192652ed995d",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "547.000",
+    "is_active": true
+  },
+  {
+    "id": "6fe8e571-2376-4299-9c89-f5919b89dc92",
+    "product_id": "e9992f42-541f-4bee-b02f-8984b3288b30",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "625.000",
+    "is_active": true
+  },
+  {
+    "id": "2577408e-6068-41c2-b458-37eaf3a761d3",
+    "product_id": "a1ca6123-5ede-412b-9fb4-3bf38e15c8fa",
+    "version": 1,
+    "yield_quantity": 18,
+    "yield_unit": "碗",
+    "production_description": "前置准备：\n1. 干木耳泡发后切丝；黄花菜泡发后切小段。\n2. 牛肉加入葱、姜、八角和香叶，高压约25分钟，放凉后切小片。\n\n熬煮：\n1. 6000g水烧开，加入牛油和核心混合香料粉。\n2. 加入木耳丝、黄花菜，再次烧开。\n3. 加入卤好切片的牛肉和面筋丁。\n4. 加入盐和味精；家庭版本可减少味精或取消。\n5. 无筋淀粉加水调匀，分三次倒入锅中并持续搅拌至合适稠度。\n6. 后续试做可探索加入粉条、豆腐丝和葱花；核心香料粉成分与配比仍待研发。",
+    "total_weight": "8585.000",
+    "is_active": true
+  },
+  {
+    "id": "fd65f2c9-a5cf-42d3-b217-067a31b7144b",
+    "product_id": "e8b3a9d2-9f46-4fe5-9b44-36b18209565d",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "703.000",
+    "is_active": true
+  },
+  {
+    "id": "80dff136-152a-45fd-b56d-026d9bc4f762",
+    "product_id": "4f291348-2bfe-4b67-8ba0-165ec1765bcb",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "723.000",
+    "is_active": true
+  },
+  {
+    "id": "94d628ce-5912-4ba5-959c-ee29c65ab830",
+    "product_id": "8e6b2a4d-68cd-4854-a985-81cbce120ac8",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "617.000",
+    "is_active": true
+  },
+  {
+    "id": "7aada429-75e7-43f3-ba41-0b4ffe7ca9ad",
+    "product_id": "80b24b04-d2a6-4b4d-96bd-ad31d6a84b8a",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "543.000",
+    "is_active": true
+  },
+  {
+    "id": "04a2d6b7-78e4-42da-a9ee-5062030648db",
+    "product_id": "21cfa4f2-034f-47cb-927a-ea318786579f",
+    "version": 1,
+    "yield_quantity": 10,
+    "yield_unit": "个",
+    "production_description": "1. 酵母倒入30–35°C温水搅匀，静置5分钟；表面起泡表示活化成功。\n2. 中筋面粉与白砂糖拌匀，边倒酵母水边搅拌至无明显干粉的絮状。\n3. 揉成团后移到案板，加入食用油，继续揉10–15分钟至表面光滑、有弹性，切面无大气孔。\n4. 面团盖好，在28–30°C环境发酵约1.5–2小时至2倍大；手指蘸粉戳洞，不回缩、不塌陷即完成。\n5. 轻揉均匀排气，搓长并按当前规格分成约75g剂子，逐个滚圆。\n6. 放在蒸笼布或油纸上二次醒发15–20分钟，至明显变大、按压缓慢回弹。\n7. 冷水入锅并留足间距，大火上汽后转中火蒸20分钟；关火焖3–5分钟后开盖。",
+    "total_weight": "770.000",
+    "is_active": true
+  },
+  {
+    "id": "51cb2d81-73dc-46a1-b05c-2486e4873db3",
+    "product_id": "797d2aed-bf83-4d85-aebd-b55642203981",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "703.000",
+    "is_active": true
+  },
+  {
+    "id": "6e0d26f8-bcf8-45b7-b443-95fa77ad4e48",
+    "product_id": "88d78754-87a8-4d9f-af8d-30d1feb55499",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "个",
+    "production_description": "预发酵面团：\n1. 高筋面粉、30°C温水和干酵母混合成团，发酵约2小时。\n2. 可将烤箱预热至30°C后关闭，放入一碗开水增加温度与湿度，再放入面团发酵。\n\n主面团与加料：\n1. 将全部预发酵面团加入高筋面粉、全脂牛奶、砂糖、干酵母、盐和软化黄油。\n2. 搅拌至可以拉出薄膜。\n3. 蔓越莓干用温水泡软15分钟，沥干后切小块。\n4. 加入蔓越莓干和咸味烤山核桃，手动折叠拌匀，避免打断面筋。\n\n整形与烘烤：\n1. 发酵至约2倍大，轻擀排气，分成4份并滚圆。\n2. 醒面15分钟，擀成长方形后卷起，捏紧收口，顶部斜划4刀。\n3. 放一杯热水增加湿度，继续发酵至明显增大。\n4. 烤箱预热至180°C，烘烤25分钟。",
+    "total_weight": "540.000",
+    "is_active": true
+  },
+  {
+    "id": "afe2a490-c1f9-436a-acaa-cf654f897a19",
+    "product_id": "95a59349-d926-4eda-ae4e-f13d83d051f0",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "475.000",
+    "is_active": true
+  },
+  {
+    "id": "a5ae8032-977d-485e-9bbf-f40b1488fca1",
+    "product_id": "347f90c6-719c-4143-9b8e-ab14d6cf2975",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "545.000",
+    "is_active": true
+  },
+  {
+    "id": "e17f9bf2-b32b-4378-ab74-bf8a52bc9645",
+    "product_id": "6fd808cd-1f27-4b3a-a35c-ee3c3aa693ad",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "1920.000",
+    "is_active": true
+  },
+  {
+    "id": "c20e4df4-7b37-4b03-b6b8-9b2c6bbc45de",
+    "product_id": "d32ebf77-5237-4479-bc41-2fbb3e3c8abd",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "500.000",
+    "is_active": true
+  },
+  {
+    "id": "ea966174-4397-44f0-a70a-fde2e4796c34",
+    "product_id": "d306e005-41cc-43e3-a057-ca45f5df3586",
+    "version": 1,
+    "yield_quantity": 4,
+    "yield_unit": "份",
+    "production_description": "",
+    "total_weight": "722.000",
+    "is_active": true
+  }
+]

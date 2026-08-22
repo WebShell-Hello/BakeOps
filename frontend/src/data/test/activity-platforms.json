@@ -1,0 +1,74 @@
+[
+  {
+    "id": "b1000000-0000-4000-8000-000000000001",
+    "category_id": "a1000000-0000-4000-8000-000000000001",
+    "code": "INSTAGRAM",
+    "name_zh": "Instagram",
+    "name_en": "Instagram",
+    "position": 10
+  },
+  {
+    "id": "b1000000-0000-4000-8000-000000000002",
+    "category_id": "a1000000-0000-4000-8000-000000000001",
+    "code": "XIAOHONGSHU",
+    "name_zh": "小红书",
+    "name_en": "Xiaohongshu",
+    "position": 20
+  },
+  {
+    "id": "b1000000-0000-4000-8000-000000000003",
+    "category_id": "a1000000-0000-4000-8000-000000000001",
+    "code": "TIKTOK",
+    "name_zh": "TikTok",
+    "name_en": "TikTok",
+    "position": 30
+  },
+  {
+    "id": "b1000000-0000-4000-8000-000000000004",
+    "category_id": "a1000000-0000-4000-8000-000000000002",
+    "code": "DELIVEROO",
+    "name_zh": "Deliveroo",
+    "name_en": "Deliveroo",
+    "position": 10
+  },
+  {
+    "id": "b1000000-0000-4000-8000-000000000005",
+    "category_id": "a1000000-0000-4000-8000-000000000002",
+    "code": "HUNGRYPANDA",
+    "name_zh": "熊猫外卖",
+    "name_en": "HungryPanda",
+    "position": 20
+  },
+  {
+    "id": "b1000000-0000-4000-8000-000000000006",
+    "category_id": "a1000000-0000-4000-8000-000000000002",
+    "code": "UBEREATS",
+    "name_zh": "Uber Eats",
+    "name_en": "Uber Eats",
+    "position": 30
+  },
+  {
+    "id": "b1000000-0000-4000-8000-000000000007",
+    "category_id": "a1000000-0000-4000-8000-000000000003",
+    "code": "POSTER",
+    "name_zh": "现场海报",
+    "name_en": "In-store poster",
+    "position": 10
+  },
+  {
+    "id": "b1000000-0000-4000-8000-000000000008",
+    "category_id": "a1000000-0000-4000-8000-000000000004",
+    "code": "KOL",
+    "name_zh": "网红代言",
+    "name_en": "KOL endorsement",
+    "position": 10
+  },
+  {
+    "id": "b1000000-0000-4000-8000-000000000009",
+    "category_id": "a1000000-0000-4000-8000-000000000005",
+    "code": "OTHER",
+    "name_zh": "其他平台",
+    "name_en": "Other platform",
+    "position": 10
+  }
+]

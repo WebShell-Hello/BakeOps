@@ -1,0 +1,820 @@
+[
+  {
+    "id": "83b739ed-762d-4554-9e34-630d4515f97c",
+    "name": "网红探店合作",
+    "event_type": "KOL_COLLABORATION",
+    "start_date": "2026-08-20",
+    "end_date": "2026-08-20",
+    "duration_days": 1,
+    "preparation_days": 14,
+    "preparation_start_date": "2026-08-06",
+    "expected_impact": "HIGH",
+    "expected_sales_change": "30.00",
+    "focus_product_ids": [
+      "5ee6bf08-7a3c-48a8-bd9a-edb0f378e4df",
+      "7442cbfe-1e5e-4f8c-b72b-3f6abae0f228",
+      "88d78754-87a8-4d9f-af8d-30d1feb55499"
+    ],
+    "focus_products": [
+      {
+        "id": "5ee6bf08-7a3c-48a8-bd9a-edb0f378e4df",
+        "name_zh": "奶黄包",
+        "name_en": "Custard Bun"
+      },
+      {
+        "id": "7442cbfe-1e5e-4f8c-b72b-3f6abae0f228",
+        "name_zh": "红糖姜奶鸡蛋羹",
+        "name_en": "Brown Sugar Ginger Milk Egg Custard"
+      },
+      {
+        "id": "88d78754-87a8-4d9f-af8d-30d1feb55499",
+        "name_zh": "蔓越莓山核桃面包",
+        "name_en": "Cranberry Pecan Bread"
+      }
+    ],
+    "estimated_cost": "500.00",
+    "currency": "GBP",
+    "notes": "邀请本地美食博主到店拍摄，重点展示招牌产品。",
+    "linked_holiday_id": null,
+    "status": "COMPLETED",
+    "days_until_start": -2,
+    "checklist_completed": 8,
+    "checklist_total": 15,
+    "checklist_items": [
+      {
+        "id": "5aa688ec-15cf-4af9-9a58-cc220845dc12",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "检查重点食材库存",
+        "title_en": "Check focus ingredient stock",
+        "is_completed": true,
+        "position": 0
+      },
+      {
+        "id": "6439ad79-bef6-465f-b1c7-c239bbf31cbf",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "确认供应商",
+        "title_en": "Confirm suppliers",
+        "is_completed": true,
+        "position": 1
+      },
+      {
+        "id": "1def7718-b5a3-4b7b-986a-057d77eaee82",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "创建采购订单",
+        "title_en": "Create purchase orders",
+        "is_completed": true,
+        "position": 2
+      },
+      {
+        "id": "6ba0d993-4177-436f-9893-498b60734d18",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "确认包装材料",
+        "title_en": "Confirm packaging materials",
+        "is_completed": true,
+        "position": 3
+      },
+      {
+        "id": "00486421-1d5e-4d90-bdd7-64378bbe9967",
+        "category": "MARKETING",
+        "title_zh": "确认宣传方案",
+        "title_en": "Confirm promotion plan",
+        "is_completed": true,
+        "position": 0
+      },
+      {
+        "id": "820cbcc5-d42b-4b27-9516-505f3967e1a6",
+        "category": "MARKETING",
+        "title_zh": "发布社交媒体内容",
+        "title_en": "Publish social media content",
+        "is_completed": true,
+        "position": 1
+      },
+      {
+        "id": "c90ea0a5-8d9d-416e-b322-bf3c7063e015",
+        "category": "MARKETING",
+        "title_zh": "准备海报",
+        "title_en": "Prepare posters",
+        "is_completed": true,
+        "position": 2
+      },
+      {
+        "id": "fa194f7b-d836-4c43-b9cd-7ea581cd1a9d",
+        "category": "MARKETING",
+        "title_zh": "确认合作方",
+        "title_en": "Confirm partners",
+        "is_completed": true,
+        "position": 3
+      },
+      {
+        "id": "18790b54-7a99-46c5-972c-1b6e85cb1ae6",
+        "category": "PRODUCT_PRODUCTION",
+        "title_zh": "确认重点产品",
+        "title_en": "Confirm focus products",
+        "is_completed": false,
+        "position": 0
+      },
+      {
+        "id": "03204a5a-75d9-4728-9dcf-e3a67e642e7c",
+        "category": "PRODUCT_PRODUCTION",
+        "title_zh": "调整生产计划",
+        "title_en": "Review production plan",
+        "is_completed": false,
+        "position": 1
+      },
+      {
+        "id": "a6d36037-3e8d-4654-8631-3fbb6c8b3f99",
+        "category": "PRODUCT_PRODUCTION",
+        "title_zh": "确认限定产品",
+        "title_en": "Confirm limited products",
+        "is_completed": false,
+        "position": 2
+      },
+      {
+        "id": "e18c7512-728b-46b8-9b2d-ea29fc1d44d3",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "调整员工排班",
+        "title_en": "Review staff schedule",
+        "is_completed": false,
+        "position": 0
+      },
+      {
+        "id": "562345a4-c9f5-4860-925c-6e12ee2f9ea7",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "确认营业时间",
+        "title_en": "Confirm opening hours",
+        "is_completed": false,
+        "position": 1
+      },
+      {
+        "id": "50caf5b4-3503-434d-b326-e4030a087338",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "检查设备",
+        "title_en": "Check equipment",
+        "is_completed": false,
+        "position": 2
+      },
+      {
+        "id": "bc9bf1aa-4b79-4570-8884-e013df61a320",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "确认活动区域",
+        "title_en": "Confirm event area",
+        "is_completed": false,
+        "position": 3
+      }
+    ],
+    "created_at": "2026-08-14T14:50:56.807498+01:00",
+    "updated_at": "2026-08-14T14:50:56.807502+01:00"
+  },
+  {
+    "id": "8671d899-7348-4940-882e-ad54199ffad8",
+    "name": "老客户回馈周",
+    "event_type": "CUSTOMER_LOYALTY",
+    "start_date": "2026-09-01",
+    "end_date": "2026-09-07",
+    "duration_days": 7,
+    "preparation_days": 21,
+    "preparation_start_date": "2026-08-11",
+    "expected_impact": "MEDIUM",
+    "expected_sales_change": "20.00",
+    "focus_product_ids": [
+      "432f9d0f-b663-41ab-8aab-daf6ac782a7b",
+      "7442cbfe-1e5e-4f8c-b72b-3f6abae0f228"
+    ],
+    "focus_products": [
+      {
+        "id": "432f9d0f-b663-41ab-8aab-daf6ac782a7b",
+        "name_zh": "凉皮",
+        "name_en": "Liangpi"
+      },
+      {
+        "id": "7442cbfe-1e5e-4f8c-b72b-3f6abae0f228",
+        "name_zh": "红糖姜奶鸡蛋羹",
+        "name_en": "Brown Sugar Ginger Milk Egg Custard"
+      }
+    ],
+    "estimated_cost": "300.00",
+    "currency": "GBP",
+    "notes": "面向常客推出限定组合与积分奖励。",
+    "linked_holiday_id": "3e2245be-2203-4a92-8ace-b0f5af5f1b01",
+    "status": "PREPARATION_RISK",
+    "days_until_start": 10,
+    "checklist_completed": 0,
+    "checklist_total": 15,
+    "checklist_items": [
+      {
+        "id": "9f1792d7-590d-4bb8-b530-8bd12455fa3b",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "检查重点食材库存",
+        "title_en": "Check focus ingredient stock",
+        "is_completed": false,
+        "position": 0
+      },
+      {
+        "id": "b57052f4-319b-4966-89d0-3cdc40bf41dc",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "确认供应商",
+        "title_en": "Confirm suppliers",
+        "is_completed": false,
+        "position": 1
+      },
+      {
+        "id": "cc3d396f-ea82-4a8d-9109-fb007645e282",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "创建采购订单",
+        "title_en": "Create purchase orders",
+        "is_completed": false,
+        "position": 2
+      },
+      {
+        "id": "07519291-c74e-4620-a848-c84848106987",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "确认包装材料",
+        "title_en": "Confirm packaging materials",
+        "is_completed": false,
+        "position": 3
+      },
+      {
+        "id": "bae925fd-b38a-4c3c-838b-d68f120a2f4b",
+        "category": "MARKETING",
+        "title_zh": "确认宣传方案",
+        "title_en": "Confirm promotion plan",
+        "is_completed": false,
+        "position": 0
+      },
+      {
+        "id": "c928ec74-4432-428c-ab23-abc6c62accfe",
+        "category": "MARKETING",
+        "title_zh": "发布社交媒体内容",
+        "title_en": "Publish social media content",
+        "is_completed": false,
+        "position": 1
+      },
+      {
+        "id": "2a76ece6-6ee3-4406-bbe9-72313d267ef0",
+        "category": "MARKETING",
+        "title_zh": "准备海报",
+        "title_en": "Prepare posters",
+        "is_completed": false,
+        "position": 2
+      },
+      {
+        "id": "3bf37d70-9c1a-451a-bc9b-68978fe5fa7c",
+        "category": "MARKETING",
+        "title_zh": "确认合作方",
+        "title_en": "Confirm partners",
+        "is_completed": false,
+        "position": 3
+      },
+      {
+        "id": "191d0a38-35f3-4336-ba84-c60c54c43061",
+        "category": "PRODUCT_PRODUCTION",
+        "title_zh": "确认重点产品",
+        "title_en": "Confirm focus products",
+        "is_completed": false,
+        "position": 0
+      },
+      {
+        "id": "98be01ad-ac2f-4bab-ae6a-b377326ab01d",
+        "category": "PRODUCT_PRODUCTION",
+        "title_zh": "调整生产计划",
+        "title_en": "Review production plan",
+        "is_completed": false,
+        "position": 1
+      },
+      {
+        "id": "d16d2eee-b324-403a-8a95-7dca45f39b6a",
+        "category": "PRODUCT_PRODUCTION",
+        "title_zh": "确认限定产品",
+        "title_en": "Confirm limited products",
+        "is_completed": false,
+        "position": 2
+      },
+      {
+        "id": "1406bc79-3741-4b75-8a19-398eb708a746",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "调整员工排班",
+        "title_en": "Review staff schedule",
+        "is_completed": false,
+        "position": 0
+      },
+      {
+        "id": "3fa3a1bf-c334-4d7e-aabd-bff7fd34fb6d",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "确认营业时间",
+        "title_en": "Confirm opening hours",
+        "is_completed": false,
+        "position": 1
+      },
+      {
+        "id": "e01842e2-8ccb-4bcb-a6f3-9291a221a784",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "检查设备",
+        "title_en": "Check equipment",
+        "is_completed": false,
+        "position": 2
+      },
+      {
+        "id": "df8a7098-eb62-47ed-a2a0-6f443a076490",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "确认活动区域",
+        "title_en": "Confirm event area",
+        "is_completed": false,
+        "position": 3
+      }
+    ],
+    "created_at": "2026-08-14T14:50:56.815461+01:00",
+    "updated_at": "2026-08-14T14:50:56.815464+01:00"
+  },
+  {
+    "id": "84feaf66-db61-4d05-b596-44c75dbff22f",
+    "name": "买二送一",
+    "event_type": "PROMOTION",
+    "start_date": "2026-09-10",
+    "end_date": "2026-09-12",
+    "duration_days": 3,
+    "preparation_days": 14,
+    "preparation_start_date": "2026-08-27",
+    "expected_impact": "HIGH",
+    "expected_sales_change": "25.00",
+    "focus_product_ids": [
+      "5ee6bf08-7a3c-48a8-bd9a-edb0f378e4df",
+      "88d78754-87a8-4d9f-af8d-30d1feb55499"
+    ],
+    "focus_products": [
+      {
+        "id": "5ee6bf08-7a3c-48a8-bd9a-edb0f378e4df",
+        "name_zh": "奶黄包",
+        "name_en": "Custard Bun"
+      },
+      {
+        "id": "88d78754-87a8-4d9f-af8d-30d1feb55499",
+        "name_zh": "蔓越莓山核桃面包",
+        "name_en": "Cranberry Pecan Bread"
+      }
+    ],
+    "estimated_cost": "450.00",
+    "currency": "GBP",
+    "notes": "指定烘焙产品买二送一。",
+    "linked_holiday_id": null,
+    "status": "NOT_PREPARING",
+    "days_until_start": 19,
+    "checklist_completed": 0,
+    "checklist_total": 15,
+    "checklist_items": [
+      {
+        "id": "ea037403-a282-4274-b095-e54e2eae270d",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "检查重点食材库存",
+        "title_en": "Check focus ingredient stock",
+        "is_completed": false,
+        "position": 0
+      },
+      {
+        "id": "7af2cc5f-008e-43b7-b3ec-6e1eafe4ed2a",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "确认供应商",
+        "title_en": "Confirm suppliers",
+        "is_completed": false,
+        "position": 1
+      },
+      {
+        "id": "41a0c6b6-8a50-4606-8e01-12120bb87f6f",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "创建采购订单",
+        "title_en": "Create purchase orders",
+        "is_completed": false,
+        "position": 2
+      },
+      {
+        "id": "e6b2ce12-ec50-49f8-a1a0-eef5b0db09a9",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "确认包装材料",
+        "title_en": "Confirm packaging materials",
+        "is_completed": false,
+        "position": 3
+      },
+      {
+        "id": "a2c45dc2-fdb7-4c37-a12e-c23aede638eb",
+        "category": "MARKETING",
+        "title_zh": "确认宣传方案",
+        "title_en": "Confirm promotion plan",
+        "is_completed": false,
+        "position": 0
+      },
+      {
+        "id": "c4912368-4d2a-448c-a5b7-8741cd49e4ba",
+        "category": "MARKETING",
+        "title_zh": "发布社交媒体内容",
+        "title_en": "Publish social media content",
+        "is_completed": false,
+        "position": 1
+      },
+      {
+        "id": "384318cb-1cc4-4eb1-8187-22910b151fde",
+        "category": "MARKETING",
+        "title_zh": "准备海报",
+        "title_en": "Prepare posters",
+        "is_completed": false,
+        "position": 2
+      },
+      {
+        "id": "081dfd50-6f65-499f-a1c7-821ea3b18f3b",
+        "category": "MARKETING",
+        "title_zh": "确认合作方",
+        "title_en": "Confirm partners",
+        "is_completed": false,
+        "position": 3
+      },
+      {
+        "id": "dfe6173b-05c6-456c-b9aa-72199e64d812",
+        "category": "PRODUCT_PRODUCTION",
+        "title_zh": "确认重点产品",
+        "title_en": "Confirm focus products",
+        "is_completed": false,
+        "position": 0
+      },
+      {
+        "id": "653a7e74-55e8-4d42-b757-39b468a293eb",
+        "category": "PRODUCT_PRODUCTION",
+        "title_zh": "调整生产计划",
+        "title_en": "Review production plan",
+        "is_completed": false,
+        "position": 1
+      },
+      {
+        "id": "5304e11f-1e0b-404f-8980-7a05077171b7",
+        "category": "PRODUCT_PRODUCTION",
+        "title_zh": "确认限定产品",
+        "title_en": "Confirm limited products",
+        "is_completed": false,
+        "position": 2
+      },
+      {
+        "id": "2d092850-d57b-4275-93a8-6f517ed6fa65",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "调整员工排班",
+        "title_en": "Review staff schedule",
+        "is_completed": false,
+        "position": 0
+      },
+      {
+        "id": "f64b224a-c67c-4f2a-b577-da398499edf1",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "确认营业时间",
+        "title_en": "Confirm opening hours",
+        "is_completed": false,
+        "position": 1
+      },
+      {
+        "id": "34270f64-a9b1-4d07-8abd-13b7428ab229",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "检查设备",
+        "title_en": "Check equipment",
+        "is_completed": false,
+        "position": 2
+      },
+      {
+        "id": "259a2520-882d-407b-a7d7-1b6e597b636f",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "确认活动区域",
+        "title_en": "Confirm event area",
+        "is_completed": false,
+        "position": 3
+      }
+    ],
+    "created_at": "2026-08-14T14:50:56.818811+01:00",
+    "updated_at": "2026-08-14T14:50:56.818815+01:00"
+  },
+  {
+    "id": "2623979e-aaab-429c-802b-38d72992d86f",
+    "name": "秋季新品发布",
+    "event_type": "PRODUCT_LAUNCH",
+    "start_date": "2026-10-03",
+    "end_date": "2026-10-04",
+    "duration_days": 2,
+    "preparation_days": 21,
+    "preparation_start_date": "2026-09-12",
+    "expected_impact": "MEDIUM",
+    "expected_sales_change": "18.00",
+    "focus_product_ids": [
+      "432f9d0f-b663-41ab-8aab-daf6ac782a7b",
+      "a7c3196c-6717-4564-937e-dbc9bfb06597"
+    ],
+    "focus_products": [
+      {
+        "id": "432f9d0f-b663-41ab-8aab-daf6ac782a7b",
+        "name_zh": "凉皮",
+        "name_en": "Liangpi"
+      },
+      {
+        "id": "a7c3196c-6717-4564-937e-dbc9bfb06597",
+        "name_zh": "桂花桂圆莲子八宝粥",
+        "name_en": "Osmanthus Longan Eight-Treasure Porridge"
+      }
+    ],
+    "estimated_cost": "650.00",
+    "currency": "GBP",
+    "notes": "秋季限定产品首发。",
+    "linked_holiday_id": null,
+    "status": "NOT_PREPARING",
+    "days_until_start": 42,
+    "checklist_completed": 0,
+    "checklist_total": 15,
+    "checklist_items": [
+      {
+        "id": "550db3c6-e39b-481b-9b5b-2dc14570f73d",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "检查重点食材库存",
+        "title_en": "Check focus ingredient stock",
+        "is_completed": false,
+        "position": 0
+      },
+      {
+        "id": "8cf92f6d-d896-4c4c-85c7-8aed0104b756",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "确认供应商",
+        "title_en": "Confirm suppliers",
+        "is_completed": false,
+        "position": 1
+      },
+      {
+        "id": "78016815-8b24-4363-aa68-6f20fb62d26e",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "创建采购订单",
+        "title_en": "Create purchase orders",
+        "is_completed": false,
+        "position": 2
+      },
+      {
+        "id": "e72219d9-97b1-4bcf-af47-fa91edfad85b",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "确认包装材料",
+        "title_en": "Confirm packaging materials",
+        "is_completed": false,
+        "position": 3
+      },
+      {
+        "id": "3afefc81-d33c-4852-8499-aca7b9e5bd90",
+        "category": "MARKETING",
+        "title_zh": "确认宣传方案",
+        "title_en": "Confirm promotion plan",
+        "is_completed": false,
+        "position": 0
+      },
+      {
+        "id": "fc5711f8-de43-4cbb-85b8-0d28d4e76a97",
+        "category": "MARKETING",
+        "title_zh": "发布社交媒体内容",
+        "title_en": "Publish social media content",
+        "is_completed": false,
+        "position": 1
+      },
+      {
+        "id": "7dcaa62c-1203-49c1-9bcd-1308b4fcd992",
+        "category": "MARKETING",
+        "title_zh": "准备海报",
+        "title_en": "Prepare posters",
+        "is_completed": false,
+        "position": 2
+      },
+      {
+        "id": "162fab0f-c3a2-44ae-98b8-9747bc537273",
+        "category": "MARKETING",
+        "title_zh": "确认合作方",
+        "title_en": "Confirm partners",
+        "is_completed": false,
+        "position": 3
+      },
+      {
+        "id": "d12959da-fa46-498b-9d9a-fc84af4c3b2c",
+        "category": "PRODUCT_PRODUCTION",
+        "title_zh": "确认重点产品",
+        "title_en": "Confirm focus products",
+        "is_completed": false,
+        "position": 0
+      },
+      {
+        "id": "fe32dbee-54e9-4230-8654-fce552f56866",
+        "category": "PRODUCT_PRODUCTION",
+        "title_zh": "调整生产计划",
+        "title_en": "Review production plan",
+        "is_completed": false,
+        "position": 1
+      },
+      {
+        "id": "3ad8a0ff-222a-4451-a1e0-10e8583e07f9",
+        "category": "PRODUCT_PRODUCTION",
+        "title_zh": "确认限定产品",
+        "title_en": "Confirm limited products",
+        "is_completed": false,
+        "position": 2
+      },
+      {
+        "id": "f31c8dc2-3b57-4a9b-b79e-eb4989a34504",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "调整员工排班",
+        "title_en": "Review staff schedule",
+        "is_completed": false,
+        "position": 0
+      },
+      {
+        "id": "887975e7-504b-4fae-ac2b-95117608afbd",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "确认营业时间",
+        "title_en": "Confirm opening hours",
+        "is_completed": false,
+        "position": 1
+      },
+      {
+        "id": "66f588a6-4f3a-44f7-a828-47e43768dd97",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "检查设备",
+        "title_en": "Check equipment",
+        "is_completed": false,
+        "position": 2
+      },
+      {
+        "id": "b980fa0a-39ca-41e9-8b8c-36d3fb86e666",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "确认活动区域",
+        "title_en": "Confirm event area",
+        "is_completed": false,
+        "position": 3
+      }
+    ],
+    "created_at": "2026-08-14T14:50:56.822035+01:00",
+    "updated_at": "2026-08-14T14:50:56.822040+01:00"
+  },
+  {
+    "id": "74c39bb9-ea72-4c32-a97e-44770dec433c",
+    "name": "门店周年庆",
+    "event_type": "MEMBER_EVENT",
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-06",
+    "duration_days": 2,
+    "preparation_days": 30,
+    "preparation_start_date": "2026-11-05",
+    "expected_impact": "HIGH",
+    "expected_sales_change": "40.00",
+    "focus_product_ids": [
+      "432f9d0f-b663-41ab-8aab-daf6ac782a7b",
+      "5ee6bf08-7a3c-48a8-bd9a-edb0f378e4df",
+      "7442cbfe-1e5e-4f8c-b72b-3f6abae0f228",
+      "88d78754-87a8-4d9f-af8d-30d1feb55499"
+    ],
+    "focus_products": [
+      {
+        "id": "432f9d0f-b663-41ab-8aab-daf6ac782a7b",
+        "name_zh": "凉皮",
+        "name_en": "Liangpi"
+      },
+      {
+        "id": "5ee6bf08-7a3c-48a8-bd9a-edb0f378e4df",
+        "name_zh": "奶黄包",
+        "name_en": "Custard Bun"
+      },
+      {
+        "id": "7442cbfe-1e5e-4f8c-b72b-3f6abae0f228",
+        "name_zh": "红糖姜奶鸡蛋羹",
+        "name_en": "Brown Sugar Ginger Milk Egg Custard"
+      },
+      {
+        "id": "88d78754-87a8-4d9f-af8d-30d1feb55499",
+        "name_zh": "蔓越莓山核桃面包",
+        "name_en": "Cranberry Pecan Bread"
+      }
+    ],
+    "estimated_cost": "1200.00",
+    "currency": "GBP",
+    "notes": "周年限定产品、会员赠礼与线下互动。",
+    "linked_holiday_id": null,
+    "status": "NOT_PREPARING",
+    "days_until_start": 105,
+    "checklist_completed": 0,
+    "checklist_total": 15,
+    "checklist_items": [
+      {
+        "id": "6de7595f-19d9-4cb8-ae04-d5636f79bd2c",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "检查重点食材库存",
+        "title_en": "Check focus ingredient stock",
+        "is_completed": false,
+        "position": 0
+      },
+      {
+        "id": "e873009f-75a9-482b-b28c-952a7bcfaf7d",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "确认供应商",
+        "title_en": "Confirm suppliers",
+        "is_completed": false,
+        "position": 1
+      },
+      {
+        "id": "870eff1d-5a3b-4103-811a-7ff1e8b85378",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "创建采购订单",
+        "title_en": "Create purchase orders",
+        "is_completed": false,
+        "position": 2
+      },
+      {
+        "id": "dd7ffa84-141b-49f4-840a-93f599a2e113",
+        "category": "INVENTORY_PURCHASING",
+        "title_zh": "确认包装材料",
+        "title_en": "Confirm packaging materials",
+        "is_completed": false,
+        "position": 3
+      },
+      {
+        "id": "ebb0600b-f2b4-4f01-b119-d40e61d73933",
+        "category": "MARKETING",
+        "title_zh": "确认宣传方案",
+        "title_en": "Confirm promotion plan",
+        "is_completed": false,
+        "position": 0
+      },
+      {
+        "id": "3f268dcd-b22b-49de-a234-05de70a20be1",
+        "category": "MARKETING",
+        "title_zh": "发布社交媒体内容",
+        "title_en": "Publish social media content",
+        "is_completed": false,
+        "position": 1
+      },
+      {
+        "id": "e95213dc-1788-4ae7-9a3b-93dcc8d848eb",
+        "category": "MARKETING",
+        "title_zh": "准备海报",
+        "title_en": "Prepare posters",
+        "is_completed": false,
+        "position": 2
+      },
+      {
+        "id": "d7d762c1-59c8-4a71-8fd0-0f8b02578136",
+        "category": "MARKETING",
+        "title_zh": "确认合作方",
+        "title_en": "Confirm partners",
+        "is_completed": false,
+        "position": 3
+      },
+      {
+        "id": "87ed8807-4120-4568-8098-a4aaec6e925e",
+        "category": "PRODUCT_PRODUCTION",
+        "title_zh": "确认重点产品",
+        "title_en": "Confirm focus products",
+        "is_completed": false,
+        "position": 0
+      },
+      {
+        "id": "c94909be-ff4a-44ea-b1b5-7d485464b6d1",
+        "category": "PRODUCT_PRODUCTION",
+        "title_zh": "调整生产计划",
+        "title_en": "Review production plan",
+        "is_completed": false,
+        "position": 1
+      },
+      {
+        "id": "2450875b-7795-48fb-b6f8-e508f3497166",
+        "category": "PRODUCT_PRODUCTION",
+        "title_zh": "确认限定产品",
+        "title_en": "Confirm limited products",
+        "is_completed": false,
+        "position": 2
+      },
+      {
+        "id": "cdb8d8c4-013c-440e-8d60-c8bed897ddda",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "调整员工排班",
+        "title_en": "Review staff schedule",
+        "is_completed": false,
+        "position": 0
+      },
+      {
+        "id": "9bedf528-10e3-4496-9a8e-cc8882dc9f75",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "确认营业时间",
+        "title_en": "Confirm opening hours",
+        "is_completed": false,
+        "position": 1
+      },
+      {
+        "id": "c053fed5-cbd3-4631-a0c3-2ad615a3d887",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "检查设备",
+        "title_en": "Check equipment",
+        "is_completed": false,
+        "position": 2
+      },
+      {
+        "id": "02d2a729-f3b6-4555-823a-ccb501d70c0e",
+        "category": "STORE_OPERATIONS",
+        "title_zh": "确认活动区域",
+        "title_en": "Confirm event area",
+        "is_completed": false,
+        "position": 3
+      }
+    ],
+    "created_at": "2026-08-14T14:50:56.825933+01:00",
+    "updated_at": "2026-08-14T14:50:56.825938+01:00"
+  }
+]

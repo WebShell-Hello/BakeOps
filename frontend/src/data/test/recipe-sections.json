@@ -1,0 +1,290 @@
+[
+  {
+    "id": "f4283f26-6522-4f5c-bfd0-f6a52bd9bccd",
+    "recipe_id": "33a29199-8e5f-4fb4-b05e-cba0e3bdd4d0",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "7b0ca6af-2148-4798-9e68-f24ae39874b6",
+    "recipe_id": "ca50e819-1933-4b2b-bf3e-46b4a60f5766",
+    "name": "面糊",
+    "position": 0
+  },
+  {
+    "id": "64e5a985-bd9c-4a04-b4a3-ac9d945f6b0e",
+    "recipe_id": "8b5d1880-71ca-4af8-ba19-2a419850e0a4",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "67705e8f-e8ec-410f-9070-5d154b69bffa",
+    "recipe_id": "f4926264-d0b2-4c75-9ee4-b15f7814d282",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "a90286ad-a0ee-4357-b9c7-9166c6d79a19",
+    "recipe_id": "09e292ed-eb0f-4d37-8b54-4b409252c0ad",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "73eabe80-d473-401b-b7f0-d55fe28946c1",
+    "recipe_id": "1b1750f4-bea6-4ceb-beba-7c19a3ec0ba8",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "6973c0b5-59a8-470c-9620-28f4d3ba8df0",
+    "recipe_id": "b44efb62-25ca-454d-b4f5-f2364b92d2ad",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "b2fb0ba9-e13e-4b0a-96fa-89348712717d",
+    "recipe_id": "78b899ba-6131-4b7e-8382-65364969ca53",
+    "name": "奶黄馅",
+    "position": 0
+  },
+  {
+    "id": "45cbff72-9d1a-4056-9c15-32db8afdb45d",
+    "recipe_id": "78b899ba-6131-4b7e-8382-65364969ca53",
+    "name": "面皮",
+    "position": 1
+  },
+  {
+    "id": "a3686c15-ecc2-4e8a-810e-667977c9fd5e",
+    "recipe_id": "0c735cda-1832-4341-9932-974286df8f06",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "a0584305-ec7a-485c-bc4f-650a27f5544b",
+    "recipe_id": "80519790-d215-4f2d-9a94-197d5821e63e",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "28880571-a941-48f0-a7bb-a0924ac659fd",
+    "recipe_id": "e86c3bc5-6fc7-44b5-beb9-b24af172a68a",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "57d35441-b7a6-41f3-bdd0-417b2bd5cd6e",
+    "recipe_id": "37cbc7ea-0abc-4c79-99da-cdcf8646990e",
+    "name": "可颂面团",
+    "position": 0
+  },
+  {
+    "id": "572f4c5b-2b3e-4aa3-a8a1-c53912326fe0",
+    "recipe_id": "37cbc7ea-0abc-4c79-99da-cdcf8646990e",
+    "name": "杏仁馅与装饰",
+    "position": 1
+  },
+  {
+    "id": "afd0428c-990b-4580-961f-0c69dad70329",
+    "recipe_id": "d5764fd4-845d-41b2-be2b-ad2490464fc8",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "53722bc3-5b97-4a99-90e8-0e482244fe19",
+    "recipe_id": "2b6de082-60c4-4481-9800-dc5c96e733bf",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "54d174c0-c41a-4d1d-aee3-6afc8b39e48b",
+    "recipe_id": "f06bb3e8-4957-41eb-a8d1-21990e876dd5",
+    "name": "无需浸泡谷物与干料",
+    "position": 0
+  },
+  {
+    "id": "8767c901-612d-47d7-a5f7-74c53fbb09a1",
+    "recipe_id": "f06bb3e8-4957-41eb-a8d1-21990e876dd5",
+    "name": "浸泡原料",
+    "position": 1
+  },
+  {
+    "id": "7c396b4a-fff1-420a-9ed4-6763708d9695",
+    "recipe_id": "f06bb3e8-4957-41eb-a8d1-21990e876dd5",
+    "name": "预煮豆类",
+    "position": 2
+  },
+  {
+    "id": "43cbe3f0-0a49-42d1-91ef-3ec2a7208fb9",
+    "recipe_id": "f06bb3e8-4957-41eb-a8d1-21990e876dd5",
+    "name": "熬煮",
+    "position": 3
+  },
+  {
+    "id": "050709dd-6232-4bf6-bf00-f81e92365d32",
+    "recipe_id": "4d0b06ad-7930-44a2-abe8-c78ec15dbad9",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "d9a8499d-90a3-449d-96c7-0e9ce2609641",
+    "recipe_id": "e1ddde21-961c-46c8-b9ee-e89bc3c3d095",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "c5ca87ec-4a72-479f-826c-c311ae903a3d",
+    "recipe_id": "ac413a82-b7a5-4510-b245-bf93c635dbc5",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "f9453071-0a43-48d5-b35d-6487c9fa6da7",
+    "recipe_id": "08784706-26a5-4ce9-a208-4f8c5e772662",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "4c2e5df5-10f6-44a2-93f6-d238f6a985d7",
+    "recipe_id": "ef474592-afbf-46f5-b9f9-1621d5c488b6",
+    "name": "蛋奶液",
+    "position": 0
+  },
+  {
+    "id": "d75d555d-8aa6-4369-bb71-6d067a61aab0",
+    "recipe_id": "31331711-f108-4983-8e4f-dfd4c8aaef5e",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "7903c70c-856a-482b-a384-be90379106d2",
+    "recipe_id": "735bf78c-2f90-4754-b14f-c3845a9606ba",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "8644feae-d29a-4ad9-841f-8d88cca1d9cc",
+    "recipe_id": "1afe8cdb-93eb-45f9-9125-b63a1167d62b",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "f748c312-84cd-4351-9cb0-d4bfbd3ea725",
+    "recipe_id": "6fe8e571-2376-4299-9c89-f5919b89dc92",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "7d86b5bf-cda4-4d59-a320-52aa39a0be2e",
+    "recipe_id": "2577408e-6068-41c2-b458-37eaf3a761d3",
+    "name": "汤底",
+    "position": 0
+  },
+  {
+    "id": "3efe50fe-6121-4540-974c-7c03bd99c7df",
+    "recipe_id": "2577408e-6068-41c2-b458-37eaf3a761d3",
+    "name": "配料",
+    "position": 1
+  },
+  {
+    "id": "c9f02539-7ab8-43e5-87c4-b8e284147d27",
+    "recipe_id": "2577408e-6068-41c2-b458-37eaf3a761d3",
+    "name": "勾芡",
+    "position": 2
+  },
+  {
+    "id": "f68b08dc-6beb-4b95-8881-362455ec7814",
+    "recipe_id": "fd65f2c9-a5cf-42d3-b217-067a31b7144b",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "c6277baa-c709-456b-9bb0-0b451589d6a2",
+    "recipe_id": "80dff136-152a-45fd-b56d-026d9bc4f762",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "bcb9ce56-e789-4af0-999a-1381129abffd",
+    "recipe_id": "94d628ce-5912-4ba5-959c-ee29c65ab830",
+    "name": "面包体",
+    "position": 0
+  },
+  {
+    "id": "1a453fee-03eb-43ad-868b-c06a7a3b2560",
+    "recipe_id": "94d628ce-5912-4ba5-959c-ee29c65ab830",
+    "name": "酥皮",
+    "position": 1
+  },
+  {
+    "id": "cb4ab45f-2466-4775-92e0-acd670870ba4",
+    "recipe_id": "7aada429-75e7-43f3-ba41-0b4ffe7ca9ad",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "f573978b-103d-4267-9eda-17fc20348e69",
+    "recipe_id": "04a2d6b7-78e4-42da-a9ee-5062030648db",
+    "name": "面团",
+    "position": 0
+  },
+  {
+    "id": "cc4eacd2-5e00-426c-8055-cffd22468cfb",
+    "recipe_id": "51cb2d81-73dc-46a1-b05c-2486e4873db3",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "e18d8e38-a773-49d4-83f7-53435527c0d2",
+    "recipe_id": "6e0d26f8-bcf8-45b7-b443-95fa77ad4e48",
+    "name": "预发酵面团",
+    "position": 0
+  },
+  {
+    "id": "71528294-5072-44a8-9401-adab3135e723",
+    "recipe_id": "6e0d26f8-bcf8-45b7-b443-95fa77ad4e48",
+    "name": "主面团",
+    "position": 1
+  },
+  {
+    "id": "3f6c96cc-5e21-4bc8-9c86-55173dbcd773",
+    "recipe_id": "6e0d26f8-bcf8-45b7-b443-95fa77ad4e48",
+    "name": "加料",
+    "position": 2
+  },
+  {
+    "id": "d9415924-1242-49c5-97bc-6def789f28e0",
+    "recipe_id": "afe2a490-c1f9-436a-acaa-cf654f897a19",
+    "name": "挞皮",
+    "position": 0
+  },
+  {
+    "id": "02d9f3a5-0d70-49f0-9527-f97acd4edcd4",
+    "recipe_id": "afe2a490-c1f9-436a-acaa-cf654f897a19",
+    "name": "蛋液",
+    "position": 1
+  },
+  {
+    "id": "eced7d76-9fa9-4437-822f-6112ee64b35f",
+    "recipe_id": "a5ae8032-977d-485e-9bbf-f40b1488fca1",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "75abd626-8564-4750-90ae-dba2cb20a40a",
+    "recipe_id": "e17f9bf2-b32b-4378-ab74-bf8a52bc9645",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "23102f0a-cd72-4788-be11-df24046a2a33",
+    "recipe_id": "c20e4df4-7b37-4b03-b6b8-9b2c6bbc45de",
+    "name": "标准配方",
+    "position": 0
+  },
+  {
+    "id": "1cff9330-de9f-4b5f-9537-6427f853b4d1",
+    "recipe_id": "ea966174-4397-44f0-a70a-fde2e4796c34",
+    "name": "标准配方",
+    "position": 0
+  }
+]

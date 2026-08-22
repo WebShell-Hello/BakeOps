@@ -1,45 +1,72 @@
 flowchart LR
-    U[门店老板 / 主管 / 员工] --> FE[Next.js 管理后台]
-    FE --> AUTH[邮箱登录与权限]
-    FE --> API[Django REST API]
-    API --> DB[(PostgreSQL)]
+    U[门店老板 / 主管 / 员工 / 游客] --> FE[Next.js 管理后台]
 
-    subgraph Master[基础资料]
+    subgraph Frontend[前端运行层]
+      FE --> AUTH[Session 登录与页面守卫]
+      FE --> MODE{数据模式路由}
+      MODE -->|共享控制数据| API[Django REST API]
+      MODE -->|生产业务数据| API
+      MODE -->|测试基础数据| SEED[合成种子数据]
+      MODE -->|测试增删改| IDB[(IndexedDB)]
+      MODE -.->|无种子且无缓存时初始化快照| API
+    end
+
+    API --> DB[(PostgreSQL)]
+    API --> AUDIT[访问日志与操作审计]
+    AUDIT --> DB
+
+    subgraph Control[共享控制域]
+      USERS[用户与偏好]
+      RBAC[角色与页面权限]
+      NAV[动态菜单]
+      LOGS[日志管理]
+    end
+
+    subgraph Master[业务主数据]
       P[产品与配方]
-      I[食材与库存单位]
-      S[供应商管理]
+      I[食材]
+      S[供应商]
       E[员工档案]
     end
+
     subgraph Operations[运营执行]
       PL[生产计划]
+      INV[库存管理]
       R[采购入库 / 进货记录]
       SH[员工排班]
-      EV[活动管理]
-      SO[实际销售记录]
+      EV[经营活动与停业]
+      AP[活动策划与循环提醒]
+      SO[销售数据]
+      COST[成本数据]
     end
+
     subgraph Analysis[经营分析]
       SA[销售分析]
-      CM[成本管理]
       PA[盈利与产品表现]
     end
 
+    API --> Control
     API --> Master
     API --> Operations
-    API --> Analysis
+    SEED --> Master
+    SEED --> Operations
+    IDB --> Master
+    IDB --> Operations
+
     P --> PL
     P --> SO
     S --> R
     I --> P
     I --> R
-    PL -->|产品计划| DEMAND[食材需求计算]
-    P -->|配方 BOM| DEMAND
-    DEMAND --> INV[库存覆盖与采购预警]
+    PL -->|产品计划| DEMAND[配方需求计算]
+    P -->|BOM| DEMAND
+    DEMAND --> INV
     R --> INV
-    SH -->|时薪 x 出勤时长| CM
+    SH -->|排班工时 x 时薪| COST
     SO --> SA
-    PL -->|实际制作| CM
-    R -->|采购单价与入库数量| CM
+    PL -->|实际制作 x 材料成本| COST
     SA --> PA
-    CM --> PA
+    COST --> PA
     EV -.->|准备建议| PL
     EV -.->|库存建议| INV
+    AP -.->|执行提醒与结果| EV

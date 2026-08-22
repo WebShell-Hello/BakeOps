@@ -1502,6 +1502,7 @@ async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
   const mode = getDataMode();
   const isRead = ["GET", "HEAD", "OPTIONS", "TRACE"].includes(method);
   const serverControlPath = [
+    "/health/",
     "/users/",
     "/access/",
     "/navigation/",
@@ -1546,6 +1547,9 @@ async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
         );
       }
     }
+    const error = new Error(`Local test-data seed is missing for ${path}`);
+    Object.assign(error, { status: 500, path });
+    throw error;
   }
   const csrfToken = await getCsrfTokenForRequest(method);
   const isFormData = init?.body instanceof FormData;
@@ -1580,11 +1584,7 @@ async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
 
   if (response.status === 204) return undefined as T;
 
-  const value = (await response.json()) as T;
-  if (usesLocalTestData) {
-    await writeTestResponse(`BASE:${path}`, value);
-  }
-  return value;
+  return (await response.json()) as T;
 }
 
 let csrfRequest: Promise<void> | null = null;

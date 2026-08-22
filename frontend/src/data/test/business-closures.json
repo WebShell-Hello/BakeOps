@@ -1,0 +1,20 @@
+[
+  {
+    "id": "5f7b1ab2-be4d-4d5f-8a58-09f2070dadfa",
+    "name": "设备年度维护",
+    "closure_type": "MAINTENANCE",
+    "start_date": "2026-08-24",
+    "end_date": "2026-08-24",
+    "duration_days": 1,
+    "notes": "烤箱与制冷设备年度维护，门店暂停营业一天。"
+  },
+  {
+    "id": "1a4996d9-a004-4284-b1eb-e7691860f5af",
+    "name": "节礼日休息",
+    "closure_type": "REST_DAY",
+    "start_date": "2026-12-26",
+    "end_date": "2026-12-26",
+    "duration_days": 1,
+    "notes": "门店休息。"
+  }
+]

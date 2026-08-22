@@ -2,18 +2,21 @@
 
 BakeOps 是一套面向面包店日常运营与经营决策的内部管理平台。项目以单店为当前落地场景，逐步连接人员、配方、库存、采购、生产、销售、损耗、成本和经营分析，并为未来多门店扩展保留清晰边界。
 
-> 当前状态基准：2026-08-14。业务蓝图、实施状态、工程约定和路线图详见 [V1.2 中文设计说明书](docs/Bakery_Operations_Website_Design_Spec_V1.2_CN.docx)。
+> 当前状态基准：2026-08-22。业务蓝图、实施状态、工程约定和路线图详见 [V1.2 中文设计说明书](docs/Bakery_Operations_Website_Design_Spec_V1.2_CN.docx)。当前工程实现以本 README、代码、迁移和自动化测试为准。
 
 ## 项目资料
 
-- [功能逻辑架构图（Draw.io）](docs/diagrams/bakeops-functional-architecture.drawio)
-- [功能逻辑架构图（Mermaid）](docs/diagrams/bakeops-functional-architecture.mmd)
-- [数据结构图（Draw.io）](docs/diagrams/bakeops-data-structure.drawio)
-- [数据结构图（Mermaid）](docs/diagrams/bakeops-data-structure.mmd)
+- [项目架构](docs/architecture/project-architecture.md)
+- [数据架构](docs/architecture/data-architecture.md)
+- [生产部署说明](docs/deployment-production.md)
+- [当前功能逻辑架构图（Mermaid）](docs/diagrams/bakeops-functional-architecture.mmd)
+- [当前数据结构图（Mermaid）](docs/diagrams/bakeops-data-structure.mmd)
+- [功能架构概要图（Draw.io）](docs/diagrams/bakeops-functional-architecture.drawio)
+- [数据结构概要图（Draw.io）](docs/diagrams/bakeops-data-structure.drawio)
 - [数据字典（Excel）](docs/BakeOps_Data_Dictionary.xlsx)
 - [门店老板版使用说明书（Word）](docs/BakeOps_Owner_User_Guide.docx)
 
-`.posm` 不是当前项目或主流图表工具普遍支持的标准格式，因此架构图提供 Draw.io 可编辑文件和 Mermaid 源文件两种格式。
+`.posm` 不是当前项目或主流图表工具普遍支持的标准格式，因此架构图提供 Draw.io 和 Mermaid 两种格式。Markdown 架构文档与 Mermaid 源文件是当前实现的维护基准；Draw.io 文件保留为便于演示的概要图。
 
 ## 当前进度
 
@@ -36,9 +39,12 @@ BakeOps 是一套面向面包店日常运营与经营决策的内部管理平台
 - 库存管理：未来 14 天生产需求、库存覆盖天数、预计不足日期和采购预警
 - 采购入库和进货记录：食材、数量、采购单价、采购时间、供应商和库存价值
 - 活动管理：节假日、门店活动、准备期和休息/停业日期
+- 活动策划：社交媒体、外卖平台、现场推广和网红合作等活动计划；支持一次、每日、每周和每月提醒，以及完成、跳过和顺延
 - 销售分析：真实销售收入、销售数量、订单、折扣、退款、实际成交价和每日明细
 - 成本管理：员工工资、生产物料成本、每月其他经营成本和历史月份明细
 - 盈利与产品表现：整体盈利 KPI、利润趋势、成本结构、产品贡献毛利和四象限
+- 日志管理：游客与登录用户的页面访问、API 请求和增删改审计；记录系统模式、设备、操作系统、浏览器、耗时及经过哈希处理的 IP 标识
+- 测试/生产数据模式：用户级模式配置；生产业务数据读取 PostgreSQL，测试业务数据读取前端种子数据并将登录用户的变更持久化到 IndexedDB
 - Django API、PostgreSQL 健康检查、OpenAPI Schema 和 Swagger 文档
 - 同一 Wi-Fi 下的手机访问与登录
 
@@ -60,7 +66,7 @@ BakeOps 是一套面向面包店日常运营与经营决策的内部管理平台
 - 库存批次、损耗、库存移动和真实出库记录
 - Yield Rate、半成品配方、包装和损耗成本
 - 活动建议到生产计划/采购计划的确认工作流
-- 多门店、审计日志、通知、备份恢复和生产部署体系
+- 多门店、通知中心、自动化备份验证和完整生产运维体系
 
 导航中存在页面或 Dashboard 中存在卡片，不代表对应业务能力已经完成。当前完成度以代码、迁移、测试和上述状态说明为准。
 
@@ -68,21 +74,25 @@ BakeOps 是一套面向面包店日常运营与经营决策的内部管理平台
 
 | 层级 | 技术 | 职责 |
 | --- | --- | --- |
-| Frontend | Next.js 16.3、React 19.2、TypeScript 5.9、Tailwind CSS 4 | App Router 管理界面、响应式交互、国际化和主题 |
+| Frontend | Next.js 16.3、React 19.2、TypeScript 5.9、Tailwind CSS 4 | App Router 管理界面、响应式交互、国际化、主题和测试业务数据路由 |
 | Backend | Python 3.13、Django 5.2 LTS、Django REST Framework 3.16 | 领域模型、REST API、认证、权限和业务校验 |
 | Database | PostgreSQL 17 | 关系数据、约束、索引和迁移 |
+| Browser Storage | IndexedDB | 测试模式下登录用户的业务数据变更；与生产业务数据隔离 |
 | API Docs | drf-spectacular / OpenAPI | Schema 与 Swagger 文档 |
 | Runtime | Docker Compose | frontend、backend、postgres 本地编排 |
 | Quality | ESLint、TypeScript、pytest、Ruff、mypy | 静态检查、类型检查和自动化测试 |
 
-浏览器统一请求同源 `/api/v1`，由 Next.js 代理到 Docker 网络中的 Django backend。前端业务代码通过 `frontend/src/lib/api.ts` 访问 API，不直接读取本地 JSON 或 CSV。
+浏览器统一通过 `frontend/src/lib/api.ts` 访问数据。账户、角色、菜单、用户偏好、系统配置和日志始终请求同源 `/api/v1`，由 Next.js 代理到 Docker 网络中的 Django backend。业务数据根据当前用户的系统模式路由：生产模式请求 Django/PostgreSQL；测试模式读取 `frontend/src/data/test/` 中的项目 JSON 基线，并合并 IndexedDB 中的本地变更。测试业务接口没有本地基线时会明确报错，不会回退读取生产业务数据。
 
 ```text
 Browser
-  -> Next.js /api/v1
-  -> Django REST Framework
-  -> PostgreSQL
+  -> Next.js
+     -> shared control data -> /api/v1 -> Django REST Framework -> PostgreSQL
+     -> production business data -> /api/v1 -> Django REST Framework -> PostgreSQL
+     -> test business data -> project JSON baseline + IndexedDB mutations
 ```
+
+游客固定使用测试模式，可以查看被匿名角色授权的页面，但不能保存测试业务数据。登录用户的 `system_mode` 保存在共享用户表中；同一浏览器的 Session Cookie 在多个页签之间共享。
 
 ## 核心约定
 
@@ -94,7 +104,7 @@ Browser
 - 需要保留历史的数据优先使用软删除；任何模型变化必须包含 Django migration。
 - 金额和重量使用 `Decimal`，所有数量必须具有明确单位。
 - 新增用户可见文案必须同时支持 `zh-CN` 和 `en-GB`；英文含义以确认后的中文业务含义为基准。
-- 开发和演示使用合成数据，但始终运行真实 PostgreSQL、REST API、权限和迁移。
+- 开发和演示使用合成数据。共享控制数据与生产业务数据使用真实 PostgreSQL、REST API、权限和迁移；测试业务数据由前端本地存储隔离维护。
 - 排班是未来计划，实际考勤是已发生事实；后续不得直接使用计划排班计算工资。
 - 供应商报价、实际进货单价和库存平均成本是三个不同概念，不能混用。
 - 历史业务数据优先软删除或停用，不能因为当前产品或员工被删除而破坏历史记录。
@@ -107,11 +117,12 @@ BakeOps/
 ├── backend/
 │   ├── bakeops/
 │   │   ├── access/       # 角色与页面权限
+│   │   ├── audit/        # 访问日志与操作审计
 │   │   ├── costs/        # 成本、工资、物料成本
 │   │   ├── api/          # API 汇总与健康检查
 │   │   ├── common/       # UUID 与时间戳基础模型
 │   │   ├── employees/    # 员工档案
-│   │   ├── events/       # 活动、节假日和营业状态
+│   │   ├── events/       # 活动、活动策划、提醒、节假日和营业状态
 │   │   ├── inventory/    # 库存、生产计划和进货记录
 │   │   ├── navigation/   # 动态菜单
 │   │   ├── products/     # 产品、原料与配方
@@ -124,10 +135,13 @@ BakeOps/
 │   └── src/
 │       ├── app/          # Next.js 页面与路由
 │       ├── components/   # 按业务领域组织的组件
+│       ├── data/test/    # 测试模式业务数据 JSON 基线
 │       ├── hooks/        # 共享 Hooks
-│       └── lib/api.ts    # 统一 API 访问层与类型
+│       ├── lib/api.ts    # 统一数据访问层、API 类型和模式路由
+│       └── lib/local-test-db.ts # IndexedDB 测试变更存储
 ├── docs/
-│   └── architecture/     # 架构决策记录 ADR
+│   ├── architecture/     # 项目架构、数据架构和 ADR
+│   └── diagrams/         # Mermaid 与 Draw.io 架构图
 ├── scripts/              # 文档维护等项目脚本
 ├── compose.yaml
 └── Makefile
@@ -216,7 +230,7 @@ docker compose exec frontend npm run build
 3. 增加 Yield Rate、半成品配方、包装和损耗成本。
 4. 将活动准备建议连接到可确认的生产计划和采购计划。
 5. 完善盈利分析的历史成本口径、导出和多门店扩展。
-6. 建立审计日志、通知、备份恢复和生产部署流程。
+6. 将活动提醒接入通知中心，并完善备份恢复演练和生产监控。
 
 详细里程碑和未来展望请阅读 [V1.2 中文设计说明书](docs/Bakery_Operations_Website_Design_Spec_V1.2_CN.docx)。重要且跨模块的技术决策应新增到 [docs/architecture](docs/architecture/) 中。
 

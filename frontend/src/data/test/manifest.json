@@ -1,0 +1,152 @@
+[
+  {
+    "table": "costs_costitem",
+    "file": "cost-items.json",
+    "rows": 10
+  },
+  {
+    "table": "costs_costmonth",
+    "file": "cost-months.json",
+    "rows": 1
+  },
+  {
+    "table": "costs_monthlycost",
+    "file": "monthly-costs.json",
+    "rows": 10
+  },
+  {
+    "table": "employees_employee",
+    "file": "employees.json",
+    "rows": 6
+  },
+  {
+    "table": "events_activitycategory",
+    "file": "activity-categories.json",
+    "rows": 5
+  },
+  {
+    "table": "events_activityplatform",
+    "file": "activity-platforms.json",
+    "rows": 9
+  },
+  {
+    "table": "events_activityplan",
+    "file": "activity-plans.json",
+    "rows": 3
+  },
+  {
+    "table": "events_activityplan_focus_products",
+    "file": "activity-plan-focus-products.json",
+    "rows": 0
+  },
+  {
+    "table": "events_activityreminderrule",
+    "file": "activity-reminder-rules.json",
+    "rows": 3
+  },
+  {
+    "table": "events_activityreminderoccurrence",
+    "file": "activity-reminder-occurrences.json",
+    "rows": 0
+  },
+  {
+    "table": "events_businessclosure",
+    "file": "business-closures.json",
+    "rows": 2
+  },
+  {
+    "table": "events_businessevent",
+    "file": "business-events.json",
+    "rows": 5
+  },
+  {
+    "table": "events_businessevent_focus_products",
+    "file": "business-event-focus-products.json",
+    "rows": 13
+  },
+  {
+    "table": "events_eventchecklistitem",
+    "file": "event-checklist-items.json",
+    "rows": 75
+  },
+  {
+    "table": "events_holiday",
+    "file": "holidays.json",
+    "rows": 11
+  },
+  {
+    "table": "inventory_inventoryitem",
+    "file": "inventory-items.json",
+    "rows": 103
+  },
+  {
+    "table": "inventory_inventoryreceipt",
+    "file": "inventory-receipts.json",
+    "rows": 1511
+  },
+  {
+    "table": "inventory_productionplan",
+    "file": "production-plans.json",
+    "rows": 145
+  },
+  {
+    "table": "inventory_purchaserequest",
+    "file": "purchase-requests.json",
+    "rows": 0
+  },
+  {
+    "table": "products_ingredient",
+    "file": "ingredients.json",
+    "rows": 103
+  },
+  {
+    "table": "products_product",
+    "file": "products.json",
+    "rows": 37
+  },
+  {
+    "table": "products_recipe",
+    "file": "recipes.json",
+    "rows": 37
+  },
+  {
+    "table": "products_recipeingredient",
+    "file": "recipe-ingredients.json",
+    "rows": 318
+  },
+  {
+    "table": "products_recipesection",
+    "file": "recipe-sections.json",
+    "rows": 48
+  },
+  {
+    "table": "sales_salesdatarecord",
+    "file": "sales-data.json",
+    "rows": 7950
+  },
+  {
+    "table": "sales_salesorder",
+    "file": "sales-orders.json",
+    "rows": 0
+  },
+  {
+    "table": "sales_salesorderline",
+    "file": "sales-order-lines.json",
+    "rows": 0
+  },
+  {
+    "table": "scheduling_scheduleentry",
+    "file": "schedules.json",
+    "rows": 1510
+  },
+  {
+    "table": "suppliers_supplier",
+    "file": "suppliers.json",
+    "rows": 50
+  },
+  {
+    "table": "suppliers_supplieringredient",
+    "file": "supplier-ingredients.json",
+    "rows": 156
+  }
+]

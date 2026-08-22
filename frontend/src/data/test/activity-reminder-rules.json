@@ -1,0 +1,41 @@
+[
+  {
+    "id": "c1000000-0000-4000-8000-000000000009",
+    "plan_id": "c1000000-0000-4000-8000-000000000001",
+    "frequency": "WEEKLY",
+    "interval": 1,
+    "weekdays": [
+      1,
+      4
+    ],
+    "month_days": [],
+    "reminder_time": "10:00",
+    "timezone": "Europe/London",
+    "is_enabled": true
+  },
+  {
+    "id": "c1000000-0000-4000-8000-000000000009",
+    "plan_id": "c1000000-0000-4000-8000-000000000002",
+    "frequency": "DAILY",
+    "interval": 1,
+    "weekdays": [],
+    "month_days": [],
+    "reminder_time": "09:30",
+    "timezone": "Europe/London",
+    "is_enabled": true
+  },
+  {
+    "id": "c1000000-0000-4000-8000-000000000009",
+    "plan_id": "c1000000-0000-4000-8000-000000000003",
+    "frequency": "MONTHLY",
+    "interval": 1,
+    "weekdays": [],
+    "month_days": [
+      1,
+      15
+    ],
+    "reminder_time": "11:00",
+    "timezone": "Europe/London",
+    "is_enabled": true
+  }
+]
