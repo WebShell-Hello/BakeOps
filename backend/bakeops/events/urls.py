@@ -1,6 +1,10 @@
 from django.urls import path
 
 from bakeops.events.views import (
+    ActivityPlanDetailApi,
+    ActivityPlanListCreateApi,
+    ActivityPlanningOverviewApi,
+    ActivityReminderOccurrenceDetailApi,
     BusinessClosureDetailApi,
     BusinessClosureListCreateApi,
     BusinessDayStatusApi,
@@ -12,6 +16,10 @@ from bakeops.events.views import (
 )
 
 urlpatterns = [
+    path("activity-planning/overview/", ActivityPlanningOverviewApi.as_view(), name="activity-planning-overview"),
+    path("activity-planning/plans/", ActivityPlanListCreateApi.as_view(), name="activity-plan-list-create"),
+    path("activity-planning/plans/<uuid:pk>/", ActivityPlanDetailApi.as_view(), name="activity-plan-detail"),
+    path("activity-planning/occurrences/<uuid:pk>/", ActivityReminderOccurrenceDetailApi.as_view(), name="activity-occurrence-detail"),
     path("overview/", EventOverviewApi.as_view(), name="event-overview"),
     path("activities/", BusinessEventCreateApi.as_view(), name="business-event-create"),
     path("activities/<uuid:pk>/", BusinessEventDetailApi.as_view(), name="business-event-detail"),

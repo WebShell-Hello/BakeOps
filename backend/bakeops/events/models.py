@@ -1,5 +1,7 @@
 from decimal import Decimal
 
+from django.conf import settings
+
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import F, Q
@@ -144,3 +146,148 @@ class BusinessClosure(BaseModel):
 
     def __str__(self) -> str:
         return self.name
+
+
+class ActivityCategory(BaseModel):
+    code = models.CharField(max_length=60, unique=True)
+    name_zh = models.CharField(max_length=100)
+    name_en = models.CharField(max_length=100)
+    colour = models.CharField(max_length=20, default="blue")
+    icon_key = models.CharField(max_length=40, blank=True)
+    position = models.PositiveSmallIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ("position", "name_en")
+
+    def __str__(self) -> str:
+        return self.name_en
+
+
+class ActivityPlatform(BaseModel):
+    category = models.ForeignKey(ActivityCategory, on_delete=models.PROTECT, related_name="platforms")
+    code = models.CharField(max_length=60, unique=True)
+    name_zh = models.CharField(max_length=100)
+    name_en = models.CharField(max_length=100)
+    position = models.PositiveSmallIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ("category__position", "position", "name_en")
+
+    def __str__(self) -> str:
+        return self.name_en
+
+
+class ActivityPlan(BaseModel):
+    class Priority(models.TextChoices):
+        LOW = "LOW", "Low"
+        NORMAL = "NORMAL", "Normal"
+        HIGH = "HIGH", "High"
+        URGENT = "URGENT", "Urgent"
+
+    class Status(models.TextChoices):
+        DRAFT = "DRAFT", "Draft"
+        ACTIVE = "ACTIVE", "Active"
+        PAUSED = "PAUSED", "Paused"
+        ENDED = "ENDED", "Ended"
+
+    name = models.CharField(max_length=180)
+    category = models.ForeignKey(ActivityCategory, on_delete=models.PROTECT, related_name="activity_plans")
+    platform = models.ForeignKey(ActivityPlatform, on_delete=models.PROTECT, related_name="activity_plans")
+    description = models.TextField(blank=True)
+    priority = models.CharField(max_length=12, choices=Priority.choices, default=Priority.NORMAL)
+    status = models.CharField(max_length=12, choices=Status.choices, default=Status.ACTIVE, db_index=True)
+    start_date = models.DateField(db_index=True)
+    end_date = models.DateField(blank=True, null=True, db_index=True)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="owned_activity_plans",
+    )
+    linked_business_event = models.ForeignKey(
+        BusinessEvent,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="activity_plans",
+    )
+    focus_products = models.ManyToManyField("products.Product", blank=True, related_name="activity_plans")
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="activity_plans_created",
+    )
+
+    class Meta:
+        ordering = ("status", "name")
+        permissions = (("manage_activity_plans", "Can manage activity plans and reminders"),)
+        constraints = (
+            models.CheckConstraint(
+                condition=Q(end_date__isnull=True) | Q(end_date__gte=F("start_date")),
+                name="activity_plan_end_on_or_after_start",
+            ),
+        )
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class ActivityReminderRule(BaseModel):
+    class Frequency(models.TextChoices):
+        ONCE = "ONCE", "Once"
+        DAILY = "DAILY", "Daily"
+        WEEKLY = "WEEKLY", "Weekly"
+        MONTHLY = "MONTHLY", "Monthly"
+
+    plan = models.OneToOneField(ActivityPlan, on_delete=models.CASCADE, related_name="reminder_rule")
+    frequency = models.CharField(max_length=12, choices=Frequency.choices)
+    interval = models.PositiveSmallIntegerField(default=1, validators=(MinValueValidator(1), MaxValueValidator(52)))
+    weekdays = models.JSONField(default=list, blank=True)
+    month_days = models.JSONField(default=list, blank=True)
+    reminder_time = models.TimeField()
+    timezone = models.CharField(max_length=64, default="Europe/London")
+    is_enabled = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ("plan__name",)
+
+    def __str__(self) -> str:
+        return f"{self.plan.name} · {self.frequency}"
+
+
+class ActivityReminderOccurrence(BaseModel):
+    class Status(models.TextChoices):
+        PENDING = "PENDING", "Pending"
+        COMPLETED = "COMPLETED", "Completed"
+        SKIPPED = "SKIPPED", "Skipped"
+        CANCELLED = "CANCELLED", "Cancelled"
+
+    plan = models.ForeignKey(ActivityPlan, on_delete=models.CASCADE, related_name="occurrences")
+    rule = models.ForeignKey(ActivityReminderRule, on_delete=models.CASCADE, related_name="occurrences")
+    scheduled_at = models.DateTimeField(db_index=True)
+    status = models.CharField(max_length=12, choices=Status.choices, default=Status.PENDING, db_index=True)
+    completed_at = models.DateTimeField(blank=True, null=True)
+    completed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="completed_activity_reminders",
+    )
+    execution_notes = models.TextField(blank=True)
+    result_url = models.URLField(blank=True)
+    snoozed_until = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        ordering = ("scheduled_at", "plan__name")
+        constraints = (
+            models.UniqueConstraint(fields=("rule", "scheduled_at"), name="unique_activity_rule_occurrence"),
+        )
+
+    def __str__(self) -> str:
+        return f"{self.plan.name} · {self.scheduled_at}"

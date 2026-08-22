@@ -1,6 +1,16 @@
 from django.contrib import admin
 
-from bakeops.events.models import BusinessClosure, BusinessEvent, EventChecklistItem, Holiday
+from bakeops.events.models import (
+    ActivityCategory,
+    ActivityPlan,
+    ActivityPlatform,
+    ActivityReminderOccurrence,
+    ActivityReminderRule,
+    BusinessClosure,
+    BusinessEvent,
+    EventChecklistItem,
+    Holiday,
+)
 
 
 class EventChecklistInline(admin.TabularInline):  # type: ignore[type-arg]
@@ -28,3 +38,10 @@ class BusinessClosureAdmin(admin.ModelAdmin):  # type: ignore[type-arg]
     list_display = ("name", "closure_type", "start_date", "end_date")
     list_filter = ("closure_type", "start_date")
     search_fields = ("name", "notes")
+
+
+admin.site.register(ActivityCategory)
+admin.site.register(ActivityPlatform)
+admin.site.register(ActivityPlan)
+admin.site.register(ActivityReminderRule)
+admin.site.register(ActivityReminderOccurrence)

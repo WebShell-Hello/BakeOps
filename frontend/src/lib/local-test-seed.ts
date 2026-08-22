@@ -4,6 +4,9 @@ import salesRecordsData from "@/data/test/sales-records.json";
 import schedulesData from "@/data/test/schedules.json";
 
 import type {
+  ActivityCategory,
+  ActivityPlan,
+  ActivityPlatform,
   Employee,
   EmployeeScheduleHistory,
   ScheduleEmployeeOption,
@@ -16,6 +19,66 @@ const employees = employeesData as Employee[];
 const schedules = schedulesData as ScheduleEntry[];
 const salesRecords = salesRecordsData as SalesRecord[];
 const salesData = salesDataJson as SalesDataRecord[];
+
+const activityCategories: ActivityCategory[] = [
+  { id: "a1000000-0000-4000-8000-000000000001", code: "SOCIAL", name_zh: "社交媒体", name_en: "Social media", colour: "rose", icon_key: "messages-square", position: 10 },
+  { id: "a1000000-0000-4000-8000-000000000002", code: "DELIVERY", name_zh: "外卖平台", name_en: "Delivery platform", colour: "blue", icon_key: "bike", position: 20 },
+  { id: "a1000000-0000-4000-8000-000000000003", code: "IN_STORE", name_zh: "现场推广", name_en: "In-store promotion", colour: "amber", icon_key: "store", position: 30 },
+  { id: "a1000000-0000-4000-8000-000000000004", code: "INFLUENCER", name_zh: "网红合作", name_en: "Influencer", colour: "violet", icon_key: "sparkles", position: 40 },
+  { id: "a1000000-0000-4000-8000-000000000005", code: "OTHER", name_zh: "其他", name_en: "Other", colour: "green", icon_key: "megaphone", position: 90 },
+];
+
+const activityPlatforms: ActivityPlatform[] = [
+  { id: "b1000000-0000-4000-8000-000000000001", category_id: activityCategories[0].id, code: "INSTAGRAM", name_zh: "Instagram", name_en: "Instagram", position: 10 },
+  { id: "b1000000-0000-4000-8000-000000000002", category_id: activityCategories[0].id, code: "XIAOHONGSHU", name_zh: "小红书", name_en: "Xiaohongshu", position: 20 },
+  { id: "b1000000-0000-4000-8000-000000000003", category_id: activityCategories[0].id, code: "TIKTOK", name_zh: "TikTok", name_en: "TikTok", position: 30 },
+  { id: "b1000000-0000-4000-8000-000000000004", category_id: activityCategories[1].id, code: "DELIVEROO", name_zh: "Deliveroo", name_en: "Deliveroo", position: 10 },
+  { id: "b1000000-0000-4000-8000-000000000005", category_id: activityCategories[1].id, code: "HUNGRYPANDA", name_zh: "熊猫外卖", name_en: "HungryPanda", position: 20 },
+  { id: "b1000000-0000-4000-8000-000000000006", category_id: activityCategories[1].id, code: "UBEREATS", name_zh: "Uber Eats", name_en: "Uber Eats", position: 30 },
+  { id: "b1000000-0000-4000-8000-000000000007", category_id: activityCategories[2].id, code: "POSTER", name_zh: "现场海报", name_en: "In-store poster", position: 10 },
+  { id: "b1000000-0000-4000-8000-000000000008", category_id: activityCategories[3].id, code: "KOL", name_zh: "网红代言", name_en: "KOL endorsement", position: 10 },
+  { id: "b1000000-0000-4000-8000-000000000009", category_id: activityCategories[4].id, code: "OTHER", name_zh: "其他平台", name_en: "Other platform", position: 10 },
+];
+
+function activityDemoPlans(): ActivityPlan[] {
+  const today = localDateKey();
+  const monthStart = `${today.slice(0, 8)}01`;
+  const now = new Date().toISOString();
+  const makePlan = (
+    id: string,
+    name: string,
+    categoryIndex: number,
+    platformIndex: number,
+    frequency: ActivityPlan["reminder_rule"]["frequency"],
+    reminderTime: string,
+    weekdays: number[] = [],
+    monthDays: number[] = [],
+  ): ActivityPlan => ({
+    id,
+    name,
+    category_id: activityCategories[categoryIndex].id,
+    category: activityCategories[categoryIndex],
+    platform_id: activityPlatforms[platformIndex].id,
+    platform: activityPlatforms[platformIndex],
+    description: "",
+    priority: platformIndex === 3 ? "HIGH" : "NORMAL",
+    status: "ACTIVE",
+    start_date: monthStart,
+    end_date: null,
+    owner_id: null,
+    owner_name: "",
+    focus_product_ids: [],
+    reminder_rule: { id: `${id.slice(0, -1)}9`, frequency, interval: 1, weekdays, month_days: monthDays, reminder_time: reminderTime, timezone: "Europe/London", is_enabled: true },
+    next_reminder_at: null,
+    created_at: now,
+    updated_at: now,
+  });
+  return [
+    makePlan("c1000000-0000-4000-8000-000000000001", "每周发布小红书动态", 0, 1, "WEEKLY", "10:00", [1, 4]),
+    makePlan("c1000000-0000-4000-8000-000000000002", "检查 Deliveroo 门店内容", 1, 3, "DAILY", "09:30"),
+    makePlan("c1000000-0000-4000-8000-000000000003", "更新门店活动海报", 2, 6, "MONTHLY", "11:00", [], [1, 15]),
+  ];
+}
 
 function localDateKey(): string {
   const now = new Date();
@@ -101,6 +164,21 @@ export function getBundledTestEmployee(employeeId: string): Employee | undefined
 
 export function readBundledTestResponse(path: string): unknown | undefined {
   const url = new URL(path, "http://bakeops.local");
+
+  if (url.pathname === "/events/activity-planning/plans/") return activityDemoPlans();
+  if (url.pathname === "/events/activity-planning/occurrences/") return [];
+  if (url.pathname === "/events/activity-planning/overview/") {
+    return {
+      range: { start: url.searchParams.get("start") ?? localDateKey(), end: url.searchParams.get("end") ?? localDateKey() },
+      categories: activityCategories,
+      platforms: activityPlatforms,
+      owner_options: [],
+      product_options: [],
+      plans: activityDemoPlans(),
+      occurrences: [],
+      kpis: { today_pending: 0, overdue: 0, range_pending: 0, active_plans: 3 },
+    };
+  }
 
   if (url.pathname === "/employees/") return filteredEmployees(url);
   if (url.pathname === "/schedules/") return filteredSchedules(url);

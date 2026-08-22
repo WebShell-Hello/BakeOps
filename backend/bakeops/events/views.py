@@ -1,21 +1,36 @@
 from datetime import date, timedelta
 from typing import Any
 
-from django.db.models import Max
+from django.db.models import Max, Q
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import generics, status
+from rest_framework.fields import DateTimeField
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from bakeops.events.models import BusinessClosure, BusinessEvent, EventChecklistItem, Holiday
-from bakeops.events.permissions import CanManageEvents, CanReadBusinessDayStatus
+from bakeops.events.activity_services import ensure_activity_occurrences
+from bakeops.events.models import (
+    ActivityCategory,
+    ActivityPlan,
+    ActivityPlatform,
+    ActivityReminderOccurrence,
+    BusinessClosure,
+    BusinessEvent,
+    EventChecklistItem,
+    Holiday,
+)
+from bakeops.events.permissions import CanManageActivityPlans, CanManageEvents, CanReadBusinessDayStatus
 from bakeops.events.serializers import (
     BusinessClosureSerializer,
     BusinessEventSerializer,
     EventChecklistItemSerializer,
     HolidaySerializer,
+    ActivityCategorySerializer,
+    ActivityPlanSerializer,
+    ActivityPlatformSerializer,
+    ActivityReminderOccurrenceSerializer,
 )
 from bakeops.events.services import build_event_advice, event_status
 from bakeops.products.models import Product
@@ -152,3 +167,117 @@ class BusinessDayStatusApi(APIView):
                 "closures": BusinessClosureSerializer(closures, many=True).data,
             }
         )
+
+
+def activity_plan_queryset() -> Any:
+    return ActivityPlan.objects.select_related(
+        "category",
+        "platform",
+        "owner",
+        "reminder_rule",
+    ).prefetch_related("focus_products", "occurrences")
+
+
+class ActivityPlanningOverviewApi(APIView):
+    permission_classes = (CanManageActivityPlans,)
+
+    def get(self, request: Request) -> Response:
+        today = timezone.localdate()
+        try:
+            start = date.fromisoformat(request.query_params.get("start", today.isoformat()))
+            end = date.fromisoformat(request.query_params.get("end", (today + timedelta(days=30)).isoformat()))
+        except ValueError:
+            return Response({"detail": "Dates must use YYYY-MM-DD format."}, status=status.HTTP_400_BAD_REQUEST)
+        if end < start:
+            return Response({"detail": "End date cannot be earlier than start date."}, status=status.HTTP_400_BAD_REQUEST)
+        if (end - start).days > 366:
+            return Response({"detail": "Date range cannot exceed 367 days."}, status=status.HTTP_400_BAD_REQUEST)
+
+        ensure_activity_occurrences(start, end)
+        plans = activity_plan_queryset()
+        occurrences = (
+            ActivityReminderOccurrence.objects.select_related("plan__category", "plan__platform", "plan__owner")
+            .filter(
+                Q(scheduled_at__date__range=(start, end))
+                | Q(snoozed_until__date__range=(start, end))
+            )
+            .order_by("scheduled_at", "plan__name")
+        )
+        occurrence_data = ActivityReminderOccurrenceSerializer(occurrences, many=True).data
+        return Response(
+            {
+                "range": {"start": start.isoformat(), "end": end.isoformat()},
+                "categories": ActivityCategorySerializer(
+                    ActivityCategory.objects.filter(is_active=True), many=True
+                ).data,
+                "platforms": ActivityPlatformSerializer(
+                    ActivityPlatform.objects.filter(is_active=True).select_related("category"), many=True
+                ).data,
+                "owner_options": list(
+                    request.user.__class__.objects.filter(is_active=True)
+                    .order_by("username", "email")
+                    .values("id", "username", "email", "first_name", "last_name")
+                ) if request.user.is_authenticated else [],
+                "product_options": list(
+                    Product.objects.filter(sale_status=Product.SaleStatus.ON_SALE)
+                    .order_by("name_zh", "name_en")
+                    .values("id", "name_zh", "name_en")
+                ),
+                "plans": ActivityPlanSerializer(plans, many=True).data,
+                "occurrences": occurrence_data,
+                "kpis": {
+                    "today_pending": sum(
+                        item["display_status"] in ("PENDING", "OVERDUE")
+                        and item["effective_at"][:10] == today.isoformat()
+                        for item in occurrence_data
+                    ),
+                    "overdue": sum(item["display_status"] == "OVERDUE" for item in occurrence_data),
+                    "range_pending": sum(item["display_status"] == "PENDING" for item in occurrence_data),
+                    "active_plans": plans.filter(status=ActivityPlan.Status.ACTIVE).count(),
+                },
+            }
+        )
+
+
+class ActivityPlanListCreateApi(generics.ListCreateAPIView[ActivityPlan]):
+    permission_classes = (CanManageActivityPlans,)
+    serializer_class = ActivityPlanSerializer
+    pagination_class = None
+
+    def get_queryset(self) -> Any:
+        return activity_plan_queryset()
+
+
+class ActivityPlanDetailApi(generics.RetrieveUpdateDestroyAPIView[ActivityPlan]):
+    permission_classes = (CanManageActivityPlans,)
+    serializer_class = ActivityPlanSerializer
+    queryset = activity_plan_queryset()
+
+
+class ActivityReminderOccurrenceDetailApi(APIView):
+    permission_classes = (CanManageActivityPlans,)
+
+    def patch(self, request: Request, pk: object) -> Response:
+        occurrence = get_object_or_404(
+            ActivityReminderOccurrence.objects.select_related("plan__category", "plan__platform", "plan__owner"),
+            pk=pk,
+        )
+        next_status = request.data.get("status", occurrence.status)
+        if next_status not in ActivityReminderOccurrence.Status.values:
+            return Response({"detail": "Invalid reminder status."}, status=status.HTTP_400_BAD_REQUEST)
+        occurrence.status = next_status
+        occurrence.execution_notes = request.data.get("execution_notes", occurrence.execution_notes)
+        occurrence.result_url = request.data.get("result_url", occurrence.result_url)
+        if "snoozed_until" in request.data:
+            occurrence.snoozed_until = DateTimeField(allow_null=True).run_validation(
+                request.data.get("snoozed_until")
+            )
+        if next_status == ActivityReminderOccurrence.Status.COMPLETED:
+            occurrence.completed_at = timezone.now()
+            occurrence.completed_by = request.user if request.user.is_authenticated else None
+            occurrence.snoozed_until = None
+        elif next_status == ActivityReminderOccurrence.Status.PENDING:
+            occurrence.completed_at = None
+            occurrence.completed_by = None
+        occurrence.save()
+        return Response(ActivityReminderOccurrenceSerializer(occurrence).data)

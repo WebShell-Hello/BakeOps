@@ -1052,6 +1052,105 @@ export type BusinessDayStatus = {
   closures: BusinessClosure[];
 };
 
+export type ActivityFrequency = "ONCE" | "DAILY" | "WEEKLY" | "MONTHLY";
+export type ActivityPlanStatus = "DRAFT" | "ACTIVE" | "PAUSED" | "ENDED";
+export type ActivityPriority = "LOW" | "NORMAL" | "HIGH" | "URGENT";
+export type ActivityOccurrenceStatus = "PENDING" | "COMPLETED" | "SKIPPED" | "CANCELLED";
+export type ActivityOccurrenceDisplayStatus = ActivityOccurrenceStatus | "OVERDUE";
+
+export type ActivityCategory = {
+  id: string;
+  code: string;
+  name_zh: string;
+  name_en: string;
+  colour: string;
+  icon_key: string;
+  position: number;
+};
+
+export type ActivityPlatform = {
+  id: string;
+  category_id: string;
+  code: string;
+  name_zh: string;
+  name_en: string;
+  position: number;
+};
+
+export type ActivityReminderRule = {
+  id: string;
+  frequency: ActivityFrequency;
+  interval: number;
+  weekdays: number[];
+  month_days: number[];
+  reminder_time: string;
+  timezone: string;
+  is_enabled: boolean;
+};
+
+export type ActivityPlan = {
+  id: string;
+  name: string;
+  category_id: string;
+  category: ActivityCategory;
+  platform_id: string;
+  platform: ActivityPlatform;
+  description: string;
+  priority: ActivityPriority;
+  status: ActivityPlanStatus;
+  start_date: string;
+  end_date: string | null;
+  owner_id: string | null;
+  owner_name: string;
+  focus_product_ids: string[];
+  reminder_rule: ActivityReminderRule;
+  next_reminder_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ActivityPlanInput = {
+  name: string;
+  category_id: string;
+  platform_id: string;
+  description: string;
+  priority: ActivityPriority;
+  status: ActivityPlanStatus;
+  start_date: string;
+  end_date: string | null;
+  owner_id: string | null;
+  focus_product_ids: string[];
+  reminder_rule: Omit<ActivityReminderRule, "id">;
+};
+
+export type ActivityReminderOccurrence = {
+  id: string;
+  plan_id: string;
+  plan_name: string;
+  platform: ActivityPlatform;
+  category: ActivityCategory;
+  owner_name: string;
+  scheduled_at: string;
+  effective_at: string;
+  status: ActivityOccurrenceStatus;
+  display_status: ActivityOccurrenceDisplayStatus;
+  completed_at: string | null;
+  execution_notes: string;
+  result_url: string;
+  snoozed_until: string | null;
+};
+
+export type ActivityPlanningOverview = {
+  range: { start: string; end: string };
+  categories: ActivityCategory[];
+  platforms: ActivityPlatform[];
+  owner_options: Array<{ id: string; username: string; email: string; first_name: string; last_name: string }>;
+  product_options: Array<{ id: string; name_zh: string; name_en: string }>;
+  plans: ActivityPlan[];
+  occurrences: ActivityReminderOccurrence[];
+  kpis: { today_pending: number; overdue: number; range_pending: number; active_plans: number };
+};
+
 export type ProductionPlanUpdateInput = {
   planned_quantity?: number;
   actual_quantity?: number | null;
@@ -2474,6 +2573,151 @@ export function deleteBusinessClosure(closureId: string) {
 
 export function getBusinessDayStatus(date: string) {
   return apiRequest<BusinessDayStatus>(`/events/business-day-status/?date=${encodeURIComponent(date)}`);
+}
+
+export async function getActivityPlanningOverview(start: string, end: string) {
+  const query = new URLSearchParams({ start, end });
+  const overview = await apiRequest<ActivityPlanningOverview>(
+    `/events/activity-planning/overview/?${query}`,
+  );
+  if (getDataMode() !== "TEST") return overview;
+
+  const [rawPlans, overrides] = await Promise.all([
+    apiRequest<ActivityPlan[]>("/events/activity-planning/plans/"),
+    apiRequest<Partial<ActivityReminderOccurrence>[]>("/events/activity-planning/occurrences/"),
+  ]);
+  const plans = rawPlans.map((plan) => enrichLocalActivityPlan(plan, overview));
+  const overrideMap = new Map(overrides.map((item) => [item.id, item]));
+  const occurrences = buildLocalActivityOccurrences(plans, start, end).map((occurrence) => {
+    const override = overrideMap.get(occurrence.id);
+    const merged = override ? { ...occurrence, ...override } : occurrence;
+    return {
+      ...merged,
+      effective_at: merged.snoozed_until ?? merged.scheduled_at,
+      display_status: merged.status !== "PENDING"
+        ? merged.status
+        : new Date(merged.snoozed_until ?? merged.scheduled_at).getTime() < Date.now()
+          ? "OVERDUE"
+          : "PENDING",
+    } as ActivityReminderOccurrence;
+  });
+  const today = localIsoDate(new Date());
+  return {
+    ...overview,
+    plans,
+    occurrences,
+    kpis: {
+      today_pending: occurrences.filter((item) => ["PENDING", "OVERDUE"].includes(item.display_status) && item.effective_at.slice(0, 10) === today).length,
+      overdue: occurrences.filter((item) => item.display_status === "OVERDUE").length,
+      range_pending: occurrences.filter((item) => item.display_status === "PENDING").length,
+      active_plans: plans.filter((item) => item.status === "ACTIVE").length,
+    },
+  };
+}
+
+export function createActivityPlan(input: ActivityPlanInput) {
+  return apiRequest<ActivityPlan>("/events/activity-planning/plans/", {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+}
+
+export function updateActivityPlan(planId: string, input: ActivityPlanInput) {
+  return apiRequest<ActivityPlan>(`/events/activity-planning/plans/${planId}/`, {
+    method: "PATCH",
+    body: JSON.stringify(input),
+  });
+}
+
+export function deleteActivityPlan(planId: string) {
+  return apiRequest<void>(`/events/activity-planning/plans/${planId}/`, { method: "DELETE" });
+}
+
+export function updateActivityOccurrence(
+  occurrenceId: string,
+  input: Partial<Pick<ActivityReminderOccurrence, "status" | "execution_notes" | "result_url" | "snoozed_until">>,
+) {
+  return apiRequest<ActivityReminderOccurrence>(
+    `/events/activity-planning/occurrences/${occurrenceId}/`,
+    { method: "PATCH", body: JSON.stringify(input) },
+  );
+}
+
+function enrichLocalActivityPlan(plan: ActivityPlan, overview: ActivityPlanningOverview): ActivityPlan {
+  const category = overview.categories.find((item) => item.id === plan.category_id) ?? plan.category;
+  const platform = overview.platforms.find((item) => item.id === plan.platform_id) ?? plan.platform;
+  return {
+    ...plan,
+    category,
+    platform,
+    owner_name: plan.owner_name ?? "",
+    next_reminder_at: plan.next_reminder_at ?? null,
+    reminder_rule: {
+      id: plan.reminder_rule?.id ?? `${plan.id.slice(0, -1)}9`,
+      frequency: plan.reminder_rule?.frequency ?? "ONCE",
+      interval: plan.reminder_rule?.interval ?? 1,
+      weekdays: plan.reminder_rule?.weekdays ?? [],
+      month_days: plan.reminder_rule?.month_days ?? [],
+      reminder_time: plan.reminder_rule?.reminder_time ?? "10:00",
+      timezone: plan.reminder_rule?.timezone ?? "Europe/London",
+      is_enabled: plan.reminder_rule?.is_enabled ?? true,
+    },
+  };
+}
+
+function buildLocalActivityOccurrences(plans: ActivityPlan[], start: string, end: string) {
+  const result: ActivityReminderOccurrence[] = [];
+  for (const plan of plans) {
+    if (plan.status !== "ACTIVE" || !plan.reminder_rule.is_enabled) continue;
+    for (let cursor = start; cursor <= end; cursor = addLocalDays(cursor, 1)) {
+      if (!localRuleMatches(plan, cursor)) continue;
+      const scheduledAt = `${cursor}T${plan.reminder_rule.reminder_time}:00+01:00`;
+      result.push({
+        id: `${plan.reminder_rule.id}-${cursor.replaceAll("-", "")}`,
+        plan_id: plan.id,
+        plan_name: plan.name,
+        platform: plan.platform,
+        category: plan.category,
+        owner_name: plan.owner_name,
+        scheduled_at: scheduledAt,
+        effective_at: scheduledAt,
+        status: "PENDING",
+        display_status: new Date(scheduledAt).getTime() < Date.now() ? "OVERDUE" : "PENDING",
+        completed_at: null,
+        execution_notes: "",
+        result_url: "",
+        snoozed_until: null,
+      });
+    }
+  }
+  return result.sort((left, right) => left.effective_at.localeCompare(right.effective_at));
+}
+
+function localRuleMatches(plan: ActivityPlan, target: string) {
+  if (target < plan.start_date || (plan.end_date && target > plan.end_date)) return false;
+  const rule = plan.reminder_rule;
+  const targetDate = new Date(`${target}T12:00:00Z`);
+  const startDate = new Date(`${plan.start_date}T12:00:00Z`);
+  const days = Math.round((targetDate.getTime() - startDate.getTime()) / 86_400_000);
+  if (rule.frequency === "ONCE") return target === plan.start_date;
+  if (rule.frequency === "DAILY") return days % rule.interval === 0;
+  if (rule.frequency === "WEEKLY") {
+    const weekday = targetDate.getUTCDay() || 7;
+    const weeks = Math.floor((days + (startDate.getUTCDay() || 7) - 1) / 7);
+    return weeks % rule.interval === 0 && rule.weekdays.includes(weekday);
+  }
+  const months = (targetDate.getUTCFullYear() - startDate.getUTCFullYear()) * 12 + targetDate.getUTCMonth() - startDate.getUTCMonth();
+  return months % rule.interval === 0 && rule.month_days.includes(targetDate.getUTCDate());
+}
+
+function addLocalDays(value: string, amount: number) {
+  const date = new Date(`${value}T12:00:00Z`);
+  date.setUTCDate(date.getUTCDate() + amount);
+  return localIsoDate(date);
+}
+
+function localIsoDate(date: Date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
 export function createSupplier(input: SupplierInput) {

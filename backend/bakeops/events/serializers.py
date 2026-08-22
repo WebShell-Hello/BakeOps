@@ -5,9 +5,21 @@ from django.db import transaction
 from django.utils import timezone
 from rest_framework import serializers
 
-from bakeops.events.models import BusinessClosure, BusinessEvent, EventChecklistItem, Holiday
+from bakeops.events.activity_services import occurrence_display_status
+from bakeops.events.models import (
+    ActivityCategory,
+    ActivityPlan,
+    ActivityPlatform,
+    ActivityReminderOccurrence,
+    ActivityReminderRule,
+    BusinessClosure,
+    BusinessEvent,
+    EventChecklistItem,
+    Holiday,
+)
 from bakeops.events.services import event_status
 from bakeops.products.models import Product
+from bakeops.users.models import User
 
 DEFAULT_CHECKLIST = (
     ("PRODUCT_PRODUCTION", "确认重点产品", "Confirm focus products"),
@@ -197,3 +209,192 @@ class BusinessClosureSerializer(serializers.ModelSerializer[BusinessClosure]):
 
     def get_duration_days(self, instance: BusinessClosure) -> int:
         return (instance.end_date - instance.start_date).days + 1
+
+
+class ActivityCategorySerializer(serializers.ModelSerializer[ActivityCategory]):
+    class Meta:
+        model = ActivityCategory
+        fields = ("id", "code", "name_zh", "name_en", "colour", "icon_key", "position")
+
+
+class ActivityPlatformSerializer(serializers.ModelSerializer[ActivityPlatform]):
+    category_id = serializers.UUIDField(read_only=True)
+
+    class Meta:
+        model = ActivityPlatform
+        fields = ("id", "category_id", "code", "name_zh", "name_en", "position")
+
+
+class ActivityReminderRuleSerializer(serializers.ModelSerializer[ActivityReminderRule]):
+    class Meta:
+        model = ActivityReminderRule
+        fields = (
+            "id",
+            "frequency",
+            "interval",
+            "weekdays",
+            "month_days",
+            "reminder_time",
+            "timezone",
+            "is_enabled",
+        )
+        read_only_fields = ("id",)
+
+    def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
+        frequency = attrs.get("frequency", getattr(self.instance, "frequency", None))
+        weekdays = attrs.get("weekdays", getattr(self.instance, "weekdays", []))
+        month_days = attrs.get("month_days", getattr(self.instance, "month_days", []))
+        if not isinstance(weekdays, list) or any(not isinstance(day, int) or day < 1 or day > 7 for day in weekdays):
+            raise serializers.ValidationError({"weekdays": "Weekdays must contain unique numbers from 1 to 7."})
+        if len(set(weekdays)) != len(weekdays):
+            raise serializers.ValidationError({"weekdays": "Weekdays cannot contain duplicates."})
+        if not isinstance(month_days, list) or any(
+            not isinstance(day, int) or day < 1 or day > 31 for day in month_days
+        ):
+            raise serializers.ValidationError({"month_days": "Month days must contain unique numbers from 1 to 31."})
+        if len(set(month_days)) != len(month_days):
+            raise serializers.ValidationError({"month_days": "Month days cannot contain duplicates."})
+        if frequency == ActivityReminderRule.Frequency.WEEKLY and not weekdays:
+            raise serializers.ValidationError({"weekdays": "Select at least one weekday."})
+        if frequency == ActivityReminderRule.Frequency.MONTHLY and not month_days:
+            raise serializers.ValidationError({"month_days": "Select at least one month day."})
+        attrs["weekdays"] = sorted(weekdays)
+        attrs["month_days"] = sorted(month_days)
+        return attrs
+
+
+class ActivityPlanSerializer(serializers.ModelSerializer[ActivityPlan]):
+    category_id = serializers.PrimaryKeyRelatedField(source="category", queryset=ActivityCategory.objects.all())
+    platform_id = serializers.PrimaryKeyRelatedField(source="platform", queryset=ActivityPlatform.objects.all())
+    owner_id = serializers.PrimaryKeyRelatedField(
+        source="owner",
+        queryset=User.objects.filter(is_active=True),
+        allow_null=True,
+        required=False,
+    )
+    focus_product_ids = serializers.PrimaryKeyRelatedField(
+        source="focus_products",
+        queryset=Product.objects.all(),
+        many=True,
+        required=False,
+    )
+    category = ActivityCategorySerializer(read_only=True)
+    platform = ActivityPlatformSerializer(read_only=True)
+    owner_name = serializers.SerializerMethodField()
+    reminder_rule = ActivityReminderRuleSerializer()
+    next_reminder_at = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ActivityPlan
+        fields = (
+            "id",
+            "name",
+            "category_id",
+            "category",
+            "platform_id",
+            "platform",
+            "description",
+            "priority",
+            "status",
+            "start_date",
+            "end_date",
+            "owner_id",
+            "owner_name",
+            "focus_product_ids",
+            "reminder_rule",
+            "next_reminder_at",
+            "created_at",
+            "updated_at",
+        )
+        read_only_fields = ("id", "created_at", "updated_at")
+
+    def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
+        start_date = attrs.get("start_date", getattr(self.instance, "start_date", None))
+        end_date = attrs.get("end_date", getattr(self.instance, "end_date", None))
+        category = attrs.get("category", getattr(self.instance, "category", None))
+        platform = attrs.get("platform", getattr(self.instance, "platform", None))
+        if start_date and end_date and end_date < start_date:
+            raise serializers.ValidationError({"end_date": "End date cannot be earlier than start date."})
+        if category and platform and platform.category_id != category.id:
+            raise serializers.ValidationError({"platform_id": "The platform must belong to the selected category."})
+        return attrs
+
+    @transaction.atomic
+    def create(self, validated_data: dict[str, Any]) -> ActivityPlan:
+        rule_data = validated_data.pop("reminder_rule")
+        products = validated_data.pop("focus_products", [])
+        request = self.context.get("request")
+        plan = ActivityPlan.objects.create(
+            created_by=request.user if request and request.user.is_authenticated else None,
+            **validated_data,
+        )
+        plan.focus_products.set(products)
+        ActivityReminderRule.objects.create(plan=plan, **rule_data)
+        return plan
+
+    @transaction.atomic
+    def update(self, instance: ActivityPlan, validated_data: dict[str, Any]) -> ActivityPlan:
+        rule_data = validated_data.pop("reminder_rule", None)
+        products = validated_data.pop("focus_products", None)
+        for field, value in validated_data.items():
+            setattr(instance, field, value)
+        instance.full_clean()
+        instance.save()
+        if products is not None:
+            instance.focus_products.set(products)
+        if rule_data is not None:
+            rule_serializer = ActivityReminderRuleSerializer(instance.reminder_rule, data=rule_data)
+            rule_serializer.is_valid(raise_exception=True)
+            rule_serializer.save()
+            instance.occurrences.filter(status=ActivityReminderOccurrence.Status.PENDING).delete()
+        return instance
+
+    def get_owner_name(self, instance: ActivityPlan) -> str:
+        if not instance.owner:
+            return ""
+        return instance.owner.get_full_name() or instance.owner.username or instance.owner.email
+
+    def get_next_reminder_at(self, instance: ActivityPlan) -> str | None:
+        occurrence = instance.occurrences.filter(
+            status=ActivityReminderOccurrence.Status.PENDING,
+            scheduled_at__gte=timezone.now(),
+        ).order_by("scheduled_at").first()
+        return occurrence.scheduled_at.isoformat() if occurrence else None
+
+
+class ActivityReminderOccurrenceSerializer(serializers.ModelSerializer[ActivityReminderOccurrence]):
+    display_status = serializers.SerializerMethodField()
+    effective_at = serializers.SerializerMethodField()
+    plan_name = serializers.CharField(source="plan.name", read_only=True)
+    platform = ActivityPlatformSerializer(source="plan.platform", read_only=True)
+    category = ActivityCategorySerializer(source="plan.category", read_only=True)
+    owner_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ActivityReminderOccurrence
+        fields = (
+            "id",
+            "plan_id",
+            "plan_name",
+            "platform",
+            "category",
+            "owner_name",
+            "scheduled_at",
+            "effective_at",
+            "status",
+            "display_status",
+            "completed_at",
+            "execution_notes",
+            "result_url",
+            "snoozed_until",
+        )
+
+    def get_display_status(self, instance: ActivityReminderOccurrence) -> str:
+        return occurrence_display_status(instance)
+
+    def get_effective_at(self, instance: ActivityReminderOccurrence) -> str:
+        return (instance.snoozed_until or instance.scheduled_at).isoformat()
+
+    def get_owner_name(self, instance: ActivityReminderOccurrence) -> str:
+        owner = instance.plan.owner
+        return owner.get_full_name() or owner.username or owner.email if owner else ""
