@@ -23,6 +23,7 @@ import { useAppPreferences } from "@/components/providers/app-preferences-provid
 import { useToast } from "@/components/providers/toast-provider";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { DateInput, normalizeDateInput } from "@/components/ui/date-input";
 import {
   DataPagination,
   useDataPagination,
@@ -43,12 +44,19 @@ import {
 } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
+function normalizeOptionalDate(value: string | null | undefined): string | null {
+  const trimmed = value?.trim() ?? "";
+  if (!trimmed) return null;
+
+  return normalizeDateInput(trimmed) ?? trimmed;
+}
+
 const emptyForm: EmployeeInput = {
   employee_number: "",
   name: "",
   gender: "UNSPECIFIED",
-  date_of_birth: "2001-05-03",
-  hire_date: "2026-08-14",
+  date_of_birth: "",
+  hire_date: "",
   departure_date: null,
   position: "",
   hourly_rate: "0.00",
@@ -304,7 +312,9 @@ export function EmployeeManagementPage() {
       employee_number: form.employee_number.trim(),
       name: form.name.trim(),
       position: form.position.trim(),
-      email: form.email.trim().toLocaleLowerCase(),
+      date_of_birth: normalizeOptionalDate(form.date_of_birth),
+      hire_date: normalizeOptionalDate(form.hire_date),
+      email: form.email?.trim().toLocaleLowerCase() || null,
     };
     try {
       if (editor) await updateEmployee(editor.id, input);
@@ -543,10 +553,10 @@ export function EmployeeManagementPage() {
                         {text.genders[employee.gender]}
                       </td>
                       <td className="px-4 py-3 tabular-nums">
-                        {employee.date_of_birth}
+                        {employee.date_of_birth ?? "—"}
                       </td>
                       <td className="px-4 py-3 tabular-nums">
-                        {employee.hire_date}
+                        {employee.hire_date ?? "—"}
                       </td>
                       <td className="px-4 py-3 tabular-nums">
                         {employee.departure_date ?? "—"}
@@ -558,7 +568,7 @@ export function EmployeeManagementPage() {
                       <td className="px-4 py-3">
                         {text.types[employee.employment_type]}
                       </td>
-                      <td className="px-4 py-3">{employee.email}</td>
+                      <td className="px-4 py-3">{employee.email ?? "—"}</td>
                       <td className="px-4 py-3">
                         <span
                           className={cn(
@@ -641,6 +651,7 @@ export function EmployeeManagementPage() {
         <EmployeeModal
           title={editor ? text.editTitle : text.createTitle}
           text={text}
+          locale={locale}
           form={form}
           saving={saving}
           onChange={setForm}
@@ -682,7 +693,7 @@ function EmployeeHistoryDrawer({ employee, history, loading, text, onClose }: {
               <h2 className="truncate text-lg font-semibold">{detail.name} · {text.historyTitle}</h2>
               {detail.deleted_at ? <span className="rounded-full bg-rose-500/10 px-2.5 py-1 text-xs font-medium text-rose-600">{text.deletedEmployee}</span> : null}
             </div>
-            <p className="mt-1 text-sm text-[var(--muted)]">{detail.employee_number} · {detail.position} · {detail.hire_date}–{detail.departure_date ?? "—"}</p>
+            <p className="mt-1 text-sm text-[var(--muted)]">{detail.employee_number} · {detail.position} · {detail.hire_date ?? "—"}–{detail.departure_date ?? "—"}</p>
           </div>
           <Button variant="ghost" size="icon" aria-label={text.cancel} onClick={onClose}><X className="size-5" /></Button>
         </header>
@@ -717,6 +728,7 @@ function HistoryMetric({ label, value }: { label: string; value: string }) {
 function EmployeeModal({
   title,
   text,
+  locale,
   form,
   saving,
   onChange,
@@ -725,6 +737,7 @@ function EmployeeModal({
 }: {
   title: string;
   text: (typeof copy)["zh-CN"] | (typeof copy)["en-GB"];
+  locale: "zh-CN" | "en-GB";
   form: EmployeeInput;
   saving: boolean;
   onChange: (form: EmployeeInput) => void;
@@ -805,25 +818,19 @@ function EmployeeModal({
             </select>
           </Field>
           <Field label={text.birthDate}>
-            <input
-              required
-              type="date"
+            <DateInput
+              locale={locale}
               className={inputClass}
-              value={form.date_of_birth}
-              onChange={(event) =>
-                onChange({ ...form, date_of_birth: event.target.value })
-              }
+              value={form.date_of_birth ?? ""}
+              onChange={(value) => onChange({ ...form, date_of_birth: value || null })}
             />
           </Field>
           <Field label={text.hireDate}>
-            <input
-              required
-              type="date"
+            <DateInput
+              locale={locale}
               className={inputClass}
-              value={form.hire_date}
-              onChange={(event) =>
-                onChange({ ...form, hire_date: event.target.value })
-              }
+              value={form.hire_date ?? ""}
+              onChange={(value) => onChange({ ...form, hire_date: value || null })}
             />
           </Field>
           <Field label={text.position}>
@@ -871,11 +878,10 @@ function EmployeeModal({
           </Field>
           <Field label={text.email}>
             <input
-              required
               type="email"
               maxLength={254}
               className={inputClass}
-              value={form.email}
+              value={form.email ?? ""}
               onChange={(event) =>
                 onChange({ ...form, email: event.target.value })
               }
@@ -905,16 +911,16 @@ function EmployeeModal({
           </Field>
           {form.status === "DEPARTED" ? (
             <Field label={text.departureDate}>
-              <input
+              <DateInput
                 required
-                type="date"
-                min={form.hire_date}
+                locale={locale}
+                min={form.hire_date ?? undefined}
                 className={inputClass}
                 value={form.departure_date ?? ""}
-                onChange={(event) =>
+                onChange={(value) =>
                   onChange({
                     ...form,
-                    departure_date: event.target.value || null,
+                    departure_date: value || null,
                   })
                 }
               />

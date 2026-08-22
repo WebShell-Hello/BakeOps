@@ -79,6 +79,79 @@ def test_user_crud_assigns_multiple_roles_and_returns_permission_union(
 
 
 @pytest.mark.django_db
+def test_superuser_can_assign_user_system_mode(admin_client: APIClient) -> None:
+    user = User.objects.create_user(
+        username="mode-user",
+        email="mode-user@example.com",
+        password="password123",
+    )
+
+    response = admin_client.put(
+        reverse("user-detail", kwargs={"pk": user.id}),
+        {
+            "username": user.username,
+            "email": user.email,
+            "first_name": "",
+            "last_name": "",
+            "is_active": True,
+            "is_protected": False,
+            "system_mode": "PRODUCTION",
+            "role_ids": [],
+        },
+        format="json",
+    )
+
+    assert response.status_code == 200
+    assert response.data["system_mode"] == User.SystemMode.PRODUCTION
+    user.refresh_from_db()
+    assert user.system_mode == User.SystemMode.PRODUCTION
+
+    user_client = APIClient()
+    user_client.force_authenticate(user)
+    assert user_client.get(reverse("auth-me")).data["system_mode"] == User.SystemMode.PRODUCTION
+
+
+@pytest.mark.django_db
+def test_role_manager_cannot_change_user_system_mode() -> None:
+    page = NavigationItem.objects.get(key="settings.users")
+    role = Role.objects.create(code="user-mode-manager", name="User mode manager")
+    role.pages.add(page)
+    manager = User.objects.create_user(
+        username="manager",
+        email="manager@example.com",
+        password="password123",
+    )
+    manager.roles.add(role)
+    target = User.objects.create_user(
+        username="target",
+        email="target@example.com",
+        password="password123",
+    )
+    client = APIClient()
+    client.force_authenticate(manager)
+
+    response = client.put(
+        reverse("user-detail", kwargs={"pk": target.id}),
+        {
+            "username": target.username,
+            "email": target.email,
+            "first_name": "",
+            "last_name": "",
+            "is_active": True,
+            "is_protected": False,
+            "system_mode": "PRODUCTION",
+            "role_ids": [],
+        },
+        format="json",
+    )
+
+    assert response.status_code == 400
+    assert "system_mode" in response.data
+    target.refresh_from_db()
+    assert target.system_mode == User.SystemMode.TEST
+
+
+@pytest.mark.django_db
 def test_anonymous_user_role_cannot_be_assigned_to_system_user(admin_client: APIClient) -> None:
     role = Role.objects.get(code=Role.ANONYMOUS_ROLE_CODE)
 
@@ -353,6 +426,25 @@ def test_remembered_login_sets_seven_day_cookie_and_logout_clears_session() -> N
     assert client.get(reverse("auth-me")).status_code == 200
     assert client.post(reverse("auth-logout")).status_code == 204
     assert client.get(reverse("auth-me")).status_code == 403
+
+
+@pytest.mark.django_db
+def test_same_browser_session_is_available_to_another_page_client() -> None:
+    User.objects.create_user(username="shared-session", email="shared@example.com", password="secret")
+    first_page = APIClient()
+    login_response = first_page.post(
+        reverse("auth-login"),
+        {"email": "shared@example.com", "password": "secret", "remember": False},
+        format="json",
+    )
+    assert login_response.status_code == 200
+
+    second_page = APIClient()
+    second_page.cookies["sessionid"] = first_page.cookies["sessionid"].value
+    refreshed_response = second_page.get(reverse("auth-me"))
+
+    assert refreshed_response.status_code == 200
+    assert refreshed_response.data["email"] == "shared@example.com"
 
 
 @pytest.mark.django_db

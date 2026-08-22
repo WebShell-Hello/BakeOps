@@ -6,6 +6,7 @@ urlpatterns = [
     path("health/", HealthCheckApi.as_view(), name="health"),
     path("dashboard/overview/", DashboardOverviewApi.as_view(), name="dashboard-overview"),
     path("access/", include("bakeops.access.urls")),
+    path("audit/", include("bakeops.audit.urls")),
     path("costs/", include("bakeops.costs.urls")),
     path("navigation/", include("bakeops.navigation.urls")),
     path("employees/", include("bakeops.employees.urls")),

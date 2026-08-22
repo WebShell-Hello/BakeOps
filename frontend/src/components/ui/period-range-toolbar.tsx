@@ -16,6 +16,7 @@ import {
 import { ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { DateInput } from "@/components/ui/date-input";
 import { cn } from "@/lib/utils";
 
 export type PeriodUnit = "day" | "week" | "month" | "year";
@@ -84,14 +85,14 @@ export function PeriodRangeToolbar({
         <Button type="button" variant="outline" size="icon" className="size-8 rounded-lg" aria-label={text.previous} onClick={() => onShift(-1)}>
           <ChevronLeft className="size-4" />
         </Button>
-        <div className="flex w-[250px] shrink-0 items-center justify-center sm:w-[278px]">
+        <div className="flex w-[278px] shrink-0 items-center justify-center">
           {unit === "day" ? (
             <p className="w-full text-center text-sm font-medium tabular-nums">{formatToolbarDate(startDate, locale)}</p>
           ) : (
             <div className="flex items-center justify-center gap-2">
-              <input aria-label={text.start} type="date" value={startDate} max={endDate} className="h-8 w-[115px] shrink-0 rounded-md border-0 bg-transparent px-2 text-xs tabular-nums outline-none transition-colors hover:bg-[var(--surface-muted)] focus:bg-[var(--surface-muted)] focus:ring-2 focus:ring-[var(--primary-ring)] sm:w-[128px]" onChange={(event) => onStartDateChange(event.target.value)} />
+              <DateInput aria-label={text.start} locale={locale} value={startDate} max={endDate} className="h-8 w-[128px] shrink-0 rounded-md border-0 bg-transparent px-2 text-xs outline-none transition-colors hover:bg-[var(--surface-muted)] focus:bg-[var(--surface-muted)] focus:ring-2 focus:ring-[var(--primary-ring)]" onChange={onStartDateChange} />
               <span className="text-xs text-[var(--muted)]">-</span>
-              <input aria-label={text.end} type="date" value={endDate} min={startDate} className="h-8 w-[115px] shrink-0 rounded-md border-0 bg-transparent px-2 text-xs tabular-nums outline-none transition-colors hover:bg-[var(--surface-muted)] focus:bg-[var(--surface-muted)] focus:ring-2 focus:ring-[var(--primary-ring)] sm:w-[128px]" onChange={(event) => onEndDateChange(event.target.value)} />
+              <DateInput aria-label={text.end} locale={locale} value={endDate} min={startDate} className="h-8 w-[128px] shrink-0 rounded-md border-0 bg-transparent px-2 text-xs outline-none transition-colors hover:bg-[var(--surface-muted)] focus:bg-[var(--surface-muted)] focus:ring-2 focus:ring-[var(--primary-ring)]" onChange={onEndDateChange} />
             </div>
           )}
         </div>

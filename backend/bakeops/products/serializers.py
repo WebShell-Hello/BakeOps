@@ -16,6 +16,7 @@ RECIPE_WEIGHT_QUANTUM = Decimal("0.001")
 
 
 class RecipeIngredientSerializer(serializers.ModelSerializer[RecipeIngredient]):
+    ingredient_id = serializers.UUIDField(source="ingredient.id", read_only=True)
     ingredient_name = serializers.CharField(source="ingredient.name", read_only=True)
     section_id = serializers.UUIDField(read_only=True)
     section_name = serializers.CharField(source="section.name", read_only=True)
@@ -26,6 +27,7 @@ class RecipeIngredientSerializer(serializers.ModelSerializer[RecipeIngredient]):
             "id",
             "section_id",
             "section_name",
+            "ingredient_id",
             "ingredient_name",
             "weight",
             "unit",

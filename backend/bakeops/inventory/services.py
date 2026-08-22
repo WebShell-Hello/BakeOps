@@ -7,7 +7,7 @@ from django.db import transaction
 from django.db.models import Prefetch, Q
 from django.utils import timezone
 
-from bakeops.inventory.models import InventoryItem, ProductionPlan
+from bakeops.inventory.models import InventoryItem, InventoryReceipt, ProductionPlan
 from bakeops.products.models import Ingredient, Recipe, RecipeIngredient, RecipeSection
 from bakeops.suppliers.models import SupplierIngredient
 
@@ -63,6 +63,76 @@ def apply_inventory_receipt(
     inventory.quantity += base_quantity
     inventory.full_clean()
     inventory.save(update_fields=("quantity", "inventory_value", "updated_at"))
+
+
+class InventoryReceiptDeletionError(ValueError):
+    pass
+
+
+@transaction.atomic
+def delete_inventory_receipts(receipt_ids: list[Any]) -> int:
+    unique_ids = list(dict.fromkeys(receipt_ids))
+    receipts = list(
+        InventoryReceipt.objects.select_for_update()
+        .select_related("ingredient")
+        .filter(id__in=unique_ids)
+    )
+    if len(receipts) != len(unique_ids):
+        raise InventoryReceiptDeletionError("One or more goods receipts no longer exist.")
+
+    quantities: dict[Any, Decimal] = defaultdict(Decimal)
+    purchase_values: dict[Any, Decimal] = defaultdict(Decimal)
+    for receipt in receipts:
+        quantities[receipt.ingredient_id] += receipt.base_quantity
+        if receipt.unit_price is not None and receipt.price_unit:
+            purchase_values[receipt.ingredient_id] += calculate_purchase_value(
+                receipt.quantity,
+                receipt.unit,
+                receipt.unit_price,
+                receipt.price_unit,
+            )
+
+    inventories = {
+        inventory.ingredient_id: inventory
+        for inventory in InventoryItem.objects.select_for_update().filter(
+            ingredient_id__in=quantities
+        )
+    }
+    if len(inventories) != len(quantities):
+        raise InventoryReceiptDeletionError("Inventory data is missing for one or more goods receipts.")
+
+    for ingredient_id, quantity in quantities.items():
+        inventory = inventories[ingredient_id]
+        new_quantity = inventory.quantity - quantity
+        if new_quantity < 0:
+            raise InventoryReceiptDeletionError(
+                f"Deleting the selected receipts would make {inventory.ingredient.name} inventory negative."
+            )
+
+        new_inventory_value = inventory.inventory_value
+        if new_quantity == 0:
+            new_inventory_value = Decimal("0")
+        elif new_inventory_value is not None:
+            new_inventory_value -= purchase_values[ingredient_id]
+            if new_inventory_value < 0:
+                raise InventoryReceiptDeletionError(
+                    f"Deleting the selected receipts would make {inventory.ingredient.name} inventory value negative."
+                )
+
+        inventory.quantity = new_quantity
+        inventory.inventory_value = new_inventory_value
+        inventory.full_clean()
+        inventory.save(update_fields=("quantity", "inventory_value", "updated_at"))
+
+    attachments = [
+        (receipt.invoice.storage, receipt.invoice.name)
+        for receipt in receipts
+        if receipt.invoice
+    ]
+    InventoryReceipt.objects.filter(id__in=unique_ids).delete()
+    for storage, name in attachments:
+        transaction.on_commit(lambda storage=storage, name=name: storage.delete(name))
+    return len(receipts)
 
 
 @transaction.atomic
@@ -327,9 +397,19 @@ def build_inventory_snapshot(today: date | None = None) -> dict[str, Any]:
 
     status_priority = {"EMERGENCY": 0, "PURCHASE_REQUIRED": 1, "WATCH": 2, "NORMAL": 3, "NO_DEMAND": 4}
     result_items.sort(key=lambda item: (status_priority[item["status"]], item["ingredient_name"]))
+    receipt_ingredient_ids = list(
+        RecipeIngredient.objects.filter(
+            section__recipe__is_active=True,
+            ingredient__is_active=True,
+        )
+        .order_by()
+        .values_list("ingredient_id", flat=True)
+        .distinct()
+    )
     return {
         "generated_at": timezone.now().isoformat(),
         "horizon_days": FORECAST_DAYS,
+        "receipt_ingredient_ids": [str(ingredient_id) for ingredient_id in receipt_ingredient_ids],
         "kpis": {
             "ingredient_count": len(result_items),
             "purchase_required_count": sum(

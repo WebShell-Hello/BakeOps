@@ -13,15 +13,11 @@ import {
   ChartLine,
   List,
   PoundSterling,
-  ReceiptText,
   RotateCcw,
   ShoppingBag,
-  WalletCards,
 } from "lucide-react";
 import { type ReactNode, useCallback, useEffect, useState } from "react";
 import {
-  Bar,
-  BarChart,
   CartesianGrid,
   Line,
   LineChart,
@@ -47,15 +43,17 @@ import {
   getSalesAnalysis,
   type SalesAnalysis,
   type SalesAnalysisGrain,
+  type SalesChannel,
 } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
 type TrendMode = "chart" | "list";
+const salesChannels: SalesChannel[] = ["DIRECT", "CONSIGNMENT", "DELIVERY"];
 
 const copy = {
   "zh-CN": {
     title: "销售分析",
-    description: "分析实际销售、成交价格、折扣、退款和营业时段表现",
+    description: "基于每日各渠道、各产品汇总数据分析销量、成交价格、折扣和退款",
     netSales: "净销售收入",
     salesQuantity: "销售数量",
     orders: "订单数",
@@ -93,10 +91,13 @@ const copy = {
     loadError: "销售分析加载失败",
     netSalesLabel: "净销售收入",
     periodSummary: "汇总",
+    channel: "销售渠道",
+    allChannels: "全部渠道",
+    channelNames: { DIRECT: "现场直销", CONSIGNMENT: "喜家代销", DELIVERY: "外卖平台" },
   },
   "en-GB": {
     title: "Sales Analysis",
-    description: "Analyse actual sales, realised prices, discounts, refunds and trading hours",
+    description: "Analyse quantity, realised prices, discounts and refunds from daily channel and product totals",
     netSales: "Net sales revenue",
     salesQuantity: "Units sold",
     orders: "Orders",
@@ -134,6 +135,9 @@ const copy = {
     loadError: "Unable to load sales analysis",
     netSalesLabel: "Net sales",
     periodSummary: "summary",
+    channel: "Sales channel",
+    allChannels: "All channels",
+    channelNames: { DIRECT: "On-site direct", CONSIGNMENT: "Consignment", DELIVERY: "Delivery platform" },
   },
 } as const;
 
@@ -148,6 +152,7 @@ export function SalesAnalysisPage() {
   const [customRange, setCustomRange] = useState(false);
   const [startDate, setStartDate] = useState(() => dateKey(startOfMonth(today)));
   const [endDate, setEndDate] = useState(() => dateKey(today));
+  const [channel, setChannel] = useState<SalesChannel | "">("");
   const grain = automaticSalesGrain(periodUnit, customRange, startDate, endDate);
   const [analysis, setAnalysis] = useState<SalesAnalysis | null>(null);
   const [loading, setLoading] = useState(true);
@@ -158,13 +163,13 @@ export function SalesAnalysisPage() {
     setLoading(true);
     setError(null);
     try {
-      setAnalysis(await getSalesAnalysis(startDate, endDate, effectiveGrain));
+      setAnalysis(await getSalesAnalysis(startDate, endDate, effectiveGrain, channel));
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : text.loadError);
     } finally {
       setLoading(false);
     }
-  }, [effectiveGrain, endDate, startDate, text.loadError]);
+  }, [channel, effectiveGrain, endDate, startDate, text.loadError]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => void load(), 0);
@@ -179,11 +184,6 @@ export function SalesAnalysisPage() {
   }));
   const dailySales = [...(analysis?.trend ?? [])].reverse();
   const dailySalesPagination = useDataPagination(dailySales);
-  const hourlyData = (analysis?.hourly ?? []).map((item) => ({
-    ...item,
-    value: Number(item.net_sales),
-    label: `${String(item.hour).padStart(2, "0")}:00`,
-  }));
   const kpis = analysis?.kpis;
 
   function applyPeriod(unit: PeriodUnit, cursor: Date) {
@@ -202,8 +202,6 @@ export function SalesAnalysisPage() {
   const metrics = [
     { label: text.netSales, value: money(kpis?.net_sales, locale), icon: PoundSterling, tone: "bg-emerald-50 text-emerald-700" },
     { label: text.salesQuantity, value: `${number(kpis?.sales_quantity ?? 0, locale)} ${text.units}`, icon: ShoppingBag, tone: "bg-blue-50 text-blue-700" },
-    { label: text.orders, value: number(kpis?.order_count ?? 0, locale), icon: ReceiptText, tone: "bg-violet-50 text-violet-700" },
-    { label: text.averageOrder, value: money(kpis?.average_order_value, locale), icon: WalletCards, tone: "bg-cyan-50 text-cyan-700" },
     { label: text.discount, value: money(kpis?.discount_amount, locale), icon: BadgePercent, tone: "bg-amber-50 text-amber-700" },
     { label: text.refunds, value: money(kpis?.refund_amount, locale), icon: RotateCcw, tone: "bg-rose-50 text-rose-700" },
   ];
@@ -219,6 +217,17 @@ export function SalesAnalysisPage() {
         </header>
 
         <div className="mb-5 flex flex-wrap items-center justify-end gap-2 border-b border-[var(--border)] pb-4">
+          <select
+            aria-label={text.channel}
+            className="h-9 min-w-[160px] rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 text-sm outline-none focus:ring-2 focus:ring-[var(--primary-ring)]"
+            value={channel}
+            onChange={(event) => setChannel(event.target.value as SalesChannel | "")}
+          >
+            <option value="">{text.allChannels}</option>
+            {salesChannels.map((value) => (
+              <option key={value} value={value}>{text.channelNames[value]}</option>
+            ))}
+          </select>
           <PeriodRangeToolbar
             locale={locale}
             unit={periodUnit}
@@ -233,7 +242,7 @@ export function SalesAnalysisPage() {
           />
         </div>
 
-        <section className="mb-5 grid grid-cols-2 gap-3 lg:grid-cols-3 2xl:grid-cols-6" aria-label={text.title}>
+        <section className="mb-5 grid grid-cols-2 gap-3 lg:grid-cols-4" aria-label={text.title}>
           {metrics.map(({ label, value, icon: Icon, tone }) => (
             <Card key={label} className="min-h-28 p-4">
               <div className="flex items-start justify-between gap-2">
@@ -249,7 +258,7 @@ export function SalesAnalysisPage() {
 
         {error ? <div className="mb-5 rounded-lg border border-rose-300 bg-rose-50 px-4 py-3 text-sm text-rose-700">{error}</div> : null}
 
-        <section className="mb-5 grid gap-5 xl:grid-cols-[minmax(0,1.7fr)_minmax(360px,1fr)]">
+        <section className="mb-5">
           <ChartPanel
             title={trendMode === "list" ? text.dailySalesTitle : text.trendTitle}
             description={text.trendDescription}
@@ -297,20 +306,6 @@ export function SalesAnalysisPage() {
                   <Tooltip formatter={(value) => [money(String(value ?? 0), locale), text.netSalesLabel]} contentStyle={tooltipStyle} />
                   <Line type="monotone" dataKey="value" stroke="var(--primary)" strokeWidth={2.5} dot={false} activeDot={{ r: 4 }} />
                 </LineChart>
-              </ResponsiveContainer>
-            ) : <EmptyChart text={loading ? text.loading : text.empty} />}
-          </ChartPanel>
-
-          <ChartPanel title={text.hourlyTitle} description={text.hourlyDescription}>
-            {hourlyData.length ? (
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={hourlyData} margin={{ top: 10, right: 8, bottom: 4, left: 0 }}>
-                  <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="label" tick={{ fontSize: 11, fill: "var(--muted)" }} axisLine={false} tickLine={false} />
-                  <YAxis tickFormatter={(value) => compactMoney(Number(value), locale)} tick={{ fontSize: 11, fill: "var(--muted)" }} axisLine={false} tickLine={false} width={52} />
-                  <Tooltip formatter={(value) => [money(String(value ?? 0), locale), text.netSalesLabel]} contentStyle={tooltipStyle} />
-                  <Bar dataKey="value" fill="#d9915b" radius={[3, 3, 0, 0]} />
-                </BarChart>
               </ResponsiveContainer>
             ) : <EmptyChart text={loading ? text.loading : text.empty} />}
           </ChartPanel>
@@ -402,13 +397,11 @@ function DailySalesTable({ items, totalItems, loading, locale, text, pagination 
               <th className="px-4 py-3 text-right font-medium">{text.productRefunds}</th>
               <th className="px-4 py-3 text-right font-medium">{text.actualNetSales}</th>
               <th className="px-4 py-3 text-right font-medium">{text.quantity}</th>
-              <th className="px-4 py-3 text-right font-medium">{text.orders}</th>
-              <th className="px-4 py-3 text-right font-medium">{text.averageOrderValue}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[var(--border)]">
-            {loading ? <tr><td colSpan={8} className="px-4 py-12 text-center text-[var(--muted)]">{text.loading}</td></tr> : null}
-            {!loading && !items.length ? <tr><td colSpan={8} className="px-4 py-12 text-center text-[var(--muted)]">{text.empty}</td></tr> : null}
+            {loading ? <tr><td colSpan={6} className="px-4 py-12 text-center text-[var(--muted)]">{text.loading}</td></tr> : null}
+            {!loading && !items.length ? <tr><td colSpan={6} className="px-4 py-12 text-center text-[var(--muted)]">{text.empty}</td></tr> : null}
             {!loading ? items.map((item) => (
               <tr key={item.period} className="hover:bg-[var(--surface-muted)]/60">
                 <td className="whitespace-nowrap px-4 py-3 font-medium">{formatSalesDate(item.period, locale)}</td>
@@ -417,8 +410,6 @@ function DailySalesTable({ items, totalItems, loading, locale, text, pagination 
                 <td className="px-4 py-3 text-right tabular-nums text-rose-600">{money(item.refunds, locale)}</td>
                 <td className="px-4 py-3 text-right font-medium tabular-nums">{money(item.net_sales, locale)}</td>
                 <td className="px-4 py-3 text-right tabular-nums">{number(item.quantity, locale)}</td>
-                <td className="px-4 py-3 text-right tabular-nums">{number(item.order_count, locale)}</td>
-                <td className="px-4 py-3 text-right tabular-nums">{money(average(item.net_sales, item.order_count), locale)}</td>
               </tr>
             )) : null}
           </tbody>
@@ -463,10 +454,6 @@ function automaticSalesGrain(
 
 function formatSalesDate(value: string, locale: "zh-CN" | "en-GB") {
   return new Intl.DateTimeFormat(locale, { year: "numeric", month: "short", day: "numeric", weekday: "short" }).format(new Date(`${value}T12:00:00`));
-}
-
-function average(value: string, count: number) {
-  return count ? String(Number(value) / count) : "0";
 }
 
 function formatPeriod(period: string, grain: SalesAnalysisGrain, locale: "zh-CN" | "en-GB", dateLocale: typeof enGB) {

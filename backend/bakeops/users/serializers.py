@@ -59,6 +59,7 @@ class UserSerializer(serializers.ModelSerializer[User]):
             "is_active",
             "is_protected",
             "is_superuser",
+            "system_mode",
             "role_ids",
             "effective_page_ids",
             "last_login",
@@ -82,6 +83,12 @@ class UserSerializer(serializers.ModelSerializer[User]):
     def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
         if self.instance is not None and self.instance.is_superuser and attrs.get("is_active") is False:
             raise serializers.ValidationError({"is_active": "Superuser accounts cannot be locked."})
+        if "system_mode" in attrs:
+            request = self.context.get("request")
+            if request is None or not request.user.is_superuser:
+                raise serializers.ValidationError(
+                    {"system_mode": "Only a superuser can change a user's system mode."}
+                )
         return attrs
 
     def create(self, validated_data: dict[str, Any]) -> User:
@@ -144,6 +151,7 @@ class SessionUserSerializer(serializers.ModelSerializer[User]):
             "role_names",
             "preferences",
             "is_superuser",
+            "system_mode",
         )
 
     def get_role_names(self, instance: User) -> list[str]:

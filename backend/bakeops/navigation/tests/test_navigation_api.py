@@ -109,6 +109,18 @@ def test_superuser_still_needs_role_pages_for_navigation(
 
 
 @pytest.mark.django_db
+def test_global_superuser_sees_all_visible_pages(navigation_menu: NavigationMenu) -> None:
+    User.objects.create_superuser(email="joe.jiaqiao.wan@gmail.com", password="test-password")
+    response = APIClient()
+    response.force_authenticate(user=User.objects.get(email="joe.jiaqiao.wan@gmail.com"))
+
+    result = response.get(reverse("navigation-tree", kwargs={"code": navigation_menu.code}))
+
+    assert result.status_code == 200
+    assert result.json()["items"][0]["children"][0]["key"] == "test-category.page"
+
+
+@pytest.mark.django_db
 def test_anonymous_tree_uses_anonymous_user_role_system_page_mode(navigation_menu: NavigationMenu) -> None:
     page = NavigationItem.objects.get(menu=navigation_menu, item_type=NavigationItem.ItemType.PAGE)
     hidden_page = NavigationItem.objects.create(
@@ -149,9 +161,7 @@ def test_anonymous_tree_is_empty_in_login_page_mode(navigation_menu: NavigationM
 
 
 @pytest.mark.django_db
-def test_reorder_is_atomic_and_rejects_stale_revision(
-    admin_client: APIClient, navigation_menu: NavigationMenu
-) -> None:
+def test_reorder_is_atomic_and_rejects_stale_revision(admin_client: APIClient, navigation_menu: NavigationMenu) -> None:
     category = NavigationItem.objects.get(menu=navigation_menu, item_type=NavigationItem.ItemType.CATEGORY)
     page = NavigationItem.objects.get(menu=navigation_menu, item_type=NavigationItem.ItemType.PAGE)
     payload = {

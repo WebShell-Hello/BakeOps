@@ -27,8 +27,8 @@ class Employee(BaseModel):
     employee_number = models.CharField(max_length=20, unique=True)
     name = models.CharField(max_length=120)
     gender = models.CharField(max_length=16, choices=Gender.choices, default=Gender.UNSPECIFIED)
-    date_of_birth = models.DateField()
-    hire_date = models.DateField(default=timezone.localdate)
+    date_of_birth = models.DateField(null=True, blank=True)
+    hire_date = models.DateField(null=True, blank=True)
     departure_date = models.DateField(null=True, blank=True)
     position = models.CharField(max_length=120)
     hourly_rate = models.DecimalField(
@@ -37,7 +37,7 @@ class Employee(BaseModel):
         validators=(MinValueValidator(Decimal("0")),),
     )
     employment_type = models.CharField(max_length=16, choices=EmploymentType.choices)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(null=True, blank=True, unique=True)
     status = models.CharField(max_length=16, choices=Status.choices, default=Status.ACTIVE)
     deleted_at = models.DateTimeField(null=True, blank=True)
 

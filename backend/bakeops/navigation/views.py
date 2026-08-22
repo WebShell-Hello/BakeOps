@@ -42,6 +42,7 @@ class NavigationMenuListApi(generics.ListAPIView[NavigationMenu]):
     queryset = NavigationMenu.objects.all()
     pagination_class = None
 
+
 class NavigationMenuDetailApi(generics.RetrieveUpdateAPIView[NavigationMenu]):
     permission_classes = (CanManageNavigation,)
     serializer_class = NavigationMenuSerializer

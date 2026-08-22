@@ -1,6 +1,7 @@
 "use client";
 
 import { ChefHat, Languages, ShieldCheck, Sparkles } from "lucide-react";
+import Link from "next/link";
 import { type ReactNode } from "react";
 
 import { useAppPreferences } from "@/components/providers/app-preferences-provider";
@@ -18,15 +19,19 @@ export function AuthShell({ children }: { children: ReactNode }) {
       <div className="relative mx-auto grid min-h-[calc(100dvh-2rem)] w-full max-w-6xl overflow-hidden rounded-[28px] border border-[var(--border)] bg-[var(--card)] shadow-2xl sm:min-h-[calc(100dvh-3rem)] lg:grid-cols-[1.04fr_.96fr]">
         <section className="flex min-h-full flex-col p-6 sm:p-10 lg:p-12">
           <header className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <span className="grid size-11 place-items-center rounded-2xl bg-[var(--primary)] text-[var(--primary-foreground)] shadow-lg shadow-[var(--primary-shadow)]">
+            <Link
+              href="/"
+              aria-label={isEnglish ? "Go to the guest home page" : "返回游客主页"}
+              className="group flex items-center gap-3 rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary-ring)]"
+            >
+              <span className="grid size-11 place-items-center rounded-2xl bg-[var(--primary)] text-[var(--primary-foreground)] shadow-lg shadow-[var(--primary-shadow)] transition-transform group-hover:-translate-y-0.5">
                 <ChefHat className="size-6" />
               </span>
-              <div>
-                <p className="text-xl font-bold tracking-[-0.03em]">BakeOps</p>
-                <p className="text-xs text-[var(--muted)]">{isEnglish ? "bitemeloud" : "来咬我啊"}</p>
-              </div>
-            </div>
+              <span>
+                <span className="block text-xl font-bold tracking-[-0.03em]">BakeOps</span>
+                <span className="block text-xs text-[var(--muted)]">{isEnglish ? "bitemeloud" : "来咬我啊"}</span>
+              </span>
+            </Link>
             <Button type="button" variant="ghost" size="icon" aria-label={isEnglish ? "切换为中文" : "Switch to English"} onClick={toggleLocale}>
               <Languages className="size-5" />
             </Button>

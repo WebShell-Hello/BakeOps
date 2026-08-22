@@ -14,6 +14,7 @@ import {
   RotateCcw,
   Search,
   Star,
+  Trash2,
   UserRound,
   Wheat,
   X,
@@ -40,6 +41,8 @@ import {
 import {
   createSupplier,
   createSupplierIngredient,
+  deleteSupplier,
+  deleteSupplierIngredient,
   getSupplierIngredientOptions,
   getSuppliers,
   updateSupplier,
@@ -99,6 +102,7 @@ const copy = {
     actions: "操作",
     view: "查看",
     edit: "编辑",
+    delete: "删除",
     loading: "正在读取供应商...",
     empty: "没有符合条件的供应商",
     ingredients: (count: number) => `${count} 种食材`,
@@ -137,6 +141,13 @@ const copy = {
     ingredientSaved: "采购条件已保存",
     preferredSaved: "首选供应商已更新",
     statusSaved: "供应状态已更新",
+    supplierDeleted: "供应商已删除",
+    ingredientDeleted: "可供应食材已删除",
+    supplierDeleteConfirm: (name: string, count: number) =>
+      `确认删除供应商“${name}”吗？该供应商的 ${count} 条可供应食材配置也会一并删除。`,
+    ingredientDeleteConfirm: (name: string) =>
+      `确认删除可供应食材“${name}”吗？`,
+    deleteError: "删除失败。请确认该供应商没有关联的采购申请或进货记录。",
     loadError: "供应商数据加载失败",
     saveError: "保存失败，请检查填写内容",
     name: "供应商名称",
@@ -176,6 +187,7 @@ const copy = {
     actions: "Actions",
     view: "View",
     edit: "Edit",
+    delete: "Delete",
     loading: "Loading suppliers...",
     empty: "No matching suppliers",
     ingredients: (count: number) =>
@@ -215,6 +227,13 @@ const copy = {
     ingredientSaved: "Supply terms saved",
     preferredSaved: "Preferred supplier updated",
     statusSaved: "Supply status updated",
+    supplierDeleted: "Supplier deleted",
+    ingredientDeleted: "Supplied ingredient deleted",
+    supplierDeleteConfirm: (name: string, count: number) =>
+      `Delete supplier “${name}”? Its ${count} supplied ingredient configuration${count === 1 ? "" : "s"} will also be deleted.`,
+    ingredientDeleteConfirm: (name: string) =>
+      `Delete supplied ingredient “${name}”?`,
+    deleteError: "Unable to delete. Make sure the supplier is not referenced by a purchase request or inventory receipt.",
     loadError: "Unable to load suppliers",
     saveError: "Unable to save. Check the details and try again.",
     name: "Supplier name",
@@ -472,6 +491,40 @@ export function SupplierManagementPage() {
     }
   }
 
+  async function removeSupplier(supplier: Supplier, event?: MouseEvent) {
+    event?.stopPropagation();
+    if (!window.confirm(text.supplierDeleteConfirm(supplier.name, supplier.supplied_ingredients.length))) return;
+    setOperatingId(supplier.id);
+    setError(null);
+    try {
+      await deleteSupplier(supplier.id);
+      setSelectedSupplierId(null);
+      setSupplierEditor(undefined);
+      showSuccess(text.supplierDeleted);
+      await load();
+    } catch (deleteError) {
+      setError(deleteError instanceof Error ? deleteError.message : text.deleteError);
+    } finally {
+      setOperatingId(null);
+    }
+  }
+
+  async function removeIngredient(item: SupplierIngredient) {
+    if (!window.confirm(text.ingredientDeleteConfirm(item.ingredient_name))) return;
+    setOperatingId(item.id);
+    setError(null);
+    try {
+      await deleteSupplierIngredient(item.id);
+      setTermEditor(undefined);
+      showSuccess(text.ingredientDeleted);
+      await load();
+    } catch (deleteError) {
+      setError(deleteError instanceof Error ? deleteError.message : text.deleteError);
+    } finally {
+      setOperatingId(null);
+    }
+  }
+
   return (
     <DashboardShell>
       <main className="mx-auto w-full max-w-[1560px] p-4 sm:p-6 xl:p-9">
@@ -651,6 +704,18 @@ export function SupplierManagementPage() {
                           >
                             <Pencil className="size-4" />
                           </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="text-rose-600 hover:text-rose-700"
+                            title={text.delete}
+                            aria-label={`${text.delete}: ${supplier.name}`}
+                            disabled={operatingId === supplier.id}
+                            onClick={(event) => void removeSupplier(supplier, event)}
+                          >
+                            <Trash2 className="size-4" />
+                          </Button>
                         </div>
                       </td>
                     </tr>
@@ -761,8 +826,10 @@ export function SupplierManagementPage() {
           operatingId={operatingId}
           onClose={() => setSelectedSupplierId(null)}
           onEditSupplier={() => openEditSupplier(selectedSupplier)}
+          onDeleteSupplier={() => void removeSupplier(selectedSupplier)}
           onAddIngredient={openCreateTerm}
           onEditIngredient={openEditTerm}
+          onDeleteIngredient={(item) => void removeIngredient(item)}
           onSetPreferred={(item) =>
             void updateTermStatus(
               item,
@@ -820,8 +887,10 @@ function SupplierDrawer({
   operatingId,
   onClose,
   onEditSupplier,
+  onDeleteSupplier,
   onAddIngredient,
   onEditIngredient,
+  onDeleteIngredient,
   onSetPreferred,
   onToggleActive,
 }: {
@@ -831,8 +900,10 @@ function SupplierDrawer({
   operatingId: string | null;
   onClose: () => void;
   onEditSupplier: () => void;
+  onDeleteSupplier: () => void;
   onAddIngredient: () => void;
   onEditIngredient: (item: SupplierIngredient) => void;
+  onDeleteIngredient: (item: SupplierIngredient) => void;
   onSetPreferred: (item: SupplierIngredient) => void;
   onToggleActive: (item: SupplierIngredient) => void;
 }) {
@@ -871,6 +942,16 @@ function SupplierDrawer({
             <Button type="button" variant="outline" onClick={onEditSupplier}>
               <Pencil className="size-4" />
               {text.edit}
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              className="text-rose-600 hover:text-rose-700"
+              disabled={operatingId === supplier.id}
+              onClick={onDeleteSupplier}
+            >
+              <Trash2 className="size-4" />
+              {text.delete}
             </Button>
             <Button
               type="button"
@@ -1014,6 +1095,18 @@ function SupplierDrawer({
                               ) : (
                                 <RotateCcw className="size-4" />
                               )}
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              className="text-rose-600 hover:text-rose-700"
+                              title={text.delete}
+                              aria-label={`${text.delete}: ${item.ingredient_name}`}
+                              disabled={operatingId === item.id}
+                              onClick={() => onDeleteIngredient(item)}
+                            >
+                              <Trash2 className="size-4" />
                             </Button>
                           </div>
                         </td>

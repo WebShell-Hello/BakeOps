@@ -60,6 +60,7 @@ def build_dashboard_overview(today: date | None = None) -> dict[str, Any]:
             {
                 "date": day.isoformat(),
                 "net_sales": item["net_sales"] if item else "0.00",
+                "record_count": item["record_count"] if item else 0,
                 "order_count": item["order_count"] if item else 0,
             }
         )
@@ -76,11 +77,7 @@ def build_dashboard_overview(today: date | None = None) -> dict[str, Any]:
                 "product_name_zh": product["product_name_zh"],
                 "product_name_en": product["product_name_en"],
                 "net_sales": product["net_sales"],
-                "share": (
-                    f"{product_sales / total_net_sales * Decimal('100'):.1f}"
-                    if total_net_sales > 0
-                    else "0.0"
-                ),
+                "share": (f"{product_sales / total_net_sales * Decimal('100'):.1f}" if total_net_sales > 0 else "0.0"),
             }
         )
     other_sales = total_net_sales - sum(
@@ -117,6 +114,7 @@ def build_dashboard_overview(today: date | None = None) -> dict[str, Any]:
         "kpis": {
             "today_net_sales": today_sales["kpis"]["net_sales"],
             "today_sales_quantity": today_sales["kpis"]["sales_quantity"],
+            "today_sales_record_count": today_sales["kpis"]["record_count"],
             "today_order_count": today_sales["kpis"]["order_count"],
             "today_planned_production": production_totals["planned"] or 0,
             "today_actual_production": production_totals["actual"] or 0,

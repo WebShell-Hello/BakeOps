@@ -39,27 +39,17 @@ class EmployeeSerializer(serializers.ModelSerializer[Employee]):
 
     def validate(self, attrs):
         instance = self.instance
-        date_of_birth = attrs.get(
-            "date_of_birth", instance.date_of_birth if instance else None
-        )
+        date_of_birth = attrs.get("date_of_birth", instance.date_of_birth if instance else None)
         hire_date = attrs.get("hire_date", instance.hire_date if instance else None)
-        departure_date = attrs.get(
-            "departure_date", instance.departure_date if instance else None
-        )
+        departure_date = attrs.get("departure_date", instance.departure_date if instance else None)
         status = attrs.get("status", instance.status if instance else Employee.Status.ACTIVE)
 
         if date_of_birth and hire_date and hire_date <= date_of_birth:
-            raise serializers.ValidationError(
-                {"hire_date": "Hire date must be later than date of birth."}
-            )
+            raise serializers.ValidationError({"hire_date": "Hire date must be later than date of birth."})
         if departure_date and hire_date and departure_date < hire_date:
-            raise serializers.ValidationError(
-                {"departure_date": "Departure date cannot be earlier than hire date."}
-            )
+            raise serializers.ValidationError({"departure_date": "Departure date cannot be earlier than hire date."})
         if status == Employee.Status.DEPARTED and departure_date is None:
-            raise serializers.ValidationError(
-                {"departure_date": "Departure date is required for departed employees."}
-            )
+            raise serializers.ValidationError({"departure_date": "Departure date is required for departed employees."})
         if status != Employee.Status.DEPARTED and departure_date is not None:
             raise serializers.ValidationError(
                 {"departure_date": "Departure date is only valid for departed employees."}

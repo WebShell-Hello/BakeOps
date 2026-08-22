@@ -22,7 +22,7 @@ const fieldDefinitions = {
 
 export function RegisterForm() {
   const { locale } = useAppPreferences();
-  const { user, loading, refreshUser } = useAuth();
+  const { user, loading, notifyAuthChange, refreshUser } = useAuth();
   const router = useRouter();
   const isEnglish = locale === "en-GB";
   const [values, setValues] = useState({ username: "", first_name: "", last_name: "", email: "", password: "", captcha_answer: "" });
@@ -70,6 +70,7 @@ export function RegisterForm() {
       if (!captcha) throw new Error(isEnglish ? "Please refresh the verification code." : "请刷新验证码后重试。");
       await registerUser({ ...values, captcha_id: captcha.challenge_id });
       await refreshUser();
+      notifyAuthChange();
       router.replace("/");
       router.refresh();
     } catch (requestError) {

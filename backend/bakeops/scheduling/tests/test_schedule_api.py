@@ -198,6 +198,17 @@ def test_deleted_employee_is_hidden_from_schedule_options(admin_client: APIClien
         status=Employee.Status.ACTIVE,
     )
     deleted_employee.soft_delete()
+    Employee.objects.create(
+        employee_number="110003",
+        name="Future Employee",
+        date_of_birth="2001-05-03",
+        hire_date="2099-01-01",
+        position="Sales",
+        hourly_rate="12.00",
+        employment_type=Employee.EmploymentType.PART_TIME,
+        email="future@employee.com",
+        status=Employee.Status.ACTIVE,
+    )
 
     response = admin_client.get(reverse("schedule-employee-options"))
 

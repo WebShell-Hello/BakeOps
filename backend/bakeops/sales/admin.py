@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from bakeops.sales.models import SalesOrder, SalesOrderLine
+from bakeops.sales.models import SalesDataRecord, SalesOrder, SalesOrderLine
 
 
 class SalesOrderLineInline(admin.TabularInline):
@@ -20,3 +20,18 @@ class SalesOrderAdmin(admin.ModelAdmin):
 class SalesOrderLineAdmin(admin.ModelAdmin):
     list_display = ("order", "product_name_en", "quantity", "paid_amount", "refund_amount")
     search_fields = ("order__reference", "product_name_zh", "product_name_en")
+
+
+@admin.register(SalesDataRecord)
+class SalesDataRecordAdmin(admin.ModelAdmin):
+    list_display = (
+        "sales_date",
+        "channel",
+        "product_name_en",
+        "quantity",
+        "received_amount",
+        "discount_amount",
+        "refund_amount",
+    )
+    search_fields = ("product__code", "product_name_zh", "product_name_en")
+    list_filter = ("channel", "sales_date")

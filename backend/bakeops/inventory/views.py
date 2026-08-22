@@ -1,9 +1,12 @@
 from datetime import date, timedelta
+from pathlib import Path
 
 from django.db.models import Count, Q, Sum
+from django.http import FileResponse, Http404
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import status
+from rest_framework.exceptions import ValidationError
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -11,16 +14,22 @@ from rest_framework.views import APIView
 from bakeops.inventory.models import InventoryReceipt, ProductionPlan
 from bakeops.inventory.permissions import CanManageInventory, CanManageProductionPlans
 from bakeops.inventory.serializers import (
-    InventoryReceiptCreateSerializer,
+    InventoryReceiptBulkDeleteSerializer,
     InventoryReceiptSerializer,
+    InventoryReceiptWriteSerializer,
     ProductionPlanBatchSerializer,
     ProductionPlanSerializer,
     ProductionPlanUpdateSerializer,
     PurchaseRequestCreateSerializer,
     PurchaseRequestSerializer,
 )
-from bakeops.inventory.services import build_inventory_snapshot
+from bakeops.inventory.services import (
+    InventoryReceiptDeletionError,
+    build_inventory_snapshot,
+    delete_inventory_receipts,
+)
 from bakeops.products.models import Product
+from bakeops.users.models import User
 
 
 class InventoryOverviewApi(APIView):
@@ -40,6 +49,14 @@ class PurchaseRequestCreateApi(APIView):
         return Response(PurchaseRequestSerializer(purchase_request).data, status=status.HTTP_201_CREATED)
 
 
+class InventoryReceiptRecorderOptionsApi(APIView):
+    permission_classes = (CanManageInventory,)
+
+    def get(self, request: Request) -> Response:
+        users = User.objects.filter(is_active=True).order_by("username", "email").values("id", "username", "email")
+        return Response(list(users))
+
+
 class InventoryReceiptCreateApi(APIView):
     permission_classes = (CanManageInventory,)
 
@@ -54,6 +71,8 @@ class InventoryReceiptCreateApi(APIView):
                 | Q(ingredient__name__icontains=search)
                 | Q(supplier__name__icontains=search)
                 | Q(notes__icontains=search)
+                | Q(created_by__username__icontains=search)
+                | Q(created_by__email__icontains=search)
             )
         try:
             if start:
@@ -68,10 +87,74 @@ class InventoryReceiptCreateApi(APIView):
         return Response(InventoryReceiptSerializer(receipts, many=True).data)
 
     def post(self, request: Request) -> Response:
-        serializer = InventoryReceiptCreateSerializer(data=request.data, context={"request": request})
+        serializer = InventoryReceiptWriteSerializer(data=request.data, context={"request": request})
         serializer.is_valid(raise_exception=True)
         receipt = serializer.save()
         return Response(InventoryReceiptSerializer(receipt).data, status=status.HTTP_201_CREATED)
+
+
+class InventoryReceiptDetailApi(APIView):
+    permission_classes = (CanManageInventory,)
+
+    def get_object(self, pk: str) -> InventoryReceipt:
+        return get_object_or_404(
+            InventoryReceipt.objects.select_related("ingredient", "supplier", "created_by"),
+            pk=pk,
+        )
+
+    def get(self, request: Request, pk: str) -> Response:
+        return Response(InventoryReceiptSerializer(self.get_object(pk)).data)
+
+    def patch(self, request: Request, pk: str) -> Response:
+        receipt = self.get_object(pk)
+        serializer = InventoryReceiptWriteSerializer(
+            receipt,
+            data=request.data,
+            partial=True,
+            context={"request": request},
+        )
+        serializer.is_valid(raise_exception=True)
+        return Response(InventoryReceiptSerializer(serializer.save()).data)
+
+    def delete(self, request: Request, pk: str) -> Response:
+        self.get_object(pk)
+        try:
+            delete_inventory_receipts([pk])
+        except InventoryReceiptDeletionError as error:
+            raise ValidationError({"detail": str(error)}) from error
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class InventoryReceiptBulkDeleteApi(APIView):
+    permission_classes = (CanManageInventory,)
+
+    def post(self, request: Request) -> Response:
+        serializer = InventoryReceiptBulkDeleteSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            delete_inventory_receipts(serializer.validated_data["receipt_ids"])
+        except InventoryReceiptDeletionError as error:
+            raise ValidationError({"receipt_ids": str(error)}) from error
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class InventoryReceiptInvoiceApi(APIView):
+    permission_classes = (CanManageInventory,)
+
+    def get(self, request: Request, pk: str) -> FileResponse:
+        receipt = get_object_or_404(InventoryReceipt, pk=pk)
+        if not receipt.invoice:
+            raise Http404("This receipt has no invoice attachment.")
+        try:
+            receipt.invoice.open("rb")
+        except (FileNotFoundError, OSError) as error:
+            raise Http404("Invoice attachment is unavailable.") from error
+        return FileResponse(
+            receipt.invoice,
+            as_attachment=True,
+            filename=receipt.invoice_original_name or Path(receipt.invoice.name).name,
+            content_type=receipt.invoice_content_type or "application/octet-stream",
+        )
 
 
 class ProductionPlanListCreateApi(APIView):

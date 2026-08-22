@@ -67,6 +67,32 @@ def test_employee_create_and_update(admin_client: APIClient) -> None:
 
 
 @pytest.mark.django_db
+def test_employee_dates_and_email_are_optional(admin_client: APIClient) -> None:
+    response = admin_client.post(
+        reverse("employee-list"),
+        {
+            "employee_number": "110009",
+            "name": "无邮箱员工",
+            "gender": "UNSPECIFIED",
+            "date_of_birth": None,
+            "hire_date": None,
+            "departure_date": None,
+            "position": "后勤",
+            "hourly_rate": "12.50",
+            "employment_type": "PART_TIME",
+            "email": None,
+            "status": "ACTIVE",
+        },
+        format="json",
+    )
+
+    assert response.status_code == 201
+    assert response.data["date_of_birth"] is None
+    assert response.data["hire_date"] is None
+    assert response.data["email"] is None
+
+
+@pytest.mark.django_db
 def test_departed_employee_requires_valid_employment_dates(admin_client: APIClient) -> None:
     response = admin_client.post(
         reverse("employee-list"),
@@ -130,9 +156,7 @@ def test_deleted_employee_schedule_history_remains_available(admin_client: APICl
     )
     employee.soft_delete()
 
-    response = admin_client.get(
-        reverse("employee-schedule-history", kwargs={"pk": employee.id})
-    )
+    response = admin_client.get(reverse("employee-schedule-history", kwargs={"pk": employee.id}))
 
     assert response.status_code == 200
     assert response.data["employee"]["deleted_at"] is not None

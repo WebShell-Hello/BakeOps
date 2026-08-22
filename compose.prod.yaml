@@ -35,6 +35,9 @@ services:
       DJANGO_SECURE_SSL_REDIRECT: ${DJANGO_SECURE_SSL_REDIRECT}
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
       DJANGO_SETTINGS_MODULE: config.settings.production
+    volumes:
+      - data_source_runtime:/app/runtime
+      - receipt_media:/app/media
     depends_on:
       postgres:
         condition: service_healthy
@@ -102,6 +105,10 @@ volumes:
     name: BO-prod-caddy-data
   caddy_config:
     name: BO-prod-caddy-config
+  data_source_runtime:
+    name: BO-prod-data-source-runtime
+  receipt_media:
+    name: BO-prod-receipt-media
 
 networks:
   bakeops:

@@ -549,6 +549,12 @@ function ProductRows({
 }) {
   const recipe = product.active_recipe;
   const estimatedCost = product.current_estimated_cost;
+  const uniqueIngredientCount = new Set(
+    items.map(
+      (item) =>
+        item.ingredient_id ?? item.ingredient_name.trim().toLocaleLowerCase(locale),
+    ),
+  ).size;
   const primaryName =
     locale === "zh-CN" ? product.name_zh : product.name_en;
   const secondaryName =
@@ -577,7 +583,9 @@ function ProductRows({
             </span>
           </button>
         </td>
-        <td className="px-4 py-3">{text.ingredientCount(items.length)}</td>
+        <td className="px-4 py-3">
+          {text.ingredientCount(uniqueIngredientCount)}
+        </td>
         <td className="px-4 py-3">
           {recipe ? `${trimDecimal(recipe.total_weight)} g` : "—"}
         </td>

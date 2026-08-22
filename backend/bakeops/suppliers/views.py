@@ -1,6 +1,7 @@
 from typing import Any
 
 from django.db.models import Prefetch, Q
+from django.db.models.deletion import ProtectedError
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
 from rest_framework.request import Request
@@ -45,12 +46,33 @@ class SupplierListCreateApi(generics.ListCreateAPIView[Supplier]):
         return queryset
 
 
-class SupplierDetailApi(generics.RetrieveUpdateAPIView[Supplier]):
+class SupplierDetailApi(generics.RetrieveUpdateDestroyAPIView[Supplier]):
     permission_classes = (CanManageSuppliers,)
     serializer_class = SupplierSerializer
 
     def get_queryset(self) -> Any:
         return supplier_queryset()
+
+    def destroy(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+        supplier = self.get_object()
+        if supplier.purchase_requests.exists() or supplier.inventory_receipts.exists():
+            return Response(
+                {
+                    "detail": (
+                        "This supplier cannot be deleted because it is referenced by "
+                        "purchase requests or inventory receipts."
+                    )
+                },
+                status=status.HTTP_409_CONFLICT,
+            )
+        try:
+            supplier.delete()
+        except ProtectedError:
+            return Response(
+                {"detail": "This supplier is still referenced by other records."},
+                status=status.HTTP_409_CONFLICT,
+            )
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class IngredientOptionListApi(generics.ListAPIView[Ingredient]):
@@ -73,8 +95,7 @@ class SupplierIngredientCreateApi(APIView):
         return Response(SupplierIngredientSerializer(item).data, status=status.HTTP_201_CREATED)
 
 
-class SupplierIngredientDetailApi(generics.RetrieveUpdateAPIView[SupplierIngredient]):
+class SupplierIngredientDetailApi(generics.RetrieveUpdateDestroyAPIView[SupplierIngredient]):
     permission_classes = (CanManageSuppliers,)
     serializer_class = SupplierIngredientSerializer
     queryset = SupplierIngredient.objects.select_related("supplier", "ingredient")
-

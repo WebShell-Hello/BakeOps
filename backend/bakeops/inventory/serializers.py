@@ -1,5 +1,6 @@
 import uuid
 from decimal import Decimal
+from pathlib import Path
 from typing import Any
 
 from django.db import transaction
@@ -16,6 +17,7 @@ from bakeops.inventory.services import (
 from bakeops.products.costing import current_product_unit_cost
 from bakeops.products.models import Ingredient, Product
 from bakeops.suppliers.models import Supplier, SupplierIngredient
+from bakeops.users.models import User
 
 
 class PurchaseRequestCreateSerializer(serializers.Serializer[dict[str, Any]]):
@@ -78,33 +80,83 @@ class PurchaseRequestSerializer(serializers.ModelSerializer[PurchaseRequest]):
         )
 
 
-class InventoryReceiptCreateSerializer(serializers.Serializer[dict[str, Any]]):
+class InventoryReceiptBulkDeleteSerializer(serializers.Serializer[dict[str, Any]]):
+    receipt_ids = serializers.ListField(
+        child=serializers.UUIDField(),
+        allow_empty=False,
+    )
+
+    def validate_receipt_ids(self, value: list[Any]) -> list[Any]:
+        return list(dict.fromkeys(value))
+
+
+class InventoryReceiptWriteSerializer(serializers.Serializer[dict[str, Any]]):
+    ALLOWED_INVOICE_EXTENSIONS = {".pdf", ".jpg", ".jpeg", ".png", ".webp"}
+    MAX_INVOICE_SIZE = 10 * 1024 * 1024
+
     ingredient_id = serializers.PrimaryKeyRelatedField(
         source="ingredient",
         queryset=Ingredient.objects.filter(is_active=True),
+        required=False,
     )
-    quantity = serializers.DecimalField(max_digits=14, decimal_places=3, min_value=Decimal("0.001"))
-    unit = serializers.CharField(max_length=24)
+    quantity = serializers.DecimalField(
+        max_digits=14,
+        decimal_places=3,
+        min_value=Decimal("0.001"),
+        required=False,
+    )
+    unit = serializers.CharField(max_length=24, required=False)
     supplier_id = serializers.PrimaryKeyRelatedField(
         source="supplier",
         queryset=Supplier.objects.all(),
+        required=False,
     )
     unit_price = serializers.DecimalField(
         max_digits=12,
         decimal_places=4,
         min_value=Decimal("0.0001"),
+        required=False,
     )
-    received_at = serializers.DateTimeField()
-    notes = serializers.CharField(max_length=255, allow_blank=True, required=False, default="")
+    received_at = serializers.DateTimeField(required=False)
+    notes = serializers.CharField(max_length=255, allow_blank=True, required=False)
+    recorded_by_id = serializers.PrimaryKeyRelatedField(
+        source="created_by",
+        queryset=User.objects.filter(is_active=True),
+        required=False,
+    )
+    invoice = serializers.FileField(required=False, allow_empty_file=False, write_only=True)
+    remove_invoice = serializers.BooleanField(required=False, default=False, write_only=True)
+
+    def validate_invoice(self, invoice: Any) -> Any:
+        extension = Path(invoice.name).suffix.lower()
+        if extension not in self.ALLOWED_INVOICE_EXTENSIONS:
+            raise serializers.ValidationError("Invoice must be a PDF, JPG, PNG or WebP file.")
+        if invoice.size > self.MAX_INVOICE_SIZE:
+            raise serializers.ValidationError("Invoice file cannot exceed 10 MB.")
+        return invoice
 
     def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
-        ingredient = attrs["ingredient"]
-        if attrs["unit"] != display_unit_for(ingredient.base_unit):
+        instance = self.instance
+        required_fields = ("ingredient", "quantity", "unit", "supplier", "unit_price", "received_at")
+        for field in required_fields:
+            if field not in attrs and instance is None:
+                api_field = f"{field}_id" if field in {"ingredient", "supplier"} else field
+                raise serializers.ValidationError({api_field: "This field is required."})
+
+        ingredient = attrs.get("ingredient", instance.ingredient if instance else None)
+        quantity = attrs.get("quantity", instance.quantity if instance else None)
+        unit = attrs.get("unit", instance.unit if instance else None)
+        supplier = attrs.get("supplier", instance.supplier if instance else None)
+        unit_price = attrs.get("unit_price", instance.unit_price if instance else None)
+        if ingredient is None or quantity is None or unit is None or supplier is None or unit_price is None:
+            raise serializers.ValidationError("Receipt data is incomplete.")
+        if instance is not None and ingredient.id != instance.ingredient_id:
+            raise serializers.ValidationError({"ingredient_id": "The ingredient cannot be changed after receipt."})
+        if unit != display_unit_for(ingredient.base_unit):
             raise serializers.ValidationError({"unit": "The received unit must match the inventory display unit."})
-        attrs["base_quantity"] = convert_quantity(attrs["quantity"], attrs["unit"], ingredient.base_unit)
         term = SupplierIngredient.objects.filter(
             ingredient=ingredient,
-            supplier=attrs["supplier"],
+            supplier=supplier,
             is_active=True,
         ).first()
         if term is None:
@@ -116,16 +168,27 @@ class InventoryReceiptCreateSerializer(serializers.Serializer[dict[str, Any]]):
                 {"supplier_id": "Inventory valuation currently supports GBP supplier terms only."}
             )
         try:
-            attrs["purchase_value"] = calculate_purchase_value(
-                attrs["quantity"],
-                attrs["unit"],
-                attrs["unit_price"],
-                term.price_unit,
-            )
+            purchase_value = calculate_purchase_value(quantity, unit, unit_price, term.price_unit)
         except ValueError as error:
             raise serializers.ValidationError({"unit_price": str(error)}) from error
-        attrs["currency"] = term.currency
-        attrs["price_unit"] = term.price_unit
+        if attrs.get("remove_invoice") and attrs.get("invoice"):
+            raise serializers.ValidationError(
+                {"invoice": "Remove the existing invoice or upload a replacement, not both."}
+            )
+
+        attrs.update(
+            ingredient=ingredient,
+            quantity=quantity,
+            unit=unit,
+            supplier=supplier,
+            unit_price=unit_price,
+            received_at=attrs.get("received_at", instance.received_at if instance else timezone.now()),
+            notes=attrs.get("notes", instance.notes if instance else ""),
+            base_quantity=convert_quantity(quantity, unit, ingredient.base_unit),
+            purchase_value=purchase_value,
+            currency=term.currency,
+            price_unit=term.price_unit,
+        )
         return attrs
 
     @transaction.atomic
@@ -133,17 +196,84 @@ class InventoryReceiptCreateSerializer(serializers.Serializer[dict[str, Any]]):
         ingredient = validated_data.pop("ingredient")
         base_quantity = validated_data.pop("base_quantity")
         purchase_value = validated_data.pop("purchase_value")
+        invoice = validated_data.pop("invoice", None)
+        validated_data.pop("remove_invoice", None)
+        request = self.context["request"]
+        recorded_by = validated_data.pop("created_by", request.user)
         inventory, _ = InventoryItem.objects.select_for_update().get_or_create(ingredient=ingredient)
         apply_inventory_receipt(inventory, base_quantity, purchase_value)
-        request = self.context["request"]
         return InventoryReceipt.objects.create(
             reference=f"GRN-{uuid.uuid4().hex[:10].upper()}",
             ingredient=ingredient,
             base_quantity=base_quantity,
             base_unit=ingredient.base_unit,
-            created_by=request.user,
+            created_by=recorded_by,
+            invoice=invoice or "",
+            invoice_original_name=invoice.name if invoice else "",
+            invoice_content_type=getattr(invoice, "content_type", "") if invoice else "",
             **validated_data,
         )
+
+    @transaction.atomic
+    def update(self, instance: InventoryReceipt, validated_data: dict[str, Any]) -> InventoryReceipt:
+        receipt = InventoryReceipt.objects.select_for_update().get(pk=instance.pk)
+        inventory = InventoryItem.objects.select_for_update().get(ingredient=receipt.ingredient)
+        old_purchase_value = (
+            calculate_purchase_value(
+                receipt.quantity,
+                receipt.unit,
+                receipt.unit_price,
+                receipt.price_unit,
+            )
+            if receipt.unit_price is not None and receipt.price_unit
+            else Decimal("0")
+        )
+        new_base_quantity = validated_data.pop("base_quantity")
+        new_purchase_value = validated_data.pop("purchase_value")
+        new_quantity = inventory.quantity + new_base_quantity - receipt.base_quantity
+        if new_quantity < 0:
+            raise serializers.ValidationError(
+                {"quantity": "This change would make current inventory negative."}
+            )
+        new_inventory_value = inventory.inventory_value
+        if new_inventory_value is not None:
+            new_inventory_value = new_inventory_value + new_purchase_value - old_purchase_value
+            if new_inventory_value < 0:
+                raise serializers.ValidationError(
+                    {"unit_price": "This change would make current inventory value negative."}
+                )
+        inventory.quantity = new_quantity
+        inventory.inventory_value = new_inventory_value
+        inventory.full_clean()
+        inventory.save(update_fields=("quantity", "inventory_value", "updated_at"))
+
+        invoice = validated_data.pop("invoice", None)
+        remove_invoice = validated_data.pop("remove_invoice", False)
+        old_invoice_name = receipt.invoice.name if receipt.invoice else ""
+        storage = receipt.invoice.storage
+        if invoice is not None:
+            receipt.invoice = invoice
+            receipt.invoice_original_name = invoice.name
+            receipt.invoice_content_type = getattr(invoice, "content_type", "")
+        elif remove_invoice:
+            receipt.invoice = ""
+            receipt.invoice_original_name = ""
+            receipt.invoice_content_type = ""
+
+        validated_data.pop("ingredient", None)
+        for field in (
+            "supplier", "quantity", "unit", "unit_price", "received_at", "notes",
+            "created_by", "currency", "price_unit",
+        ):
+            if field in validated_data:
+                setattr(receipt, field, validated_data[field])
+        receipt.base_quantity = new_base_quantity
+        receipt.base_unit = receipt.ingredient.base_unit
+        receipt.full_clean()
+        receipt.save()
+        if old_invoice_name and (invoice is not None or remove_invoice):
+            transaction.on_commit(lambda: storage.delete(old_invoice_name))
+        return receipt
 
 
 class InventoryReceiptSerializer(serializers.ModelSerializer[InventoryReceipt]):
@@ -151,31 +281,35 @@ class InventoryReceiptSerializer(serializers.ModelSerializer[InventoryReceipt]):
     ingredient_name = serializers.CharField(source="ingredient.name", read_only=True)
     supplier_id = serializers.UUIDField(source="supplier.id", read_only=True, allow_null=True)
     supplier_name = serializers.CharField(source="supplier.name", read_only=True, allow_null=True)
+    created_by_id = serializers.UUIDField(source="created_by.id", read_only=True, allow_null=True)
     created_by_name = serializers.CharField(source="created_by.username", read_only=True, allow_null=True)
+    invoice_name = serializers.CharField(source="invoice_original_name", read_only=True)
+    invoice_size = serializers.SerializerMethodField()
+    invoice_download_url = serializers.SerializerMethodField()
     current_stock = serializers.SerializerMethodField()
     total_cost = serializers.SerializerMethodField()
 
     class Meta:
         model = InventoryReceipt
         fields = (
-            "id",
-            "reference",
-            "ingredient_id",
-            "ingredient_name",
-            "supplier_id",
-            "supplier_name",
-            "quantity",
-            "unit",
-            "unit_price",
-            "currency",
-            "price_unit",
-            "total_cost",
-            "current_stock",
-            "notes",
-            "received_at",
-            "created_by_name",
-            "created_at",
+            "id", "reference", "ingredient_id", "ingredient_name", "supplier_id", "supplier_name",
+            "quantity", "unit", "unit_price", "currency", "price_unit", "total_cost", "current_stock",
+            "notes", "received_at", "created_by_id", "created_by_name", "invoice_name", "invoice_size",
+            "invoice_download_url", "created_at",
         )
+
+    def get_invoice_size(self, instance: InventoryReceipt) -> int | None:
+        if not instance.invoice:
+            return None
+        try:
+            return instance.invoice.size
+        except OSError:
+            return None
+
+    def get_invoice_download_url(self, instance: InventoryReceipt) -> str | None:
+        if not instance.invoice:
+            return None
+        return f"/api/v1/inventory/receipts/{instance.id}/invoice/"
 
     def get_current_stock(self, instance: InventoryReceipt) -> str:
         inventory = InventoryItem.objects.get(ingredient=instance.ingredient)

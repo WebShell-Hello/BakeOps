@@ -13,7 +13,7 @@ import { loginUser } from "@/lib/api";
 
 export function LoginForm({ nextPath }: { nextPath: string }) {
   const { locale } = useAppPreferences();
-  const { user, loading, refreshUser } = useAuth();
+  const { user, loading, notifyAuthChange, refreshUser } = useAuth();
   const router = useRouter();
   const isEnglish = locale === "en-GB";
   const [email, setEmail] = useState("");
@@ -34,6 +34,7 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
     try {
       await loginUser({ email, password, remember });
       await refreshUser();
+      notifyAuthChange();
       router.replace(nextPath);
       router.refresh();
     } catch (requestError) {

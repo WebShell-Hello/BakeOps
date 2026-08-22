@@ -566,6 +566,8 @@ export function MenuManagementPage() {
                       data-navigation-row={item.key}
                       className={cn(
                         "border-t border-[var(--border)] transition-[background-color,opacity] duration-150 hover:bg-[var(--surface-muted)]",
+                        item.item_type === "CATEGORY" &&
+                          "bg-[var(--surface-muted)]/70 text-[var(--muted)]",
                         draggedItemId === item.id &&
                           "bg-[var(--primary-soft)] opacity-30",
                       )}

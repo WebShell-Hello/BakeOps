@@ -8,6 +8,7 @@ from django.db.models import Max
 
 from bakeops.access.models import Role
 from bakeops.navigation.models import NavigationItem, NavigationMenu
+from bakeops.users.constants import is_global_superuser
 
 
 class NavigationRevisionConflictError(Exception):
@@ -26,6 +27,14 @@ def next_navigation_position(menu: NavigationMenu, parent: NavigationItem | None
 
 
 def role_page_ids_for(user: Any) -> set[UUID]:
+    if is_global_superuser(user):
+        return set(
+            NavigationItem.objects.filter(
+                item_type=NavigationItem.ItemType.PAGE,
+                is_active=True,
+                is_visible=True,
+            ).values_list("id", flat=True)
+        )
     if not user or not user.is_authenticated or not user.is_active:
         anonymous_role = (
             Role.objects.filter(
@@ -60,9 +69,7 @@ def role_page_ids_for(user: Any) -> set[UUID]:
 def build_navigation_tree(menu: NavigationMenu, user: Any | None = None) -> list[dict[str, Any]]:
     allowed_page_ids = role_page_ids_for(user)
     items = list(
-        menu.items.filter(is_active=True, is_visible=True)
-        .select_related("parent")
-        .order_by("position", "created_at")
+        menu.items.filter(is_active=True, is_visible=True).select_related("parent").order_by("position", "created_at")
     )
     children_by_parent: dict[UUID | None, list[NavigationItem]] = defaultdict(list)
     for item in items:
@@ -111,9 +118,7 @@ def reorder_navigation_items(
     if len(requested_ids) != len(set(requested_ids)) or set(requested_ids) != set(existing_by_id):
         raise NavigationReorderValidationError("The reorder payload must contain every active menu item exactly once.")
 
-    category_ids = {
-        item.id for item in existing_items if item.item_type == NavigationItem.ItemType.CATEGORY
-    }
+    category_ids = {item.id for item in existing_items if item.item_type == NavigationItem.ItemType.CATEGORY}
     positions_by_parent: dict[UUID | None, set[int]] = defaultdict(set)
 
     for requested_item in requested:

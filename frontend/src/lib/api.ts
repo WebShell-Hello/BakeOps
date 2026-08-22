@@ -1,3 +1,9 @@
+import { isAuthenticatedLocally, getDataMode, setDataMode, setAuthenticated } from "@/lib/data-mode";
+import { readTestMutations, readTestResponse, readTestResponsesByPrefix, writeTestMutation, writeTestMutations, writeTestResponse } from "@/lib/local-test-db";
+import { getBundledTestEmployee, readBundledTestResponse } from "@/lib/local-test-seed";
+
+export { apiRequest };
+
 export type HealthStatus = {
   status: string;
   database: string;
@@ -104,6 +110,7 @@ export type SystemUser = {
   is_active: boolean;
   is_protected: boolean;
   is_superuser: boolean;
+  system_mode: "TEST" | "PRODUCTION";
   role_ids: string[];
   effective_page_ids: string[];
   last_login: string | null;
@@ -118,6 +125,7 @@ export type SystemUserInput = {
   last_name: string;
   is_active: boolean;
   is_protected: boolean;
+  system_mode?: "TEST" | "PRODUCTION";
   role_ids: string[];
 };
 
@@ -130,6 +138,7 @@ export type AuthUser = {
   full_name: string;
   role_names: string[];
   is_superuser: boolean;
+  system_mode: "TEST" | "PRODUCTION";
   preferences: UserPreferences;
 };
 
@@ -291,6 +300,69 @@ export type CostOverview = {
 
 export type SalesAnalysisGrain = "day" | "week" | "month";
 
+export type SalesRecord = {
+  id: string;
+  order_id: string;
+  reference: string;
+  sold_at: string;
+  product_id: string;
+  product_name_zh: string;
+  product_name_en: string;
+  quantity: number;
+  standard_unit_price: string;
+  standard_sales_amount: string;
+  discount_amount: string;
+  paid_amount: string;
+  refund_amount: string;
+  net_sales_amount: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type SalesRecordInput = {
+  reference: string;
+  sold_at: string;
+  product_id: string;
+  product_name_zh?: string;
+  product_name_en?: string;
+  quantity: number;
+  standard_unit_price: string;
+  discount_amount: string;
+  paid_amount: string;
+  refund_amount: string;
+};
+
+export type SalesChannel = "DIRECT" | "CONSIGNMENT" | "DELIVERY";
+
+export type SalesDataRecord = {
+  id: string;
+  sales_date: string;
+  channel: SalesChannel;
+  product_id: string;
+  product_name_zh: string;
+  product_name_en: string;
+  quantity: number;
+  received_amount: string;
+  discount_amount: string;
+  refund_amount: string;
+  standard_sales_amount: string;
+  net_sales_amount: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type SalesDataInput = {
+  sales_date: string;
+  channel: SalesChannel;
+  product_id: string;
+  product_name_zh?: string;
+  product_name_en?: string;
+  quantity: number;
+  received_amount: string;
+  discount_amount: string;
+  refund_amount: string;
+};
+
 export type SalesAnalysis = {
   range: {
     start: string;
@@ -299,7 +371,9 @@ export type SalesAnalysis = {
   };
   kpis: {
     net_sales: string;
+    standard_sales?: string;
     sales_quantity: number;
+    record_count?: number;
     order_count: number;
     average_order_value: string;
     discount_amount: string;
@@ -312,6 +386,7 @@ export type SalesAnalysis = {
     discount: string;
     refunds: string;
     quantity: number;
+    record_count?: number;
     order_count: number;
   }>;
   products: Array<{
@@ -333,6 +408,12 @@ export type SalesAnalysis = {
     quantity: number;
     order_count: number;
   }>;
+  channels?: Array<{
+    channel: SalesChannel;
+    quantity: number;
+    standard_sales: string;
+    net_sales: string;
+  }>;
 };
 
 export type DashboardOverview = {
@@ -341,6 +422,7 @@ export type DashboardOverview = {
   kpis: {
     today_net_sales: string;
     today_sales_quantity: number;
+    today_sales_record_count: number;
     today_order_count: number;
     today_planned_production: number;
     today_actual_production: number;
@@ -359,7 +441,7 @@ export type DashboardOverview = {
     inventory_risk_count: number;
     event_risk_count: number;
   };
-  sales_trend: Array<{ date: string; net_sales: string; order_count: number }>;
+  sales_trend: Array<{ date: string; net_sales: string; record_count: number; order_count: number }>;
   sales_mix: Array<{
     product_id: string | null;
     product_name_zh: string;
@@ -397,6 +479,8 @@ export type ProfitabilityAnalysis = {
   kpis: {
     net_sales: string;
     material_cost: string;
+    missing_material_cost_count?: number;
+    material_cost_complete?: boolean;
     gross_profit: string;
     gross_margin: string;
     wages: string;
@@ -412,6 +496,7 @@ export type ProfitabilityAnalysis = {
     period: string;
     net_sales: string;
     material_cost: string;
+    missing_material_cost_count?: number;
     gross_profit: string;
     wages: string;
     other_costs: string;
@@ -424,6 +509,8 @@ export type ProfitabilityAnalysis = {
     quantity: number;
     net_sales: string;
     material_cost: string;
+    missing_material_cost_count?: number;
+    material_cost_complete?: boolean;
     contribution_profit: string;
     contribution_margin: string;
     contribution_share: string;
@@ -478,13 +565,12 @@ export type Employee = {
   employee_number: string;
   name: string;
   gender: EmployeeGender;
-  date_of_birth: string;
-  hire_date: string;
-  departure_date: string | null;
+  date_of_birth: string | null;
+  hire_date: string | null;  departure_date: string | null;
   position: string;
   hourly_rate: string;
   employment_type: EmploymentType;
-  email: string;
+  email: string | null;
   status: EmployeeStatus;
   deleted_at: string | null;
   created_at: string;
@@ -518,6 +604,7 @@ export type ProductRecipeIngredient = {
   id: string;
   section_id: string;
   section_name: string;
+  ingredient_id?: string;
   ingredient_name: string;
   weight: string;
   unit: string;
@@ -697,6 +784,7 @@ export type InventoryForecastItem = {
 export type InventoryOverview = {
   generated_at: string;
   horizon_days: number;
+  receipt_ingredient_ids: string[];
   kpis: {
     ingredient_count: number;
     purchase_required_count: number;
@@ -736,8 +824,37 @@ export type InventoryReceipt = {
   current_stock: string;
   notes: string;
   received_at: string;
+  created_by_id: string | null;
   created_by_name: string | null;
+  invoice_name: string;
+  invoice_size: number | null;
+  invoice_download_url: string | null;
+  invoice_file?: File | null;
   created_at: string;
+};
+
+export type InventoryRecorderOption = {
+  id: string;
+  username: string;
+  email: string;
+};
+
+export type InventoryReceiptInput = {
+  ingredient_id?: string;
+  ingredient_name?: string;
+  supplier_id: string;
+  supplier_name?: string;
+  quantity: string;
+  unit: string;
+  unit_price: string;
+  currency?: string;
+  price_unit?: string;
+  received_at: string;
+  notes: string;
+  recorded_by_id: string;
+  recorded_by_name?: string;
+  invoice?: File | null;
+  remove_invoice?: boolean;
 };
 
 export type ProductionPlanDisplayStatus =
@@ -960,15 +1077,386 @@ function getApiBaseUrl() {
   return baseUrl;
 }
 
+function collectionRoot(path: string): { root: string; id: string | null } {
+  const clean = path.split("?", 1)[0];
+  const parts = clean.split("/").filter(Boolean);
+  if (parts.length <= 1) return { root: clean.endsWith("/") ? clean : `${clean}/`, id: null };
+  const last = parts.at(-1) ?? "";
+  const looksLikeId = /^[0-9a-f-]{8,}$/i.test(last);
+  return looksLikeId ? { root: `/${parts.slice(0, -1).join("/")}/`, id: last } : { root: clean.endsWith("/") ? clean : `${clean}/`, id: null };
+}
+
+function applyLocalMutations<T>(value: T, mutations: Awaited<ReturnType<typeof readTestMutations>>): T {
+  if (!Array.isArray(value) && !(value && typeof value === "object" && Array.isArray((value as { results?: unknown }).results))) return value;
+  const rows = Array.isArray(value) ? value : (value as unknown as { results: unknown[] }).results;
+  const rowMap = new Map<string, Record<string, unknown>>();
+  const order = (rows as Array<Record<string, unknown>>).map((row, index) => {
+    const key = row.id === undefined ? `__local_row_${index}` : String(row.id);
+    rowMap.set(key, row);
+    return key;
+  });
+  const addedKeys: string[] = [];
+  for (const mutation of mutations) {
+    if (mutation.method === "DELETE_NESTED_SUPPLIER_INGREDIENT") {
+      for (const key of order) {
+        const row = rowMap.get(key);
+        if (!row) continue;
+        const suppliedIngredients = row.supplied_ingredients;
+        if (!Array.isArray(suppliedIngredients)) continue;
+        const remaining = suppliedIngredients.filter(
+          (item) => String((item as { id?: unknown }).id) !== mutation.id,
+        );
+        if (remaining.length !== suppliedIngredients.length) {
+          rowMap.set(key, {
+            ...row,
+            supplied_ingredients: remaining,
+            supplied_ingredient_count: remaining.filter(
+              (item) => Boolean((item as { is_active?: unknown }).is_active),
+            ).length,
+          });
+        }
+      }
+      continue;
+    }
+    const key = mutation.id;
+    if (mutation.method === "DELETE") {
+      if (key) rowMap.delete(key);
+      continue;
+    }
+    if (!mutation.value || typeof mutation.value !== "object") continue;
+    if (key && rowMap.has(key)) {
+      rowMap.set(key, { ...rowMap.get(key), ...(mutation.value as Record<string, unknown>) });
+    } else {
+      const nextKey = key ?? `__local_mutation_${mutation.key}`;
+      rowMap.set(nextKey, mutation.value as Record<string, unknown>);
+      addedKeys.push(nextKey);
+    }
+  }
+  const next = [...addedKeys.reverse(), ...order].flatMap((key) => {
+    const row = rowMap.get(key);
+    return row ? [row] : [];
+  });
+  return (Array.isArray(value) ? next : { ...(value as object), results: next }) as T;
+}
+
+async function readCompatibleProductionPlanOverview(path: string) {
+  const requestUrl = new URL(path, "http://bakeops.local");
+  if (requestUrl.pathname !== "/inventory/production-plans/") return undefined;
+  const start = requestUrl.searchParams.get("start") ?? "";
+  const end = requestUrl.searchParams.get("end") ?? "";
+  if (!start || !end) return undefined;
+
+  const mutations = await readTestMutations("/inventory/production-plans/");
+  const candidates = await readTestResponsesByPrefix<ProductionPlanOverview>(
+    "BASE:/inventory/production-plans/?",
+  );
+  const compatible = candidates.flatMap((candidate) => {
+    const overview = candidate.value;
+    if (
+      !overview?.range ||
+      !Array.isArray(overview.plans) ||
+      overview.range.start > start ||
+      overview.range.end < end
+    ) {
+      return [];
+    }
+    const plansWithMutations = applyLocalMutations(overview.plans, mutations);
+    const plans = plansWithMutations.filter(
+      (plan) => plan.production_date >= start && plan.production_date <= end,
+    );
+    return [{
+      updatedAt: candidate.updatedAt,
+      overview: {
+        ...overview,
+        range: { start, end },
+        kpis: {
+          ...overview.kpis,
+          planned_product_count: new Set(plans.map((plan) => plan.product_id)).size,
+        },
+        plans,
+      },
+    }];
+  });
+  compatible.sort(
+    (left, right) =>
+      right.overview.plans.length - left.overview.plans.length ||
+      right.updatedAt - left.updatedAt,
+  );
+  return compatible[0]?.overview;
+}
+
+function parseLocalMutationBody(body: BodyInit | null | undefined): Record<string, unknown> {
+  if (!body) return {};
+  if (!(body instanceof FormData)) return JSON.parse(String(body)) as Record<string, unknown>;
+  const parsed: Record<string, unknown> = {};
+  for (const [key, entry] of body.entries()) {
+    if (key.startsWith("_local_")) {
+      parsed[key.slice(7)] = entry;
+    } else if (key === "invoice" && entry instanceof File) {
+      parsed.invoice_file = entry;
+      parsed.invoice_name = entry.name;
+      parsed.invoice_size = entry.size;
+      parsed.invoice_download_url = null;
+    } else {
+      parsed[key] = entry;
+    }
+  }
+  parsed.created_by_id = parsed.recorded_by_id ?? parsed.created_by_id ?? null;
+  parsed.created_by_name = parsed.recorded_by_name ?? parsed.created_by_name ?? null;
+  delete parsed.recorded_by_id;
+  delete parsed.recorded_by_name;
+  if (parsed.remove_invoice === "true") {
+    parsed.invoice_file = null;
+    parsed.invoice_name = "";
+    parsed.invoice_size = null;
+    parsed.invoice_download_url = null;
+  }
+  delete parsed.remove_invoice;
+  return parsed;
+}
+
+async function auditLocalAction(method: string, path: string, resourceId: string | null) {
+  try {
+    await apiRequest<void>("/audit/client-actions/", {
+      method: "POST",
+      body: JSON.stringify({
+        method,
+        path,
+        resource_type: path.split("/").filter(Boolean)[0] ?? "",
+        resource_id: resourceId,
+      }),
+    });
+  } catch {
+    // Audit availability must not block a local test-data operation.
+  }
+}
+
+async function localTestMutation<T>(path: string, method: string, init?: RequestInit): Promise<T> {
+  const parsed = parseLocalMutationBody(init?.body);
+  const now = new Date().toISOString();
+  const { root, id: pathId } = collectionRoot(path);
+  const mutationId = typeof parsed.id === "string" ? parsed.id : pathId ?? crypto.randomUUID();
+  if (method === "POST" && path === "/sales/data/import/") {
+    const rows = Array.isArray(parsed.records) ? parsed.records as Array<Record<string, unknown>> : [];
+    const records = rows.map((row) => {
+      const received = Number(row.received_amount ?? 0);
+      const discount = Number(row.discount_amount ?? 0);
+      const refund = Number(row.refund_amount ?? 0);
+      return {
+        ...row,
+        id: crypto.randomUUID(),
+        standard_sales_amount: (received + discount).toFixed(2),
+        net_sales_amount: (received - refund).toFixed(2),
+        created_at: now,
+        updated_at: now,
+      };
+    });
+    await writeTestMutations(records.map((record) => ({
+      root: "/sales/data/",
+      method: "POST",
+      id: record.id,
+      value: record,
+    })));
+    const value = { created_count: records.length, records };
+    await writeTestResponse(`${method}:${path}`, value);
+    window.dispatchEvent(new Event(BAKEOPS_DATA_CHANGE_EVENT));
+    await auditLocalAction(method, path, null);
+    return value as T;
+  }
+  if (method === "POST" && path === "/sales/data/bulk-delete/") {
+    const ids = Array.isArray(parsed.record_ids) ? parsed.record_ids.map(String) : [];
+    await writeTestMutations(ids.map((id) => ({
+      root: "/sales/data/",
+      method: "DELETE",
+      id,
+      value: undefined,
+    })));
+    await writeTestResponse(`${method}:${path}`, undefined);
+    window.dispatchEvent(new Event(BAKEOPS_DATA_CHANGE_EVENT));
+    await auditLocalAction(method, path, null);
+    return undefined as T;
+  }
+  if (method === "POST" && path === "/sales/records/import/") {
+    const rows = Array.isArray(parsed.records) ? parsed.records as Array<Record<string, unknown>> : [];
+    const orderIds = new Map<string, string>();
+    const records = [];
+    for (const row of rows) {
+      const id = crypto.randomUUID();
+      const reference = String(row.reference ?? "");
+      const orderId = orderIds.get(reference) ?? crypto.randomUUID();
+      orderIds.set(reference, orderId);
+      const quantity = Number(row.quantity ?? 0);
+      const unitPrice = Number(row.standard_unit_price ?? 0);
+      const discount = Number(row.discount_amount ?? 0);
+      const paid = Number(row.paid_amount ?? quantity * unitPrice - discount);
+      const refund = Number(row.refund_amount ?? 0);
+      const record = {
+        ...row,
+        id,
+        order_id: orderId,
+        standard_sales_amount: (quantity * unitPrice).toFixed(2),
+        net_sales_amount: (paid - refund).toFixed(2),
+        created_at: now,
+        updated_at: now,
+      };
+      records.push(record);
+    }
+    await writeTestMutations(records.map((record) => ({
+      root: "/sales/records/",
+      method: "POST",
+      id: record.id,
+      value: record,
+    })));
+    const value = { created_count: records.length, records };
+    await writeTestResponse(`${method}:${path}`, value);
+    window.dispatchEvent(new Event(BAKEOPS_DATA_CHANGE_EVENT));
+    await auditLocalAction(method, path, null);
+    return value as T;
+  }
+  if (method === "POST" && path === "/sales/records/bulk-delete/") {
+    const ids = Array.isArray(parsed.line_ids) ? parsed.line_ids.map(String) : [];
+    for (const id of ids) await writeTestMutation("/sales/records/", "DELETE", id, undefined);
+    await writeTestResponse(`${method}:${path}`, undefined);
+    window.dispatchEvent(new Event(BAKEOPS_DATA_CHANGE_EVENT));
+    await auditLocalAction(method, path, null);
+    return undefined as T;
+  }
+  const deletesNestedSupplierIngredient =
+    method === "DELETE" && root === "/suppliers/ingredients/" && Boolean(pathId);
+  const scheduleEmployee = root === "/schedules/" && typeof parsed.employee === "string"
+    ? getBundledTestEmployee(parsed.employee)
+    : undefined;
+  const scheduleStart = typeof parsed.start_time === "string" ? parsed.start_time : "";
+  const scheduleEnd = typeof parsed.end_time === "string" ? parsed.end_time : "";
+  const scheduleMinutes = scheduleStart && scheduleEnd
+    ? Math.max(
+        (Number(scheduleEnd.slice(0, 2)) * 60 + Number(scheduleEnd.slice(3, 5))) -
+          (Number(scheduleStart.slice(0, 2)) * 60 + Number(scheduleStart.slice(3, 5))) -
+          Number(parsed.break_minutes ?? 0),
+        0,
+      )
+    : 0;
+  const localReceiptFields = root === "/inventory/receipts/" ? {
+    ...(method === "POST" ? {
+      reference: parsed.reference ?? `GRN-TEST-${Date.now().toString(36).toUpperCase()}`,
+      current_stock: parsed.current_stock ?? "0",
+    } : {}),
+    total_cost: parsed.total_cost ?? (Number(parsed.quantity ?? 0) * Number(parsed.unit_price ?? 0)).toFixed(2),
+  } : {};
+  const localEmployeeFields = root === "/employees/" ? {
+    deleted_at: parsed.deleted_at ?? null,
+  } : {};
+  const localScheduleFields = root === "/schedules/" ? {
+    employee_name: scheduleEmployee?.name ?? parsed.employee_name ?? "",
+    employee_position: scheduleEmployee?.position ?? parsed.employee_position ?? "",
+    hourly_rate: scheduleEmployee?.hourly_rate ?? parsed.hourly_rate ?? null,
+    actual_hours: (scheduleMinutes / 60).toFixed(2),
+    daily_wage: scheduleEmployee
+      ? (Number(scheduleEmployee.hourly_rate) * scheduleMinutes / 60).toFixed(2)
+      : parsed.daily_wage ?? null,
+    employee_is_deleted: Boolean(scheduleEmployee?.deleted_at),
+    employee_status: scheduleEmployee?.status ?? parsed.employee_status ?? "",
+  } : {};
+  const localSalesFields = root === "/sales/records/" ? {
+    standard_sales_amount: (
+      Number(parsed.quantity ?? 0) * Number(parsed.standard_unit_price ?? 0)
+    ).toFixed(2),
+    net_sales_amount: (
+      Number(parsed.paid_amount ?? 0) - Number(parsed.refund_amount ?? 0)
+    ).toFixed(2),
+  } : {};
+  const localSalesDataFields = root === "/sales/data/" ? {
+    standard_sales_amount: (
+      Number(parsed.received_amount ?? 0) + Number(parsed.discount_amount ?? 0)
+    ).toFixed(2),
+    net_sales_amount: (
+      Number(parsed.received_amount ?? 0) - Number(parsed.refund_amount ?? 0)
+    ).toFixed(2),
+  } : {};
+  const value = method === "DELETE" ? undefined : {
+    ...parsed,
+    ...localReceiptFields,
+    ...localEmployeeFields,
+    ...localScheduleFields,
+    ...localSalesFields,
+    ...localSalesDataFields,
+    id: mutationId,
+    ...(method === "POST" ? {
+      created_at: typeof parsed.created_at === "string" ? parsed.created_at : now,
+    } : {}),
+    updated_at: now,
+  };
+  await writeTestMutation(
+    deletesNestedSupplierIngredient ? "/suppliers/" : root,
+    deletesNestedSupplierIngredient ? "DELETE_NESTED_SUPPLIER_INGREDIENT" : method,
+    pathId ?? mutationId,
+    value,
+  );
+  await writeTestResponse(`${method}:${path}`, value);
+  window.dispatchEvent(new Event(BAKEOPS_DATA_CHANGE_EVENT));
+  await auditLocalAction(method, path, pathId ?? mutationId);
+  return value as T;
+}
+
 async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
   const method = (init?.method ?? "GET").toUpperCase();
+  const mode = getDataMode();
+  const isRead = ["GET", "HEAD", "OPTIONS", "TRACE"].includes(method);
+  const serverControlPath = [
+    "/users/",
+    "/access/",
+    "/navigation/",
+    "/audit/",
+    "/system/",
+    "/inventory/receipts/recorder-options/",
+  ].some((prefix) => path.startsWith(prefix));
+  const usesLocalTestData = mode === "TEST" && !serverControlPath;
+
+  if (usesLocalTestData) {
+    if (!isRead && !isAuthenticatedLocally()) {
+      const error = new Error("游客测试模式不能保存修改。请登录后再试。");
+      Object.assign(error, { status: 403 });
+      throw error;
+    }
+    if (!isRead) return localTestMutation<T>(path, method, init);
+    const bundledValue = readBundledTestResponse(path);
+    if (bundledValue !== undefined) {
+      return applyLocalMutations(
+        bundledValue as T,
+        await readTestMutations(collectionRoot(path).root),
+      );
+    }
+    const compatibleProductionPlans = await readCompatibleProductionPlanOverview(path);
+    if (compatibleProductionPlans !== undefined) {
+      return compatibleProductionPlans as T;
+    }
+    const localValue = await readTestResponse<T>(`${method}:${path}`);
+    if (localValue !== undefined) {
+      if (!isRead) return localValue;
+      return applyLocalMutations(
+        localValue,
+        await readTestMutations(collectionRoot(path).root),
+      );
+    }
+    if (isRead) {
+      const baseValue = await readTestResponse<T>(`BASE:${path}`);
+      if (baseValue !== undefined) {
+        return applyLocalMutations(
+          baseValue,
+          await readTestMutations(collectionRoot(path).root),
+        );
+      }
+    }
+  }
   const csrfToken = await getCsrfTokenForRequest(method);
+  const isFormData = init?.body instanceof FormData;
   const response = await fetch(`${getApiBaseUrl()}${path}`, {
     cache: "no-store",
     credentials: "include",
     ...init,
     headers: {
-      "Content-Type": "application/json",
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
+      "X-BakeOps-System-Mode": mode,
       ...(csrfToken ? { "X-CSRFToken": csrfToken } : {}),
       ...init?.headers,
     },
@@ -993,7 +1481,11 @@ async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
 
   if (response.status === 204) return undefined as T;
 
-  return response.json() as Promise<T>;
+  const value = (await response.json()) as T;
+  if (usesLocalTestData) {
+    await writeTestResponse(`BASE:${path}`, value);
+  }
+  return value;
 }
 
 let csrfRequest: Promise<void> | null = null;
@@ -1047,6 +1539,7 @@ function readApiError(value: unknown): string | null {
   return null;
 }
 
+
 export async function getHealthStatus(): Promise<HealthStatus> {
   return apiRequest<HealthStatus>("/health/");
 }
@@ -1069,11 +1562,13 @@ export function updateCurrentUserPreferences(input: Partial<UserPreferences>) {
   });
 }
 
-export function loginUser(input: LoginInput) {
-  return apiRequest<AuthUser>("/users/auth/login/", {
+export async function loginUser(input: LoginInput) {
+  const user = await apiRequest<AuthUser>("/users/auth/login/", {
     method: "POST",
     body: JSON.stringify(input),
   });
+  setAuthenticated(true);
+  return user;
 }
 
 export function registerUser(input: RegistrationInput) {
@@ -1087,8 +1582,11 @@ export function getRegistrationCaptcha() {
   return apiRequest<RegistrationCaptcha>("/users/auth/registration-captcha/");
 }
 
-export function logoutUser() {
-  return apiRequest<void>("/users/auth/logout/", { method: "POST" });
+export async function logoutUser() {
+  const result = await apiRequest<void>("/users/auth/logout/", { method: "POST" });
+  setAuthenticated(false);
+  setDataMode("TEST");
+  return result;
 }
 
 export function changeCurrentUserPassword(input: ChangePasswordInput) {
@@ -1223,13 +1721,193 @@ export function getCostOverview(month: string) {
   return apiRequest<CostOverview>(`/costs/overview/?month=${encodeURIComponent(month)}`);
 }
 
-export function getSalesAnalysis(
+export async function getSalesAnalysis(
   start: string,
   end: string,
   grain: SalesAnalysisGrain,
+  channel: SalesChannel | "" = "",
 ) {
+  if (getDataMode() === "TEST") {
+    const records = await getSalesData({ start, end, channel });
+    return buildLocalSalesAnalysis(records, start, end, grain);
+  }
   const query = new URLSearchParams({ start, end, grain });
+  if (channel) query.set("channel", channel);
   return apiRequest<SalesAnalysis>(`/sales/analysis/?${query}`);
+}
+
+function buildLocalSalesAnalysis(
+  records: SalesDataRecord[],
+  start: string,
+  end: string,
+  grain: SalesAnalysisGrain,
+): SalesAnalysis {
+  const sum = (values: SalesDataRecord[], key: keyof SalesDataRecord) =>
+    values.reduce((total, record) => total + Number(record[key]), 0);
+  const netSales = sum(records, "net_sales_amount");
+  const groups = new Map<string, SalesDataRecord[]>();
+  for (const record of records) {
+    const period = localSalesPeriod(record.sales_date, grain);
+    groups.set(period, [...(groups.get(period) ?? []), record]);
+  }
+  const trend = [...groups.entries()].sort(([left], [right]) => left.localeCompare(right)).map(
+    ([period, items]) => ({
+      period,
+      net_sales: sum(items, "net_sales_amount").toFixed(2),
+      standard_sales: sum(items, "standard_sales_amount").toFixed(2),
+      discount: sum(items, "discount_amount").toFixed(2),
+      refunds: sum(items, "refund_amount").toFixed(2),
+      quantity: sum(items, "quantity"),
+      record_count: items.length,
+      order_count: 0,
+    }),
+  );
+  const productGroups = new Map<string, SalesDataRecord[]>();
+  for (const record of records) {
+    productGroups.set(record.product_id, [...(productGroups.get(record.product_id) ?? []), record]);
+  }
+  const products: SalesAnalysis["products"] = [...productGroups.entries()].map(([productId, items]) => {
+    const quantity = sum(items, "quantity");
+    const standardSales = sum(items, "standard_sales_amount");
+    const productNetSales = sum(items, "net_sales_amount");
+    return {
+      product_id: productId,
+      product_name_zh: items[0].product_name_zh,
+      product_name_en: items[0].product_name_en,
+      quantity,
+      standard_sales: standardSales.toFixed(2),
+      discount: sum(items, "discount_amount").toFixed(2),
+      refunds: sum(items, "refund_amount").toFixed(2),
+      net_sales: productNetSales.toFixed(2),
+      standard_unit_price: (quantity ? standardSales / quantity : 0).toFixed(2),
+      actual_average_price: (quantity ? productNetSales / quantity : 0).toFixed(2),
+      price_realisation_rate: (standardSales ? productNetSales / standardSales * 100 : 0).toFixed(1),
+    };
+  }).sort((left, right) => Number(right.net_sales) - Number(left.net_sales));
+  const channelGroups = new Map<SalesChannel, SalesDataRecord[]>();
+  for (const record of records) {
+    channelGroups.set(record.channel, [...(channelGroups.get(record.channel) ?? []), record]);
+  }
+  const channels = [...channelGroups.entries()].map(([channel, items]) => ({
+    channel,
+    quantity: sum(items, "quantity"),
+    standard_sales: sum(items, "standard_sales_amount").toFixed(2),
+    net_sales: sum(items, "net_sales_amount").toFixed(2),
+  }));
+  return {
+    range: { start, end, grain },
+    kpis: {
+      net_sales: netSales.toFixed(2),
+      standard_sales: sum(records, "standard_sales_amount").toFixed(2),
+      sales_quantity: sum(records, "quantity"),
+      record_count: records.length,
+      order_count: 0,
+      average_order_value: "0.00",
+      discount_amount: sum(records, "discount_amount").toFixed(2),
+      refund_amount: sum(records, "refund_amount").toFixed(2),
+    },
+    trend,
+    products,
+    channels,
+    hourly: [],
+  };
+}
+
+function localSalesPeriod(value: string, grain: SalesAnalysisGrain) {
+  const key = value.slice(0, 10);
+  if (grain === "day") return key;
+  if (grain === "month") return `${key.slice(0, 7)}-01`;
+  const monday = new Date(`${key}T12:00:00Z`);
+  monday.setUTCDate(monday.getUTCDate() - ((monday.getUTCDay() + 6) % 7));
+  return monday.toISOString().slice(0, 10);
+}
+
+export async function getSalesData(filters?: {
+  search?: string;
+  start?: string;
+  end?: string;
+  channel?: SalesChannel | "";
+}) {
+  const query = new URLSearchParams();
+  if (filters?.search) query.set("search", filters.search);
+  if (filters?.start) query.set("start", filters.start);
+  if (filters?.end) query.set("end", filters.end);
+  if (filters?.channel) query.set("channel", filters.channel);
+  const suffix = query.size ? `?${query.toString()}` : "";
+  const records = await apiRequest<SalesDataRecord[]>(`/sales/data/${suffix}`);
+  const search = filters?.search?.trim().toLocaleLowerCase() ?? "";
+  return records.filter((record) => {
+    if (filters?.start && record.sales_date < filters.start) return false;
+    if (filters?.end && record.sales_date > filters.end) return false;
+    if (filters?.channel && record.channel !== filters.channel) return false;
+    if (!search) return true;
+    return [record.product_name_zh, record.product_name_en]
+      .some((value) => value.toLocaleLowerCase().includes(search));
+  }).sort((left, right) =>
+    right.sales_date.localeCompare(left.sales_date)
+      || left.channel.localeCompare(right.channel)
+      || left.product_name_en.localeCompare(right.product_name_en)
+  );
+}
+
+export function updateSalesData(recordId: string, input: SalesDataInput) {
+  return apiRequest<SalesDataRecord>(`/sales/data/${recordId}/`, {
+    method: "PUT",
+    body: JSON.stringify(input),
+  });
+}
+
+export function importSalesData(records: SalesDataInput[]) {
+  return apiRequest<{ created_count: number; records: SalesDataRecord[] }>(
+    "/sales/data/import/",
+    { method: "POST", body: JSON.stringify({ records }) },
+  );
+}
+
+export function bulkDeleteSalesData(recordIds: string[]) {
+  return apiRequest<void>("/sales/data/bulk-delete/", {
+    method: "POST",
+    body: JSON.stringify({ record_ids: recordIds }),
+  });
+}
+
+export async function getSalesRecords(filters?: { search?: string; start?: string; end?: string }) {
+  const query = new URLSearchParams();
+  if (filters?.search) query.set("search", filters.search);
+  if (filters?.start) query.set("start", filters.start);
+  if (filters?.end) query.set("end", filters.end);
+  const suffix = query.size ? `?${query}` : "";
+  const records = await apiRequest<SalesRecord[]>(`/sales/records/${suffix}`);
+  const search = filters?.search?.trim().toLocaleLowerCase() ?? "";
+  return records.filter((record) => {
+    const date = record.sold_at.slice(0, 10);
+    if (filters?.start && date < filters.start) return false;
+    if (filters?.end && date > filters.end) return false;
+    if (!search) return true;
+    return [record.reference, record.product_name_zh, record.product_name_en]
+      .some((value) => value.toLocaleLowerCase().includes(search));
+  });
+}
+
+export function updateSalesRecord(recordId: string, input: SalesRecordInput) {
+  return apiRequest<SalesRecord>(`/sales/records/${recordId}/`, {
+    method: "PUT",
+    body: JSON.stringify(input),
+  });
+}
+
+export function importSalesRecords(records: SalesRecordInput[]) {
+  return apiRequest<{ created_count: number; records: SalesRecord[] }>(
+    "/sales/records/import/",
+    { method: "POST", body: JSON.stringify({ records }) },
+  );
+}
+
+export function bulkDeleteSalesRecords(lineIds: string[]) {
+  return apiRequest<void>("/sales/records/bulk-delete/", {
+    method: "POST",
+    body: JSON.stringify({ line_ids: lineIds }),
+  });
 }
 
 export function getDashboardOverview(date?: string) {
@@ -1237,13 +1915,159 @@ export function getDashboardOverview(date?: string) {
   return apiRequest<DashboardOverview>(`/dashboard/overview/${query}`);
 }
 
-export function getProfitabilityAnalysis(
+export async function getProfitabilityAnalysis(
   start: string,
   end: string,
   grain: ProfitabilityAnalysisGrain,
 ) {
   const query = new URLSearchParams({ start, end, grain });
-  return apiRequest<ProfitabilityAnalysis>(`/sales/profitability/?${query}`);
+  const base = await apiRequest<ProfitabilityAnalysis>(`/sales/profitability/?${query}`);
+  if (getDataMode() !== "TEST") return base;
+  const [records, products] = await Promise.all([
+    getSalesData({ start, end }),
+    getBakeryProducts(),
+  ]);
+  return buildLocalProfitabilityAnalysis(records, products, base, start, end, grain);
+}
+
+function buildLocalProfitabilityAnalysis(
+  records: SalesDataRecord[],
+  bakeryProducts: BakeryProduct[],
+  base: ProfitabilityAnalysis,
+  start: string,
+  end: string,
+  grain: ProfitabilityAnalysisGrain,
+): ProfitabilityAnalysis {
+  const unitCosts = new Map<string, number | null>();
+  for (const product of bakeryProducts) {
+    const amount = Number(product.current_estimated_cost?.amount);
+    const yieldQuantity = product.active_recipe?.yield_quantity ?? 0;
+    unitCosts.set(
+      product.id,
+      product.current_estimated_cost?.is_complete && Number.isFinite(amount) && yieldQuantity > 0
+        ? amount / yieldQuantity
+        : null,
+    );
+  }
+
+  const periodSales = new Map<string, number>();
+  const periodMaterial = new Map<string, number>();
+  const periodMissing = new Map<string, number>();
+  const productGroups = new Map<string, SalesDataRecord[]>();
+  let totalSales = 0;
+  let totalMaterial = 0;
+  let missingMaterialCostCount = 0;
+
+  for (const record of records) {
+    const period = localProfitabilityPeriod(record.sales_date, grain);
+    const netSales = Number(record.net_sales_amount);
+    const unitCost = unitCosts.get(record.product_id) ?? null;
+    const materialCost = unitCost === null ? 0 : unitCost * record.quantity;
+    totalSales += netSales;
+    totalMaterial += materialCost;
+    periodSales.set(period, (periodSales.get(period) ?? 0) + netSales);
+    periodMaterial.set(period, (periodMaterial.get(period) ?? 0) + materialCost);
+    if (unitCost === null) {
+      missingMaterialCostCount += 1;
+      periodMissing.set(period, (periodMissing.get(period) ?? 0) + 1);
+    }
+    productGroups.set(record.product_id, [...(productGroups.get(record.product_id) ?? []), record]);
+  }
+
+  const baseTrend = new Map(base.trend.map((item) => [item.period, item]));
+  const periods = new Set([...baseTrend.keys(), ...periodSales.keys(), ...periodMaterial.keys()]);
+  const trend = [...periods].sort().map((period) => {
+    const original = baseTrend.get(period);
+    const netSales = periodSales.get(period) ?? 0;
+    const materialCost = periodMaterial.get(period) ?? 0;
+    const wages = Number(original?.wages ?? 0);
+    const otherCosts = Number(original?.other_costs ?? 0);
+    const grossProfit = netSales - materialCost;
+    return {
+      period,
+      net_sales: netSales.toFixed(2),
+      material_cost: materialCost.toFixed(2),
+      missing_material_cost_count: periodMissing.get(period) ?? 0,
+      gross_profit: grossProfit.toFixed(2),
+      wages: wages.toFixed(2),
+      other_costs: otherCosts.toFixed(2),
+      operating_profit: (grossProfit - wages - otherCosts).toFixed(2),
+    };
+  });
+
+  const totalWages = Number(base.kpis.wages);
+  const totalOther = Number(base.kpis.other_costs);
+  const grossProfit = totalSales - totalMaterial;
+  const operatingProfit = grossProfit - totalWages - totalOther;
+  const products: ProfitabilityAnalysis["products"] = [...productGroups.entries()].map(([productId, items]) => {
+    const quantity = items.reduce((sum, item) => sum + item.quantity, 0);
+    const netSales = items.reduce((sum, item) => sum + Number(item.net_sales_amount), 0);
+    const unitCost = unitCosts.get(productId) ?? null;
+    const materialCost = unitCost === null ? 0 : unitCost * quantity;
+    const contribution = netSales - materialCost;
+    return {
+      product_id: productId,
+      product_name_zh: items[0].product_name_zh,
+      product_name_en: items[0].product_name_en,
+      quantity,
+      net_sales: netSales.toFixed(2),
+      material_cost: materialCost.toFixed(2),
+      missing_material_cost_count: unitCost === null ? items.length : 0,
+      material_cost_complete: unitCost !== null,
+      contribution_profit: contribution.toFixed(2),
+      contribution_margin: (netSales ? contribution / netSales * 100 : 0).toFixed(1),
+      contribution_share: "0.0",
+      quadrant: "REVIEW" as const,
+    };
+  }).sort((left, right) => Number(right.net_sales) - Number(left.net_sales));
+
+  for (const product of products) {
+    product.contribution_share = (grossProfit ? Number(product.contribution_profit) / grossProfit * 100 : 0).toFixed(1);
+  }
+  const salesMedian = median(products.map((product) => Number(product.net_sales)));
+  const marginMedian = median(products.map((product) => Number(product.contribution_margin)));
+  for (const product of products) {
+    const highSales = Number(product.net_sales) >= salesMedian;
+    const highMargin = Number(product.contribution_margin) >= marginMedian;
+    product.quadrant = highSales && highMargin ? "STAR" : !highSales && highMargin ? "POTENTIAL" : highSales ? "TRAFFIC" : "REVIEW";
+  }
+
+  return {
+    range: { start, end, grain },
+    kpis: {
+      net_sales: totalSales.toFixed(2),
+      material_cost: totalMaterial.toFixed(2),
+      missing_material_cost_count: missingMaterialCostCount,
+      material_cost_complete: missingMaterialCostCount === 0,
+      gross_profit: grossProfit.toFixed(2),
+      gross_margin: (totalSales ? grossProfit / totalSales * 100 : 0).toFixed(1),
+      wages: totalWages.toFixed(2),
+      other_costs: totalOther.toFixed(2),
+      operating_profit: operatingProfit.toFixed(2),
+      operating_margin: (totalSales ? operatingProfit / totalSales * 100 : 0).toFixed(1),
+    },
+    cost_structure: [
+      { key: "MATERIALS", amount: totalMaterial.toFixed(2) },
+      { key: "WAGES", amount: totalWages.toFixed(2) },
+      { key: "OTHER", amount: totalOther.toFixed(2) },
+    ],
+    trend,
+    products,
+  };
+}
+
+function localProfitabilityPeriod(value: string, grain: ProfitabilityAnalysisGrain) {
+  if (grain === "day") return value;
+  if (grain === "month") return `${value.slice(0, 7)}-01`;
+  const monday = new Date(`${value}T12:00:00Z`);
+  monday.setUTCDate(monday.getUTCDate() - ((monday.getUTCDay() + 6) % 7));
+  return monday.toISOString().slice(0, 10);
+}
+
+function median(values: number[]) {
+  if (!values.length) return 0;
+  const sorted = [...values].sort((left, right) => left - right);
+  return sorted[Math.floor(sorted.length / 2)];
 }
 
 export function getWageDetails(month: string) {
@@ -1315,7 +2139,18 @@ export function saveMonthlyCostItems(
   });
 }
 
-export function getActiveScheduleEmployees() {
+export async function getActiveScheduleEmployees() {
+  if (getDataMode() === "TEST") {
+    const today = new Date();
+    const todayKey = [
+      today.getFullYear(),
+      String(today.getMonth() + 1).padStart(2, "0"),
+      String(today.getDate()).padStart(2, "0"),
+    ].join("-");
+    return (await getEmployees("", "ACTIVE", false))
+      .filter((employee) => !employee.hire_date || employee.hire_date <= todayKey)
+      .map(({ id, name, position }) => ({ id, name, position }));
+  }
   return apiRequest<ScheduleEmployeeOption[]>("/schedules/employee-options/");
 }
 
@@ -1473,19 +2308,66 @@ export function createInventoryPurchaseRequest(input: {
   });
 }
 
-export function createInventoryReceipt(input: {
-  ingredient_id: string;
-  supplier_id: string;
-  quantity: string;
-  unit: string;
-  unit_price: string;
-  received_at: string;
-  notes: string;
-}) {
+function inventoryReceiptFormData(input: InventoryReceiptInput) {
+  const form = new FormData();
+  const fields = {
+    ingredient_id: input.ingredient_id,
+    supplier_id: input.supplier_id,
+    quantity: input.quantity,
+    unit: input.unit,
+    unit_price: input.unit_price,
+    received_at: input.received_at,
+    notes: input.notes,
+    recorded_by_id: input.recorded_by_id,
+  };
+  for (const [key, value] of Object.entries(fields)) {
+    if (value !== undefined) form.set(key, value);
+  }
+  if (input.invoice) form.set("invoice", input.invoice);
+  if (input.remove_invoice) form.set("remove_invoice", "true");
+  if (input.ingredient_name) form.set("_local_ingredient_name", input.ingredient_name);
+  if (input.supplier_name) form.set("_local_supplier_name", input.supplier_name);
+  if (input.recorded_by_name) form.set("_local_recorded_by_name", input.recorded_by_name);
+  if (input.currency) form.set("_local_currency", input.currency);
+  if (input.price_unit) form.set("_local_price_unit", input.price_unit);
+  return form;
+}
+
+export function createInventoryReceipt(input: InventoryReceiptInput & { ingredient_id: string }) {
   return apiRequest<InventoryReceipt>("/inventory/receipts/", {
     method: "POST",
-    body: JSON.stringify(input),
+    body: inventoryReceiptFormData(input),
   });
+}
+
+export function updateInventoryReceipt(receiptId: string, input: InventoryReceiptInput) {
+  return apiRequest<InventoryReceipt>(`/inventory/receipts/${receiptId}/`, {
+    method: "PATCH",
+    body: inventoryReceiptFormData(input),
+  });
+}
+
+export function deleteInventoryReceipt(receiptId: string) {
+  return apiRequest<void>(`/inventory/receipts/${receiptId}/`, {
+    method: "DELETE",
+  });
+}
+
+export async function bulkDeleteInventoryReceipts(receiptIds: string[]) {
+  if (getDataMode() === "TEST") {
+    for (const receiptId of receiptIds) {
+      await deleteInventoryReceipt(receiptId);
+    }
+    return;
+  }
+  return apiRequest<void>("/inventory/receipts/bulk-delete/", {
+    method: "POST",
+    body: JSON.stringify({ receipt_ids: receiptIds }),
+  });
+}
+
+export function getInventoryRecorderOptions() {
+  return apiRequest<InventoryRecorderOption[]>("/inventory/receipts/recorder-options/");
 }
 
 export function getInventoryReceipts(filters: {
@@ -1611,6 +2493,10 @@ export function updateSupplier(
   });
 }
 
+export function deleteSupplier(supplierId: string) {
+  return apiRequest<void>(`/suppliers/${supplierId}/`, { method: "DELETE" });
+}
+
 export function getSupplierIngredientOptions() {
   return apiRequest<IngredientOption[]>("/suppliers/ingredient-options/");
 }
@@ -1635,5 +2521,11 @@ export function updateSupplierIngredient(
   return apiRequest<SupplierIngredient>(`/suppliers/ingredients/${itemId}/`, {
     method: "PATCH",
     body: JSON.stringify(input),
+  });
+}
+
+export function deleteSupplierIngredient(itemId: string) {
+  return apiRequest<void>(`/suppliers/ingredients/${itemId}/`, {
+    method: "DELETE",
   });
 }

@@ -1,5 +1,6 @@
 from typing import Any
 
+from django.db.models import Q
 from django.utils import timezone
 from django.utils.dateparse import parse_date
 from rest_framework import generics
@@ -26,7 +27,8 @@ class ActiveScheduleEmployeeListApi(APIView):
         employees = Employee.objects.filter(
             status=Employee.Status.ACTIVE,
             deleted_at__isnull=True,
-            hire_date__lte=timezone.localdate(),
+        ).filter(
+            Q(hire_date__isnull=True) | Q(hire_date__lte=timezone.localdate())
         ).values(
             "id", "name", "position"
         )

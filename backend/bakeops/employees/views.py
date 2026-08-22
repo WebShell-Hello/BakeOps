@@ -63,10 +63,14 @@ class EmployeeScheduleHistoryApi(APIView):
 
     def get(self, request: Request, pk: str) -> Response:
         employee = get_object_or_404(Employee.objects.all(), pk=pk)
-        entries = ScheduleEntry.objects.filter(
-            employee=employee,
-            work_date__lte=timezone.localdate(),
-        ).select_related("employee").order_by("-work_date", "-start_time")
+        entries = (
+            ScheduleEntry.objects.filter(
+                employee=employee,
+                work_date__lte=timezone.localdate(),
+            )
+            .select_related("employee")
+            .order_by("-work_date", "-start_time")
+        )
         total_minutes = sum(shift_minutes(entry) for entry in entries)
         total_wage = sum((shift_wage(entry) for entry in entries), start=0)
         return Response(

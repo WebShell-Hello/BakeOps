@@ -3,6 +3,7 @@ from django.core.management import call_command
 from django.urls import reverse
 from rest_framework.test import APIClient
 
+from bakeops.inventory.models import PurchaseRequest
 from bakeops.products.models import Ingredient
 from bakeops.suppliers.models import Supplier, SupplierIngredient
 from bakeops.users.models import User
@@ -113,6 +114,63 @@ def test_preferred_supplier_moves_atomically_and_deactivation_clears_it(admin_cl
     second.refresh_from_db()
     assert second.is_active is False
     assert second.is_preferred is False
+
+
+@pytest.mark.django_db
+def test_supplier_and_supply_terms_can_be_deleted(admin_client: APIClient) -> None:
+    ingredient = Ingredient.objects.create(name="删除测试面粉", base_unit="g")
+    supplier = Supplier.objects.create(code="SUP-DELETE", name="Delete Supplier")
+    term = SupplierIngredient.objects.create(
+        supplier=supplier,
+        ingredient=ingredient,
+        unit_price="1.2000",
+        price_unit="kg",
+        minimum_order_quantity="10.000",
+        minimum_order_unit="kg",
+    )
+
+    term_response = admin_client.delete(
+        reverse("supplier-ingredient-detail", kwargs={"pk": term.id}),
+    )
+    assert term_response.status_code == 204
+    assert not SupplierIngredient.objects.filter(pk=term.id).exists()
+
+    SupplierIngredient.objects.create(
+        supplier=supplier,
+        ingredient=ingredient,
+        unit_price="1.3000",
+        price_unit="kg",
+        minimum_order_quantity="12.000",
+        minimum_order_unit="kg",
+    )
+    supplier_response = admin_client.delete(
+        reverse("supplier-detail", kwargs={"pk": supplier.id}),
+    )
+    assert supplier_response.status_code == 204
+    assert not Supplier.objects.filter(pk=supplier.id).exists()
+    assert not SupplierIngredient.objects.filter(supplier_id=supplier.id).exists()
+
+
+@pytest.mark.django_db
+def test_supplier_with_purchase_history_cannot_be_deleted(admin_client: APIClient) -> None:
+    ingredient = Ingredient.objects.create(name="历史引用测试糖", base_unit="g")
+    supplier = Supplier.objects.create(code="SUP-HISTORY", name="Historical Supplier")
+    PurchaseRequest.objects.create(
+        reference="PR-SUPPLIER-DELETE-TEST",
+        ingredient=ingredient,
+        supplier=supplier,
+        quantity="5.000",
+        unit="kg",
+        unit_price="2.0000",
+        currency="GBP",
+        price_unit="kg",
+    )
+
+    response = admin_client.delete(
+        reverse("supplier-detail", kwargs={"pk": supplier.id}),
+    )
+    assert response.status_code == 409
+    assert Supplier.objects.filter(pk=supplier.id).exists()
 
 
 @pytest.mark.django_db

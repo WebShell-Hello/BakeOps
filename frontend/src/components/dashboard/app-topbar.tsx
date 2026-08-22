@@ -10,7 +10,7 @@ import {
   Palette,
   X,
 } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 import { UserMenu } from "@/components/auth/user-menu";
 import { TopbarGlobalSearch } from "@/components/dashboard/topbar-global-search";
@@ -19,12 +19,22 @@ import { useAppPreferences } from "@/components/providers/app-preferences-provid
 import { Button } from "@/components/ui/button";
 import type { NavigationTreeItem } from "@/lib/api";
 import { cn } from "@/lib/utils";
+import { DATA_MODE_SYNC_EVENT, getDataMode, type DataMode } from "@/lib/data-mode";
 
 type AppTopbarProps = {
   desktopSidebarPinned: boolean;
   navigationItems: NavigationTreeItem[];
   onOpenMobileSidebar: () => void;
 };
+
+function subscribeToDataMode(callback: () => void) {
+  window.addEventListener(DATA_MODE_SYNC_EVENT, callback);
+  window.addEventListener("storage", callback);
+  return () => {
+    window.removeEventListener(DATA_MODE_SYNC_EVENT, callback);
+    window.removeEventListener("storage", callback);
+  };
+}
 
 export function AppTopbar({
   desktopSidebarPinned,
@@ -33,6 +43,11 @@ export function AppTopbar({
 }: AppTopbarProps) {
   const { locale, theme, setTheme, toggleLocale } = useAppPreferences();
   const [aboutOpen, setAboutOpen] = useState(false);
+  const dataMode = useSyncExternalStore(
+    subscribeToDataMode,
+    getDataMode,
+    (): DataMode => "TEST",
+  );
   const [themeMenuOpen, setThemeMenuOpen] = useState(false);
   const themeMenuRef = useRef<HTMLDivElement>(null);
   const isEnglish = locale === "en-GB";
@@ -98,6 +113,16 @@ export function AppTopbar({
               "来咬我啊"
             )}
           </p>
+          <span className={cn(
+            "hidden rounded-full px-2.5 py-1 text-[11px] font-semibold sm:inline-flex",
+            dataMode === "PRODUCTION"
+              ? "bg-rose-500/10 text-rose-600"
+              : "bg-amber-500/10 text-amber-700",
+          )}>
+            {dataMode === "PRODUCTION"
+              ? (isEnglish ? "Production mode" : "生产模式")
+              : (isEnglish ? "Test mode" : "测试模式")}
+          </span>
         </div>
 
         <TopbarGlobalSearch locale={locale} navigationItems={navigationItems} />
@@ -282,8 +307,8 @@ function AboutProjectDialog({
         <div className="space-y-6 px-5 py-5 text-sm leading-7 sm:px-6 sm:py-6">
           <p>
             {isEnglish
-              ? "This restaurant operations monitoring system is designed for practising operations management."
-              : "本餐饮运营监控系统，用于练习运营管理。"}
+              ? "This restaurant operations monitoring system is for BingBing to practise operations management."
+              : "本餐饮运营监控系统，用于 BingBing 练习运营管理。"}
           </p>
 
           <section className="space-y-2">
@@ -297,8 +322,8 @@ function AboutProjectDialog({
             </p>
             <p>
               {isEnglish
-                ? "Joe holds an MSc in Big Data and High Performance Computing from the University of Liverpool. His primary areas of focus are data engineering, data analysis, data visualisation and web development."
-                : "Joe 拥有利物浦大学大数据与高性能计算理学硕士学位，主要专注于数据工程、数据分析、数据可视化与 Web 开发。"}
+                ? "Joe holds an MSc in Big Data and High Performance Computing from the University of Liverpool. He primarily focuses on web development, data development and data visualisation."
+                : "Joe 是利物浦大学大数据与高性能计算理学硕士，主要专注于 Web 开发、数据开发、数据可视化。"}
             </p>
           </section>
 

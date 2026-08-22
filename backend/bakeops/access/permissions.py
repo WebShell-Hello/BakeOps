@@ -4,9 +4,12 @@ from rest_framework.request import Request
 from rest_framework.views import APIView
 
 from bakeops.access.models import Role
+from bakeops.users.constants import is_global_superuser
 
 
 def has_role_page_access(user: object, page_keys: set[str]) -> bool:
+    if is_global_superuser(user):
+        return True
     if not getattr(user, "is_authenticated", False) or not getattr(user, "is_active", False):
         return False
     return bool(

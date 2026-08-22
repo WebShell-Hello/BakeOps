@@ -2,6 +2,7 @@ from datetime import timedelta
 from decimal import Decimal
 
 import pytest
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.management import call_command
 from django.test import override_settings
 from django.urls import reverse
@@ -76,6 +77,7 @@ def test_inventory_overview_calculates_recipe_demand_and_purchase_timing(admin_c
     assert item["status"] == "NORMAL"
     assert item["supplier"]["lead_time_days"] == 7
     assert item["demand_sources"][0]["quantity"] == "14.000"
+    assert str(ingredient.id) in response.data["receipt_ingredient_ids"]
 
 
 @pytest.mark.django_db
@@ -347,6 +349,14 @@ def test_production_plan_overview_returns_kpis_and_derived_status(admin_client: 
     assert response.data["plans"][0]["display_status"] == "IN_PROGRESS"
     assert response.data["plans"][1]["display_status"] == "PLANNED"
 
+    single_day_response = admin_client.get(
+        reverse("production-plan-list-create"),
+        {"start": today.isoformat(), "end": today.isoformat()},
+    )
+
+    assert single_day_response.status_code == 200
+    assert [plan["reference"] for plan in single_day_response.data["plans"]] == ["PLAN-TODAY"]
+
 
 @pytest.mark.django_db
 @override_settings(DEBUG=True)
@@ -556,3 +566,230 @@ def test_historical_plan_without_actual_quantity_requires_entry(admin_client: AP
 
     assert response.status_code == 200
     assert response.data["plans"][0]["display_status"] == "MISSING_ACTUAL"
+
+
+@pytest.mark.django_db
+def test_inventory_receipt_accepts_invoice_and_editable_recorder(
+    admin_client: APIClient,
+    tmp_path,
+) -> None:
+    ingredient = Ingredient.objects.create(name="Invoice flour", base_unit="g")
+    InventoryItem.objects.create(ingredient=ingredient, quantity="10000.000", inventory_value="20.0000")
+    supplier = Supplier.objects.create(code="SUP-INVOICE", name="Invoice Supplier")
+    SupplierIngredient.objects.create(
+        supplier=supplier,
+        ingredient=ingredient,
+        unit_price="2.0000",
+        currency="GBP",
+        price_unit="kg",
+        minimum_order_quantity="1",
+        minimum_order_unit="kg",
+        is_preferred=True,
+    )
+    recorder = User.objects.create_user(
+        username="receipt-recorder",
+        email="receipt-recorder@example.com",
+        password="password123",
+    )
+    invoice = SimpleUploadedFile("invoice.pdf", b"%PDF-1.4 test invoice", content_type="application/pdf")
+
+    with override_settings(MEDIA_ROOT=tmp_path):
+        response = admin_client.post(
+            reverse("inventory-receipt-create"),
+            {
+                "ingredient_id": str(ingredient.id),
+                "supplier_id": str(supplier.id),
+                "quantity": "5.000",
+                "unit": "kg",
+                "unit_price": "2.0000",
+                "received_at": "2026-08-22T09:30:00Z",
+                "recorded_by_id": str(recorder.id),
+                "invoice": invoice,
+                "_local_ingredient_name": ingredient.name,
+                "_local_supplier_name": supplier.name,
+            },
+            format="multipart",
+        )
+
+        assert response.status_code == 201
+        options = admin_client.get(reverse("inventory-receipt-recorder-options"))
+        assert options.status_code == 200
+        assert any(row["id"] == recorder.id and row["email"] == recorder.email for row in options.data)
+        assert response.data["created_by_id"] == str(recorder.id)
+        assert response.data["created_by_name"] == recorder.username
+        assert response.data["invoice_name"] == "invoice.pdf"
+        assert response.data["invoice_size"] == len(b"%PDF-1.4 test invoice")
+        assert response.data["invoice_download_url"].endswith("/invoice/")
+        receipt = InventoryReceipt.objects.get()
+        assert receipt.invoice.name.endswith(".pdf")
+
+        download = admin_client.get(reverse("inventory-receipt-invoice", kwargs={"pk": receipt.id}))
+        assert download.status_code == 200
+        assert download["Content-Type"] == "application/pdf"
+
+
+@pytest.mark.django_db
+def test_inventory_receipt_update_applies_only_inventory_delta_and_removes_invoice(
+    admin_client: APIClient,
+    tmp_path,
+) -> None:
+    ingredient = Ingredient.objects.create(name="Editable flour", base_unit="g")
+    inventory = InventoryItem.objects.create(
+        ingredient=ingredient,
+        quantity="10000.000",
+        inventory_value="20.0000",
+    )
+    supplier = Supplier.objects.create(code="SUP-EDIT", name="Editable Supplier")
+    SupplierIngredient.objects.create(
+        supplier=supplier,
+        ingredient=ingredient,
+        unit_price="2.0000",
+        currency="GBP",
+        price_unit="kg",
+        minimum_order_quantity="1",
+        minimum_order_unit="kg",
+        is_preferred=True,
+    )
+    recorder = User.objects.create_user(username="new-recorder", email="new-recorder@example.com")
+
+    with override_settings(MEDIA_ROOT=tmp_path):
+        create_response = admin_client.post(
+            reverse("inventory-receipt-create"),
+            {
+                "ingredient_id": str(ingredient.id),
+                "supplier_id": str(supplier.id),
+                "quantity": "5.000",
+                "unit": "kg",
+                "unit_price": "2.0000",
+                "received_at": "2026-08-22T09:30:00Z",
+                "invoice": SimpleUploadedFile("first.png", b"png-data", content_type="image/png"),
+            },
+            format="multipart",
+        )
+        receipt_id = create_response.data["id"]
+        response = admin_client.patch(
+            reverse("inventory-receipt-detail", kwargs={"pk": receipt_id}),
+            {
+                "supplier_id": str(supplier.id),
+                "quantity": "7.000",
+                "unit": "kg",
+                "unit_price": "3.0000",
+                "received_at": "2026-08-22T10:30:00Z",
+                "recorded_by_id": str(recorder.id),
+                "remove_invoice": "true",
+            },
+            format="multipart",
+        )
+
+        assert response.status_code == 200
+        assert response.data["quantity"] == "7.000"
+        assert response.data["total_cost"] == "21.00"
+        assert response.data["created_by_id"] == str(recorder.id)
+        assert response.data["invoice_name"] == ""
+        assert response.data["invoice_download_url"] is None
+        inventory.refresh_from_db()
+        assert inventory.quantity == Decimal("17000.000")
+        assert inventory.inventory_value == Decimal("41.0000")
+
+
+
+@pytest.mark.django_db
+def test_inventory_receipts_can_be_bulk_deleted_and_reverse_inventory(
+    admin_client: APIClient,
+) -> None:
+    ingredient = Ingredient.objects.create(name="Bulk delete flour", base_unit="g")
+    inventory = InventoryItem.objects.create(
+        ingredient=ingredient,
+        quantity="10000.000",
+        inventory_value="20.0000",
+    )
+    supplier = Supplier.objects.create(code="SUP-BULK-DELETE", name="Bulk Delete Supplier")
+    SupplierIngredient.objects.create(
+        supplier=supplier,
+        ingredient=ingredient,
+        unit_price="2.0000",
+        currency="GBP",
+        price_unit="kg",
+        minimum_order_quantity="1",
+        minimum_order_unit="kg",
+        is_preferred=True,
+    )
+    receipt_ids = []
+    for quantity, unit_price in (("5.000", "2.0000"), ("2.000", "3.0000")):
+        response = admin_client.post(
+            reverse("inventory-receipt-create"),
+            {
+                "ingredient_id": str(ingredient.id),
+                "supplier_id": str(supplier.id),
+                "quantity": quantity,
+                "unit": "kg",
+                "unit_price": unit_price,
+                "received_at": "2026-08-22T09:30:00Z",
+            },
+            format="multipart",
+        )
+        assert response.status_code == 201
+        receipt_ids.append(response.data["id"])
+
+    inventory.refresh_from_db()
+    assert inventory.quantity == Decimal("17000.000")
+    assert inventory.inventory_value == Decimal("36.0000")
+
+    response = admin_client.post(
+        reverse("inventory-receipt-bulk-delete"),
+        {"receipt_ids": receipt_ids},
+        format="json",
+    )
+
+    assert response.status_code == 204
+    assert InventoryReceipt.objects.count() == 0
+    inventory.refresh_from_db()
+    assert inventory.quantity == Decimal("10000.000")
+    assert inventory.inventory_value == Decimal("20.0000")
+
+
+@pytest.mark.django_db
+def test_inventory_receipt_delete_is_rejected_when_stock_was_consumed(
+    admin_client: APIClient,
+) -> None:
+    ingredient = Ingredient.objects.create(name="Consumed receipt flour", base_unit="g")
+    inventory = InventoryItem.objects.create(
+        ingredient=ingredient,
+        quantity="0.000",
+        inventory_value="0.0000",
+    )
+    supplier = Supplier.objects.create(code="SUP-CONSUMED-DELETE", name="Consumed Delete Supplier")
+    SupplierIngredient.objects.create(
+        supplier=supplier,
+        ingredient=ingredient,
+        unit_price="2.0000",
+        currency="GBP",
+        price_unit="kg",
+        minimum_order_quantity="1",
+        minimum_order_unit="kg",
+        is_preferred=True,
+    )
+    create_response = admin_client.post(
+        reverse("inventory-receipt-create"),
+        {
+            "ingredient_id": str(ingredient.id),
+            "supplier_id": str(supplier.id),
+            "quantity": "5.000",
+            "unit": "kg",
+            "unit_price": "2.0000",
+            "received_at": "2026-08-22T09:30:00Z",
+        },
+        format="multipart",
+    )
+    assert create_response.status_code == 201
+    consume_inventory(ingredient.id, Decimal("4000.000"))
+
+    response = admin_client.delete(
+        reverse("inventory-receipt-detail", kwargs={"pk": create_response.data["id"]})
+    )
+
+    assert response.status_code == 400
+    assert InventoryReceipt.objects.count() == 1
+    inventory.refresh_from_db()
+    assert inventory.quantity == Decimal("1000.000")
+    assert inventory.inventory_value == Decimal("2.0000")

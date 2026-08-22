@@ -60,7 +60,11 @@ class ScheduleEntrySerializer(serializers.ModelSerializer[ScheduleEntry]):
         start_time = attrs.get("start_time", instance.start_time if instance else None)
         end_time = attrs.get("end_time", instance.end_time if instance else None)
         work_date = attrs.get("work_date", instance.work_date if instance else None)
-        if work_date is not None and work_date < employee.hire_date:
+        if (
+            work_date is not None
+            and employee.hire_date is not None
+            and work_date < employee.hire_date
+        ):
             raise serializers.ValidationError(
                 {"work_date": "A shift cannot be scheduled before the employee's hire date."}
             )

@@ -12,7 +12,7 @@ from bakeops.events.models import BusinessEvent, EventChecklistItem
 from bakeops.inventory.models import ProductionPlan
 from bakeops.navigation.models import NavigationItem, NavigationMenu
 from bakeops.products.models import Product
-from bakeops.sales.models import SalesOrder, SalesOrderLine
+from bakeops.sales.models import SalesDataRecord
 from bakeops.scheduling.models import ScheduleEntry
 from bakeops.users.models import User
 
@@ -93,17 +93,15 @@ def test_dashboard_overview_aggregates_existing_modules() -> None:
         preparation_days=0,
         estimated_cost="31.00",
     )
-    order = SalesOrder.objects.create(reference="DASHBOARD-SALE", sold_at=timezone.now())
-    SalesOrderLine.objects.create(
-        order=order,
+    SalesDataRecord.objects.create(
+        sales_date=today,
+        channel=SalesDataRecord.Channel.DIRECT,
         product=product,
         product_name_zh=product.name_zh,
         product_name_en=product.name_en,
         quantity=10,
-        standard_unit_price="3.00",
-        standard_sales_amount="30.00",
+        received_amount="28.00",
         discount_amount="2.00",
-        paid_amount="28.00",
         refund_amount="1.00",
     )
     event = BusinessEvent.objects.create(
@@ -127,7 +125,8 @@ def test_dashboard_overview_aggregates_existing_modules() -> None:
     assert response.status_code == 200
     assert response.data["kpis"]["today_net_sales"] == "27.00"
     assert response.data["kpis"]["today_sales_quantity"] == 10
-    assert response.data["kpis"]["today_order_count"] == 1
+    assert response.data["kpis"]["today_sales_record_count"] == 1
+    assert response.data["kpis"]["today_order_count"] == 0
     assert response.data["kpis"]["today_planned_production"] == 120
     assert response.data["kpis"]["today_actual_production"] == 90
     assert response.data["kpis"]["inventory_risk_count"] == 0

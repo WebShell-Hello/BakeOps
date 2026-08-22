@@ -35,6 +35,12 @@ def test_product_list_returns_seeded_nested_recipe(admin_client: APIClient) -> N
     assert custard_bun["active_recipe"]["total_weight"] == "814.500"
     assert len(custard_bun["active_recipe"]["sections"]) == 2
     assert sum(len(section["items"]) for section in custard_bun["active_recipe"]["sections"]) == 12
+    ingredient_ids = [
+        item["ingredient_id"]
+        for section in custard_bun["active_recipe"]["sections"]
+        for item in section["items"]
+    ]
+    assert len(set(ingredient_ids)) == 11
     assert all(
         item["estimated_price"] is None
         for section in custard_bun["active_recipe"]["sections"]

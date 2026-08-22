@@ -31,6 +31,7 @@ import { useAppPreferences } from "@/components/providers/app-preferences-provid
 import { useToast } from "@/components/providers/toast-provider";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { DateInput } from "@/components/ui/date-input";
 import {
   PeriodRangeToolbar,
   periodRange,
@@ -518,13 +519,13 @@ export function ProductionPlanningPage() {
             <div className="space-y-5 p-5">
               <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
                 <Field label={text.productionDate}>
-                  <input
-                    type="date"
+                  <DateInput
                     required
+                    locale={locale}
                     value={productionDate}
                     className={inputClass}
-                    onChange={(event) => {
-                      setProductionDate(event.target.value);
+                    onChange={(value) => {
+                      setProductionDate(value);
                       setBusinessDayStatus(null);
                       setOverrideClosure(false);
                     }}

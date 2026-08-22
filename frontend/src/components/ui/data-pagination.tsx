@@ -5,13 +5,12 @@ import { type FocusEvent, type KeyboardEvent, useCallback, useEffect, useMemo, u
 
 import { Button } from "@/components/ui/button";
 
-const PAGE_SIZE_OPTIONS = [10, 20, 50, 100] as const;
 const MIN_PAGE_SIZE = 1;
 const MAX_PAGE_SIZE = 1000;
 
-export function useDataPagination<T>(items: T[]) {
+export function useDataPagination<T>(items: T[], initialPageSize = 10) {
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSizeValue] = useState(10);
+  const [pageSize, setPageSizeValue] = useState(initialPageSize);
   const pageCount = Math.max(1, Math.ceil(items.length / pageSize));
   const currentPage = Math.min(page, pageCount);
 
@@ -95,16 +94,12 @@ export function DataPagination({
           min={MIN_PAGE_SIZE}
           max={MAX_PAGE_SIZE}
           step={1}
-          list="page-size-options"
           defaultValue={pageSize}
           aria-label={isEnglish ? "Rows per page" : "每页显示数量"}
-          className="h-9 w-16 rounded-lg border border-[var(--border)] bg-[var(--card)] px-2 text-center text-sm text-[var(--foreground)] outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary-ring)]"
+          className="h-9 w-20 rounded-lg border border-[var(--border)] bg-[var(--card)] px-2 pr-7 text-center text-sm text-[var(--foreground)] outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary-ring)]"
           onBlur={commitPageSize}
           onKeyDown={commitPageSizeOnEnter}
         />
-        <datalist id="page-size-options">
-          {PAGE_SIZE_OPTIONS.map((option) => <option key={option} value={option} />)}
-        </datalist>
         <Button
           type="button"
           variant="outline"

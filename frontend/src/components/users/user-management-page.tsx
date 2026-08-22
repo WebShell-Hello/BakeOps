@@ -2,6 +2,7 @@
 
 import {
   Check,
+  Database,
   KeyRound,
   LockKeyhole,
   Pencil,
@@ -21,6 +22,7 @@ import {
   useState,
 } from "react";
 
+import { useAuth } from "@/components/auth/auth-provider";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { PageBreadcrumb } from "@/components/navigation/page-breadcrumb";
 import { useAppPreferences } from "@/components/providers/app-preferences-provider";
@@ -55,6 +57,7 @@ const emptyForm: UserForm = {
   last_name: "",
   is_active: true,
   is_protected: false,
+  system_mode: "TEST",
   role_ids: [],
 };
 
@@ -70,6 +73,10 @@ const copy = {
     username: "用户名",
     email: "邮箱",
     roles: "角色",
+    systemMode: "系统模式",
+    testMode: "测试模式",
+    productionMode: "生产模式",
+    systemModeHint: "只有超级管理员可以修改用户的系统模式。",
     status: "账户状态",
     actions: "操作",
     active: "正常",
@@ -128,6 +135,10 @@ const copy = {
     username: "Username",
     email: "Email",
     roles: "Roles",
+    systemMode: "System mode",
+    testMode: "Test mode",
+    productionMode: "Production mode",
+    systemModeHint: "Only a superuser can change a user's system mode.",
     status: "Account status",
     actions: "Actions",
     active: "Active",
@@ -183,6 +194,7 @@ const copy = {
 
 export function UserManagementPage() {
   const { locale } = useAppPreferences();
+  const { user: currentUser, refreshUser, notifyAuthChange } = useAuth();
   const { showSuccess } = useToast();
   const text = copy[locale];
   const [users, setUsers] = useState<SystemUser[]>([]);
@@ -259,6 +271,7 @@ export function UserManagementPage() {
       last_name: user.last_name,
       is_active: user.is_active,
       is_protected: user.is_protected,
+      system_mode: user.system_mode,
       role_ids: user.role_ids.filter((roleId) => roleById.get(roleId)?.is_assignable),
     });
     setEditingUser(user);
@@ -275,11 +288,19 @@ export function UserManagementPage() {
       last_name: form.last_name.trim(),
       is_active: form.is_active,
       is_protected: form.is_protected,
+      ...(currentUser?.is_superuser
+        ? { system_mode: form.system_mode }
+        : {}),
       role_ids: form.role_ids,
     };
     try {
-      if (editingUser) await updateSystemUser(editingUser.id, input);
-      else await createSystemUser(input);
+      const savedUser = editingUser
+        ? await updateSystemUser(editingUser.id, input)
+        : await createSystemUser(input);
+      if (savedUser.id === currentUser?.id) {
+        await refreshUser();
+        notifyAuthChange();
+      }
       setEditingUser(undefined);
       showSuccess(text.saved);
       await load();
@@ -446,7 +467,7 @@ export function UserManagementPage() {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[980px] border-collapse text-sm">
+            <table className="w-full min-w-[1100px] border-collapse text-sm">
               <thead className="bg-[var(--surface-muted)] text-left text-xs uppercase tracking-wide text-[var(--muted)]">
                 <tr>
                   <th className="w-12 px-4 py-3">
@@ -467,6 +488,7 @@ export function UserManagementPage() {
                   <th className="px-4 py-3">{text.username}</th>
                   <th className="px-4 py-3">{text.email}</th>
                   <th className="px-4 py-3">{text.roles}</th>
+                  <th className="w-32 px-4 py-3">{text.systemMode}</th>
                   <th className="w-32 px-4 py-3">{text.status}</th>
                   <th className="w-48 px-4 py-3 text-right">{text.actions}</th>
                 </tr>
@@ -475,7 +497,7 @@ export function UserManagementPage() {
                 {loading ? (
                   <tr>
                     <td
-                      colSpan={6}
+                      colSpan={7}
                       className="px-4 py-16 text-center text-[var(--muted)]"
                     >
                       {text.loading}
@@ -484,7 +506,7 @@ export function UserManagementPage() {
                 ) : users.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={6}
+                      colSpan={7}
                       className="px-4 py-16 text-center text-[var(--muted)]"
                     >
                       {text.empty}
@@ -562,6 +584,21 @@ export function UserManagementPage() {
                               user.effective_page_ids.length,
                             )}
                           </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span
+                            className={cn(
+                              "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium",
+                              user.system_mode === "PRODUCTION"
+                                ? "bg-rose-50 text-rose-700"
+                                : "bg-amber-50 text-amber-700",
+                            )}
+                          >
+                            <Database className="size-3.5" />
+                            {user.system_mode === "PRODUCTION"
+                              ? text.productionMode
+                              : text.testMode}
+                          </span>
                         </td>
                         <td className="px-4 py-3">
                           <span
@@ -737,6 +774,47 @@ export function UserManagementPage() {
                 {text.passwordHint}
               </p>
             ) : null}
+            <fieldset
+              disabled={!currentUser?.is_superuser}
+              className="space-y-2"
+            >
+              <legend className="text-sm font-medium">{text.systemMode}</legend>
+              <div className="grid grid-cols-2 gap-2">
+                {(["TEST", "PRODUCTION"] as const).map((mode) => (
+                  <label
+                    key={mode}
+                    className={cn(
+                      "flex cursor-pointer items-center gap-2 rounded-lg border border-[var(--border)] px-3 py-2.5 text-sm transition-colors",
+                      form.system_mode === mode &&
+                        "border-[var(--primary-border)] bg-[var(--primary-soft)] text-[var(--primary)]",
+                      !currentUser?.is_superuser && "cursor-not-allowed opacity-60",
+                    )}
+                  >
+                    <input
+                      type="radio"
+                      name="system_mode"
+                      value={mode}
+                      checked={form.system_mode === mode}
+                      onChange={() =>
+                        setForm((current) => ({
+                          ...current,
+                          system_mode: mode,
+                        }))
+                      }
+                    />
+                    <Database className="size-4" />
+                    {mode === "PRODUCTION"
+                      ? text.productionMode
+                      : text.testMode}
+                  </label>
+                ))}
+              </div>
+              {!currentUser?.is_superuser ? (
+                <p className="text-xs text-[var(--muted)]">
+                  {text.systemModeHint}
+                </p>
+              ) : null}
+            </fieldset>
             <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-[var(--border)] p-4">
               <input
                 className="mt-0.5"

@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import environ
+from corsheaders.defaults import default_headers
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 env = environ.Env()
@@ -8,6 +9,7 @@ env = environ.Env()
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 DEBUG = False
 ALLOWED_HOSTS: list[str] = []
+CORS_ALLOW_HEADERS = (*default_headers, "x-bakeops-system-mode")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -22,6 +24,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "bakeops.common.apps.CommonConfig",
     "bakeops.access.apps.AccessConfig",
+    "bakeops.audit.apps.AuditConfig",
     "bakeops.navigation.apps.NavigationConfig",
     "bakeops.employees.apps.EmployeesConfig",
     "bakeops.costs.apps.CostsConfig",
@@ -42,6 +45,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "bakeops.audit.middleware.AuditLoggingMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -71,6 +75,12 @@ AUTH_USER_MODEL = "users.User"
 AUTH_PASSWORD_VALIDATORS: list[dict[str, str]] = []
 DEFAULT_USER_PASSWORD = env("DEFAULT_USER_PASSWORD", default="password123")
 REGISTRATION_CAPTCHA_TTL_SECONDS = env.int("REGISTRATION_CAPTCHA_TTL_SECONDS", default=300)
+AUDIT_ACCESS_DEDUP_SECONDS = env.int("AUDIT_ACCESS_DEDUP_SECONDS", default=60)
+AUDIT_SECURITY_DEDUP_SECONDS = env.int("AUDIT_SECURITY_DEDUP_SECONDS", default=60)
+AUDIT_BOT_DEDUP_SECONDS = env.int("AUDIT_BOT_DEDUP_SECONDS", default=600)
+AUDIT_ACCESS_RETENTION_DAYS = env.int("AUDIT_ACCESS_RETENTION_DAYS", default=90)
+AUDIT_EVENT_RETENTION_DAYS = env.int("AUDIT_EVENT_RETENTION_DAYS", default=365)
+DATA_SOURCE_CONFIG_FILE = env("DATA_SOURCE_CONFIG_FILE", default=str(BASE_DIR / "runtime" / "data-source.json"))
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"
@@ -84,6 +94,7 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_ROOT = BASE_DIR / "media"
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},

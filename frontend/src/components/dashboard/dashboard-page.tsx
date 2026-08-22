@@ -5,7 +5,6 @@ import Link from "next/link";
 import {
   AlertTriangle,
   Calculator,
-  CalendarDays,
   ChefHat,
   CheckCircle2,
   ExternalLink,
@@ -24,12 +23,13 @@ import { PageBreadcrumb } from "@/components/navigation/page-breadcrumb";
 import { useAppPreferences } from "@/components/providers/app-preferences-provider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DateInput } from "@/components/ui/date-input";
 import { BAKEOPS_DATA_CHANGE_EVENT, getDashboardOverview, type DashboardOverview } from "@/lib/api";
 
 const metricDefinitions = [
   { key: "sales", icon: PoundSterling, tone: "blue" as const },
   { key: "cost", icon: Calculator, tone: "violet" as const },
-  { key: "orders", icon: ShoppingBag, tone: "blue" as const },
+  { key: "records", icon: ShoppingBag, tone: "blue" as const },
   { key: "planned", icon: ChefHat, tone: "amber" as const },
   { key: "actual", icon: CheckCircle2, tone: "green" as const },
 ] as const;
@@ -39,16 +39,16 @@ const chartColors = ["#0a2535", "#fe6844", "#e3c900", "#378fb8", "#38a169", "#8b
 const copy = {
   "zh-CN": {
     overview: "概览", description: "从销售、生产、库存和活动风险快速掌握门店运营状况", refresh: "刷新", refreshPage: "刷新仪表盘",
-    selectDate: "选择仪表盘日期", coreMetrics: "核心指标", sales: "净销售", ordersLabel: "订单", planned: "计划生产", actualLabel: "实际生产", cost: "成本预估",
-    soldItems: (n: number) => `已售 ${n.toLocaleString("zh-CN")} 件`, orders: (n: number) => `${n.toLocaleString("zh-CN")} 笔订单`, plannedDescription: "计划制作总量", completion: (rate: string) => `计划完成率 ${rate}%`, costParts: (materials: string, labour: string) => `物料 ${materials} · 人工 ${labour}`, costIncomplete: (n: number) => `${n} 项生产记录缺少成本`,
+    selectDate: "选择仪表盘日期", coreMetrics: "核心指标", sales: "净销售", recordsLabel: "销售汇总", planned: "计划生产", actualLabel: "实际生产", cost: "成本预估",
+    soldItems: (n: number) => `已售 ${n.toLocaleString("zh-CN")} 件`, records: (n: number) => `${n.toLocaleString("zh-CN")} 个渠道产品组合`, plannedDescription: "计划制作总量", completion: (rate: string) => `计划完成率 ${rate}%`, costParts: (materials: string, labour: string) => `物料 ${materials} · 人工 ${labour}`, costIncomplete: (n: number) => `${n} 项生产记录缺少成本`,
     trend: "销售趋势", lastSeven: "截至所选日期的 7 天", revenue: "净销售", ordersCount: "订单数", mix: "销售结构", other: "其他产品", noSales: "该 7 天区间暂无销售", noMix: "暂无销售结构数据",
     products: "热销产品 TOP 5", quantity: "销量", netSales: "净销售", noProducts: "暂无产品销售数据", inventoryRisks: "库存风险", noInventoryRisks: "当前没有库存风险", eventsRisk: "活动准备风险", noEventRisks: "当前没有活动准备风险", viewAll: "查看全部", shortage: "预计不足", days: "天后开始", preparation: "准备进度", noDate: "未计算",
     inventoryStatus: { EMERGENCY: "紧急", PURCHASE_REQUIRED: "需要采购", WATCH: "关注" },
   },
   "en-GB": {
     overview: "Overview", description: "A live view of sales, production, inventory and event risks", refresh: "Refresh", refreshPage: "Refresh dashboard",
-    selectDate: "Select dashboard date", coreMetrics: "Core metrics", sales: "Net sales", ordersLabel: "Orders", planned: "Planned production", actualLabel: "Actual production", cost: "Estimated cost",
-    soldItems: (n: number) => `${n.toLocaleString("en-GB")} items sold`, orders: (n: number) => `${n.toLocaleString("en-GB")} orders`, plannedDescription: "Total planned output", completion: (rate: string) => `${rate}% of plan completed`, costParts: (materials: string, labour: string) => `Materials ${materials} · Labour ${labour}`, costIncomplete: (n: number) => `${n} production records lack costs`,
+    selectDate: "Select dashboard date", coreMetrics: "Core metrics", sales: "Net sales", recordsLabel: "Sales summaries", planned: "Planned production", actualLabel: "Actual production", cost: "Estimated cost",
+    soldItems: (n: number) => `${n.toLocaleString("en-GB")} items sold`, records: (n: number) => `${n.toLocaleString("en-GB")} channel-product combinations`, plannedDescription: "Total planned output", completion: (rate: string) => `${rate}% of plan completed`, costParts: (materials: string, labour: string) => `Materials ${materials} · Labour ${labour}`, costIncomplete: (n: number) => `${n} production records lack costs`,
     trend: "Sales trend", lastSeven: "7 days ending on selected date", revenue: "Net sales", ordersCount: "Orders", mix: "Sales mix", other: "Other products", noSales: "No sales in this 7-day period", noMix: "No sales mix data yet",
     products: "Top 5 products", quantity: "Quantity", netSales: "Net sales", noProducts: "No product sales data yet", inventoryRisks: "Inventory risks", noInventoryRisks: "No inventory risks", eventsRisk: "Event preparation risks", noEventRisks: "No event preparation risks", viewAll: "View all", shortage: "Shortage", days: "days to start", preparation: "Preparation", noDate: "Not calculated",
     inventoryStatus: { EMERGENCY: "Emergency", PURCHASE_REQUIRED: "Purchase required", WATCH: "Watch" },
@@ -94,10 +94,9 @@ export function DashboardPage() {
         <header className="mb-7 flex flex-col justify-between gap-5 sm:flex-row sm:items-start">
           <div><PageBreadcrumb fallback={{ zh: text.overview, en: text.overview }} /><p className="mt-1.5 text-sm text-[var(--muted)]">{text.description}</p></div>
           <div className="flex flex-wrap items-center gap-3">
-            <label className="flex h-10 w-[170px] items-center gap-2 rounded-lg bg-transparent px-2 text-[var(--muted)] transition-colors hover:bg-[var(--surface-muted)] focus-within:bg-[var(--surface-muted)] focus-within:ring-2 focus-within:ring-[var(--primary-ring)]">
-              <CalendarDays className="size-4 shrink-0" />
-              <input aria-label={text.selectDate} type="date" value={selectedDate} className="min-w-0 flex-1 border-0 bg-transparent text-sm font-medium tabular-nums text-[var(--foreground)] outline-none" onChange={(event) => selectDate(event.target.value)} onBlur={(event) => selectDate(event.target.value)} />
-            </label>
+            <div className="flex h-10 w-[180px] items-center rounded-lg bg-transparent text-[var(--muted)] transition-colors hover:bg-[var(--surface-muted)] focus-within:bg-[var(--surface-muted)] focus-within:ring-2 focus-within:ring-[var(--primary-ring)]">
+              <DateInput aria-label={text.selectDate} locale={locale} value={selectedDate} className="min-w-0 flex-1 border-0 bg-transparent text-sm font-medium text-[var(--foreground)] outline-none" onChange={selectDate} />
+            </div>
             <Button variant="outline" aria-label={text.refreshPage} onClick={() => void load()} disabled={loading}><RefreshCw className={loading ? "size-4 animate-spin" : "size-4"} />{text.refresh}</Button>
           </div>
         </header>
@@ -108,9 +107,10 @@ export function DashboardPage() {
           {metricDefinitions.map((metric) => {
             const dailyCost = metrics?.daily_estimated_cost;
             const completionRate = metrics?.today_planned_production ? (metrics.today_actual_production / metrics.today_planned_production * 100).toFixed(1) : "0.0";
-            const value = !metrics ? "—" : metric.key === "sales" ? formatCurrency(metrics.today_net_sales) : metric.key === "cost" ? dailyCost?.total ? formatCurrency(dailyCost.total) : "—" : metric.key === "orders" ? metrics.today_order_count.toLocaleString(locale) : metric.key === "planned" ? metrics.today_planned_production.toLocaleString(locale) : metrics.today_actual_production.toLocaleString(locale);
-            const description = !metrics ? "—" : metric.key === "sales" ? text.soldItems(metrics.today_sales_quantity) : metric.key === "cost" ? dailyCost?.calculation_complete ? text.costParts(formatCurrency(dailyCost.material_cost), formatCurrency(dailyCost.labour_cost)) : text.costIncomplete(dailyCost?.missing_cost_count ?? 0) : metric.key === "orders" ? text.orders(metrics.today_order_count) : metric.key === "planned" ? text.plannedDescription : text.completion(completionRate);
-            const label = metric.key === "sales" ? text.sales : metric.key === "cost" ? text.cost : metric.key === "orders" ? text.ordersLabel : metric.key === "planned" ? text.planned : text.actualLabel;
+            const salesRecordCount = metrics?.today_sales_record_count ?? 0;
+            const value = !metrics ? "—" : metric.key === "sales" ? formatCurrency(metrics.today_net_sales) : metric.key === "cost" ? dailyCost?.total ? formatCurrency(dailyCost.total) : "—" : metric.key === "records" ? salesRecordCount.toLocaleString(locale) : metric.key === "planned" ? metrics.today_planned_production.toLocaleString(locale) : metrics.today_actual_production.toLocaleString(locale);
+            const description = !metrics ? "—" : metric.key === "sales" ? text.soldItems(metrics.today_sales_quantity) : metric.key === "cost" ? dailyCost?.calculation_complete ? text.costParts(formatCurrency(dailyCost.material_cost), formatCurrency(dailyCost.labour_cost)) : text.costIncomplete(dailyCost?.missing_cost_count ?? 0) : metric.key === "records" ? text.records(salesRecordCount) : metric.key === "planned" ? text.plannedDescription : text.completion(completionRate);
+            const label = metric.key === "sales" ? text.sales : metric.key === "cost" ? text.cost : metric.key === "records" ? text.recordsLabel : metric.key === "planned" ? text.planned : text.actualLabel;
             return <MetricCard key={metric.key} icon={metric.icon} tone={metric.tone} label={label} value={value} description={description} />;
           })}
         </section>

@@ -10,9 +10,18 @@ from bakeops.users.managers import UserManager
 
 
 class User(BaseModel, AbstractUser):
+    class SystemMode(models.TextChoices):
+        TEST = "TEST", "Test"
+        PRODUCTION = "PRODUCTION", "Production"
+
     username = models.CharField(max_length=150, validators=(UnicodeUsernameValidator(),))
     email = models.EmailField(unique=True)
     is_protected = models.BooleanField(default=False)
+    system_mode = models.CharField(
+        max_length=10,
+        choices=SystemMode.choices,
+        default=SystemMode.TEST,
+    )
     roles = models.ManyToManyField(
         "access.Role",
         blank=True,

@@ -1,10 +1,17 @@
+import uuid
 from decimal import Decimal
+from pathlib import Path
 
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils import timezone
 
 from bakeops.common.models import BaseModel
+
+
+def receipt_invoice_upload_to(instance: "InventoryReceipt", filename: str) -> str:
+    extension = Path(filename).suffix.lower()
+    return f"inventory/receipts/{instance.id}/{uuid.uuid4().hex}{extension}"
 
 
 class InventoryItem(BaseModel):
@@ -156,6 +163,9 @@ class InventoryReceipt(BaseModel):
     price_unit = models.CharField(max_length=24, blank=True)
     notes = models.CharField(max_length=255, blank=True)
     received_at = models.DateTimeField(default=timezone.now)
+    invoice = models.FileField(upload_to=receipt_invoice_upload_to, blank=True)
+    invoice_original_name = models.CharField(max_length=255, blank=True)
+    invoice_content_type = models.CharField(max_length=100, blank=True)
     created_by = models.ForeignKey(
         "users.User",
         blank=True,

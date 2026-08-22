@@ -108,6 +108,8 @@ const copy = {
     empty: "当前范围没有可用数据",
     loading: "正在读取盈利数据...",
     error: "盈利分析加载失败",
+    incompleteMaterialCost: (count: number) => `有 ${count} 条销售汇总缺少产品单位材料成本，毛利润、经营利润和产品贡献可能偏高。请先补齐对应食材的库存成本。`,
+    unavailableCost: "无法计算",
   },
   "en-GB": {
     title: "Profitability Analysis",
@@ -167,6 +169,8 @@ const copy = {
     empty: "No data is available for this range",
     loading: "Loading profitability data...",
     error: "Unable to load profitability analysis",
+    incompleteMaterialCost: (count: number) => `${count} sales summar${count === 1 ? "y is" : "ies are"} missing product unit material cost. Gross profit, operating profit and product contribution may be overstated. Complete the related ingredient inventory costs first.`,
+    unavailableCost: "Unavailable",
   },
 } as const;
 
@@ -304,6 +308,7 @@ export function ProfitabilityAnalysisPage() {
         </section>
 
         {error ? <div className="mb-5 rounded-lg border border-rose-300 bg-rose-50 px-4 py-3 text-sm text-rose-700">{error}</div> : null}
+        {!loading && Number(kpis?.missing_material_cost_count ?? 0) > 0 ? <div className="mb-5 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">{text.incompleteMaterialCost(Number(kpis?.missing_material_cost_count ?? 0))}</div> : null}
 
         <section className="mb-5">
           <Card className="p-4">

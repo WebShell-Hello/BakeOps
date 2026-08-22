@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { createContext, type ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 import { useAppPreferences } from "@/components/providers/app-preferences-provider";
+import { setAuthenticated, setAuthReady, setDataMode } from "@/lib/data-mode";
 import {
   getCurrentUser,
   getNavigationTree,
@@ -12,10 +13,13 @@ import {
   type NavigationTreeItem,
 } from "@/lib/api";
 
+const AUTH_SYNC_STORAGE_KEY = "bakeops-auth-sync";
+
 type AuthContextValue = {
   user: AuthUser | null;
   loading: boolean;
   refreshUser: () => Promise<AuthUser | null>;
+  notifyAuthChange: () => void;
   signOut: () => Promise<void>;
 };
 
@@ -39,14 +43,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [signingOut, setSigningOut] = useState(false);
   const [guestRoute, setGuestRoute] = useState<{ pathname: string; allowed: boolean } | null>(null);
 
+  const notifyAuthChange = useCallback(() => {
+    try {
+      window.localStorage.setItem(AUTH_SYNC_STORAGE_KEY, String(Date.now()));
+    } catch {
+      // Storage can be unavailable in private browsing; the current tab still updates locally.
+    }
+  }, []);
+
   const refreshUser = useCallback(async () => {
     try {
       const currentUser = await getCurrentUser();
       syncAccountPreferences(currentUser.preferences);
+      setAuthenticated(true);
+      setDataMode(currentUser.system_mode);
+      setAuthReady(true);
       setUser(currentUser);
       return currentUser;
     } catch {
       setUser(null);
+      setAuthenticated(false);
+      setAuthReady(true);
+      setDataMode("TEST");
       clearAccountPreferences();
       return null;
     } finally {
@@ -55,6 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [clearAccountPreferences, syncAccountPreferences]);
 
   useEffect(() => {
+    setAuthReady(false);
     const timer = window.setTimeout(() => {
       void refreshUser();
     }, 0);
@@ -88,21 +107,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, [loading, pathname, router, signingOut, user]);
 
+  useEffect(() => {
+    function handleAuthStorage(event: StorageEvent) {
+      if (event.key !== AUTH_SYNC_STORAGE_KEY || !event.newValue) return;
+      void refreshUser();
+    }
+    window.addEventListener("storage", handleAuthStorage);
+    return () => window.removeEventListener("storage", handleAuthStorage);
+  }, [refreshUser]);
+
   const signOut = useCallback(async () => {
     try {
       await logoutUser();
     } finally {
       setSigningOut(true);
       setUser(null);
+      setAuthenticated(false);
+      setAuthReady(true);
+      setDataMode("TEST");
       clearAccountPreferences();
+      notifyAuthChange();
       router.replace("/");
       router.refresh();
     }
-  }, [clearAccountPreferences, router]);
+  }, [clearAccountPreferences, notifyAuthChange, router]);
 
   const value = useMemo(
-    () => ({ user, loading, refreshUser, signOut }),
-    [loading, refreshUser, signOut, user],
+    () => ({ user, loading, refreshUser, notifyAuthChange, signOut }),
+    [loading, notifyAuthChange, refreshUser, signOut, user],
   );
   const currentGuestRoute = guestRoute?.pathname === pathname ? guestRoute : null;
   const shouldBlockProtectedGuestRoute =

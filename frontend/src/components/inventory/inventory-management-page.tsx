@@ -5,6 +5,7 @@ import {
   Boxes,
   CalendarDays,
   Factory,
+  FileUp,
   PackageCheck,
   PackagePlus,
   RefreshCw,
@@ -15,6 +16,7 @@ import {
 } from "lucide-react";
 import { type FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 
+import { useAuth } from "@/components/auth/auth-provider";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { PageBreadcrumb } from "@/components/navigation/page-breadcrumb";
 import { useAppPreferences } from "@/components/providers/app-preferences-provider";
@@ -26,10 +28,12 @@ import {
   createInventoryReceipt,
   getInventoryOverview,
   getSuppliers,
+  getInventoryRecorderOptions,
   type InventoryForecastItem,
   type InventoryOverview,
   type InventoryPurchaseStatus,
   type Supplier,
+  type InventoryRecorderOption,
 } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
@@ -82,12 +86,18 @@ const copy = {
     suggestedQuantity: "建议采购量",
     receivePurchase: "采购入库",
     receiptTitle: "采购入库",
+    receiptIngredient: "入库食材",
+    noRecipeIngredients: "没有可入库的配方食材",
     receiptQuantity: "本次入库数量",
     receiptSupplier: "供应商",
     receiptUnitPrice: "成本单价",
     receiptTime: "采购时间",
     receiptNotes: "入库备注",
     receiptNotesPlaceholder: "例如：已验收，包装完好",
+    recordedBy: "录入人",
+    invoice: "发票附件",
+    invoiceHint: "支持 PDF、JPG、PNG、WebP，最大 10 MB",
+    chooseInvoice: "选择发票",
     receiving: "正在入库...",
     confirmReceipt: "确认入库",
     cancel: "取消",
@@ -151,12 +161,18 @@ const copy = {
     suggestedQuantity: "Suggested quantity",
     receivePurchase: "Receive purchase",
     receiptTitle: "Receive purchased stock",
+    receiptIngredient: "Ingredient received",
+    noRecipeIngredients: "No recipe ingredients are available to receive",
     receiptQuantity: "Quantity received",
     receiptSupplier: "Supplier",
     receiptUnitPrice: "Cost unit price",
     receiptTime: "Purchase time",
     receiptNotes: "Receipt notes",
     receiptNotesPlaceholder: "For example: inspected and accepted",
+    recordedBy: "Recorded by",
+    invoice: "Invoice attachment",
+    invoiceHint: "PDF, JPG, PNG or WebP, up to 10 MB",
+    chooseInvoice: "Choose invoice",
     receiving: "Receiving...",
     confirmReceipt: "Confirm receipt",
     cancel: "Cancel",
@@ -196,6 +212,7 @@ export function InventoryManagementPage({
   initialIngredientId?: string | null;
 }) {
   const { locale } = useAppPreferences();
+  const { user } = useAuth();
   const { showInfo } = useToast();
   const text = copy[locale];
   const [overview, setOverview] = useState<InventoryOverview | null>(null);
@@ -205,13 +222,17 @@ export function InventoryManagementPage({
   const [statusFilter, setStatusFilter] = useState<InventoryPurchaseStatus | "ALL">("ALL");
   const [selectedIngredientId, setSelectedIngredientId] = useState<string | null>(initialIngredientId);
   const [receiptItem, setReceiptItem] = useState<InventoryForecastItem | null>(null);
+  const [receiptIngredientSelectionEnabled, setReceiptIngredientSelectionEnabled] = useState(false);
   const [receiptQuantity, setReceiptQuantity] = useState("");
   const [receiptSupplierId, setReceiptSupplierId] = useState("");
   const [receiptUnitPrice, setReceiptUnitPrice] = useState("");
   const [receiptTime, setReceiptTime] = useState("");
   const [receiptNotes, setReceiptNotes] = useState("");
+  const [receiptRecordedById, setReceiptRecordedById] = useState("");
+  const [receiptInvoice, setReceiptInvoice] = useState<File | null>(null);
   const [receiving, setReceiving] = useState(false);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [systemUsers, setSystemUsers] = useState<InventoryRecorderOption[]>([]);
 
   const loadOverview = useCallback(async () => {
     setLoading(true);
@@ -232,7 +253,15 @@ export function InventoryManagementPage({
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
-      void getSuppliers().then(setSuppliers).catch(() => setSuppliers([]));
+      void Promise.all([getSuppliers(), getInventoryRecorderOptions()])
+        .then(([supplierRows, userRows]) => {
+          setSuppliers(supplierRows);
+          setSystemUsers(userRows);
+        })
+        .catch(() => {
+          setSuppliers([]);
+          setSystemUsers([]);
+        });
     }, 0);
     return () => window.clearTimeout(timer);
   }, []);
@@ -246,6 +275,12 @@ export function InventoryManagementPage({
   }, [locale, overview?.items, query, statusFilter]);
   const pagination = useDataPagination(filteredItems);
   const selectedItem = overview?.items.find((item) => item.ingredient_id === selectedIngredientId) ?? null;
+  const receiptIngredientOptions = useMemo(() => {
+    const allowed = new Set(overview?.receipt_ingredient_ids ?? []);
+    return (overview?.items ?? [])
+      .filter((item) => allowed.has(item.ingredient_id))
+      .sort((left, right) => left.ingredient_name.localeCompare(right.ingredient_name, locale));
+  }, [locale, overview?.items, overview?.receipt_ingredient_ids]);
   const receiptSupplierOptions = useMemo(
     () => suppliers
       .map((supplier) => ({
@@ -258,7 +293,8 @@ export function InventoryManagementPage({
     [receiptItem?.ingredient_id, suppliers],
   );
 
-  function openReceipt(item: InventoryForecastItem) {
+  function openReceipt(item: InventoryForecastItem, allowIngredientSelection = false) {
+    setReceiptIngredientSelectionEnabled(allowIngredientSelection);
     const suggestedQuantity = item.recommended_order_quantity && Number(item.recommended_order_quantity) > 0
       ? item.recommended_order_quantity
       : "1";
@@ -280,6 +316,22 @@ export function InventoryManagementPage({
     setReceiptUnitPrice(preferredTerm?.unit_price ?? fallback?.term?.unit_price ?? "");
     setReceiptTime(toDateTimeLocalValue(new Date()));
     setReceiptNotes("");
+    setReceiptRecordedById(user?.id ?? "");
+    setReceiptInvoice(null);
+  }
+
+  function openGeneralReceipt() {
+    const firstIngredient = receiptIngredientOptions[0];
+    if (!firstIngredient) {
+      showInfo(text.noRecipeIngredients);
+      return;
+    }
+    openReceipt(firstIngredient, true);
+  }
+
+  function changeReceiptIngredient(ingredientId: string) {
+    const ingredient = receiptIngredientOptions.find((item) => item.ingredient_id === ingredientId);
+    if (ingredient) openReceipt(ingredient, true);
   }
 
   function changeReceiptSupplier(supplierId: string) {
@@ -294,21 +346,32 @@ export function InventoryManagementPage({
       !receiptItem
       || !receiptSupplierId
       || !receiptTime
+      || !receiptRecordedById
       || Number(receiptQuantity) <= 0
       || Number(receiptUnitPrice) <= 0
     ) return;
     setReceiving(true);
     try {
+      const selectedSupplier = receiptSupplierOptions.find(({ supplier }) => supplier.id === receiptSupplierId);
+      const recordedBy = systemUsers.find((row) => row.id === receiptRecordedById);
       const receipt = await createInventoryReceipt({
         ingredient_id: receiptItem.ingredient_id,
+        ingredient_name: receiptItem.ingredient_name,
         supplier_id: receiptSupplierId,
+        supplier_name: selectedSupplier?.supplier.name,
         quantity: receiptQuantity,
         unit: receiptItem.unit,
         unit_price: receiptUnitPrice,
+        currency: selectedSupplier?.term.currency,
+        price_unit: selectedSupplier?.term.price_unit,
         received_at: new Date(receiptTime).toISOString(),
         notes: receiptNotes.trim(),
+        recorded_by_id: receiptRecordedById,
+        recorded_by_name: recordedBy?.username,
+        invoice: receiptInvoice,
       });
       setReceiptItem(null);
+      setReceiptIngredientSelectionEnabled(false);
       showInfo(text.receiptCreated(receipt.reference));
       await loadOverview();
     } catch (receiptError) {
@@ -334,10 +397,16 @@ export function InventoryManagementPage({
             <PageBreadcrumb fallback={{ zh: text.title, en: text.title }} />
             <p className="mt-1.5 text-sm text-[var(--muted)]">{text.description}</p>
           </div>
-          <Button type="button" variant="outline" disabled={loading} onClick={() => void loadOverview()}>
-            <RefreshCw className={cn("size-4", loading && "animate-spin")} />
-            {text.refresh}
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <Button type="button" disabled={loading || receiptIngredientOptions.length === 0} onClick={openGeneralReceipt}>
+              <PackagePlus className="size-4" />
+              {text.receivePurchase}
+            </Button>
+            <Button type="button" variant="outline" disabled={loading} onClick={() => void loadOverview()}>
+              <RefreshCw className={cn("size-4", loading && "animate-spin")} />
+              {text.refresh}
+            </Button>
+          </div>
         </header>
 
         <section className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4" aria-label={text.title}>
@@ -511,6 +580,8 @@ export function InventoryManagementPage({
       {receiptItem ? (
         <InventoryReceiptModal
           item={receiptItem}
+          ingredientOptions={receiptIngredientOptions}
+          ingredientSelectionEnabled={receiptIngredientSelectionEnabled}
           locale={locale}
           text={text}
           quantity={receiptQuantity}
@@ -519,13 +590,22 @@ export function InventoryManagementPage({
           unitPrice={receiptUnitPrice}
           purchaseTime={receiptTime}
           notes={receiptNotes}
+          recordedById={receiptRecordedById}
+          users={systemUsers}
+          invoice={receiptInvoice}
           receiving={receiving}
+          onIngredientChange={changeReceiptIngredient}
           onQuantityChange={setReceiptQuantity}
           onSupplierChange={changeReceiptSupplier}
           onUnitPriceChange={setReceiptUnitPrice}
           onPurchaseTimeChange={setReceiptTime}
           onNotesChange={setReceiptNotes}
-          onClose={() => setReceiptItem(null)}
+          onRecordedByChange={setReceiptRecordedById}
+          onInvoiceChange={setReceiptInvoice}
+          onClose={() => {
+            setReceiptItem(null);
+            setReceiptIngredientSelectionEnabled(false);
+          }}
           onSubmit={receivePurchase}
         />
       ) : null}
@@ -670,6 +750,8 @@ function InventoryDrawer({
 
 function InventoryReceiptModal({
   item,
+  ingredientOptions,
+  ingredientSelectionEnabled,
   locale,
   text,
   quantity,
@@ -678,16 +760,24 @@ function InventoryReceiptModal({
   unitPrice,
   purchaseTime,
   notes,
+  recordedById,
+  users,
+  invoice,
   receiving,
+  onIngredientChange,
   onQuantityChange,
   onSupplierChange,
   onUnitPriceChange,
   onPurchaseTimeChange,
   onNotesChange,
+  onRecordedByChange,
+  onInvoiceChange,
   onClose,
   onSubmit,
 }: {
   item: InventoryForecastItem;
+  ingredientOptions: InventoryForecastItem[];
+  ingredientSelectionEnabled: boolean;
   locale: "zh-CN" | "en-GB";
   text: LocalisedText;
   quantity: string;
@@ -699,12 +789,18 @@ function InventoryReceiptModal({
   unitPrice: string;
   purchaseTime: string;
   notes: string;
+  recordedById: string;
+  users: InventoryRecorderOption[];
+  invoice: File | null;
   receiving: boolean;
+  onIngredientChange: (value: string) => void;
   onQuantityChange: (value: string) => void;
   onSupplierChange: (value: string) => void;
   onUnitPriceChange: (value: string) => void;
   onPurchaseTimeChange: (value: string) => void;
   onNotesChange: (value: string) => void;
+  onRecordedByChange: (value: string) => void;
+  onInvoiceChange: (value: File | null) => void;
   onClose: () => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 }) {
@@ -731,7 +827,7 @@ function InventoryReceiptModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="inventory-receipt-title"
-        className="relative w-full max-w-md rounded-lg border border-[var(--border)] bg-[var(--background)] shadow-2xl"
+        className="relative max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-lg border border-[var(--border)] bg-[var(--background)] shadow-2xl"
       >
         <header className="flex items-center justify-between border-b border-[var(--border)] px-5 py-4">
           <div>
@@ -743,6 +839,23 @@ function InventoryReceiptModal({
           </Button>
         </header>
         <form className="space-y-5 p-5" onSubmit={onSubmit}>
+          {ingredientSelectionEnabled ? (
+            <label className="block space-y-1.5 text-sm font-medium">
+              <span>{text.receiptIngredient}</span>
+              <select
+                autoFocus
+                required
+                value={item.ingredient_id}
+                disabled={receiving}
+                className="h-10 w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 text-sm outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary-ring)]"
+                onChange={(event) => onIngredientChange(event.target.value)}
+              >
+                {ingredientOptions.map((option) => (
+                  <option key={option.ingredient_id} value={option.ingredient_id}>{option.ingredient_name}</option>
+                ))}
+              </select>
+            </label>
+          ) : null}
           <div className="grid grid-cols-2 gap-4 border-y border-[var(--border)] py-4">
             <InfoValue label={text.currentStock} value={formatQuantity(item.current_stock, item.unit, locale)} />
             <InfoValue label={text.preferredSupplier} value={item.supplier?.supplier_name ?? text.noSupplier} />
@@ -752,7 +865,7 @@ function InventoryReceiptModal({
             <div className="flex">
               <input
                 required
-                autoFocus
+                autoFocus={!ingredientSelectionEnabled}
                 type="number"
                 inputMode="decimal"
                 min="0.001"
@@ -818,6 +931,36 @@ function InventoryReceiptModal({
             </label>
           </div>
           <label className="block space-y-1.5 text-sm font-medium">
+            <span>{text.recordedBy}</span>
+            <select
+              required
+              value={recordedById}
+              disabled={receiving}
+              className="h-10 w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-3 text-sm outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary-ring)]"
+              onChange={(event) => onRecordedByChange(event.target.value)}
+            >
+              <option value="">{text.recordedBy}</option>
+              {users.map((row) => (
+                <option key={row.id} value={row.id}>{row.username}{row.email ? ` · ${row.email}` : ""}</option>
+              ))}
+            </select>
+          </label>
+          <div className="space-y-1.5 text-sm font-medium">
+            <span>{text.invoice}</span>
+            <label className="flex min-h-10 cursor-pointer items-center gap-2 rounded-lg border border-dashed border-[var(--border)] bg-[var(--card)] px-3 py-2 text-sm transition-colors hover:border-[var(--primary)]">
+              <FileUp className="size-4 shrink-0 text-[var(--primary)]" />
+              <span className="min-w-0 flex-1 truncate">{invoice?.name ?? text.chooseInvoice}</span>
+              <input
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp"
+                className="sr-only"
+                disabled={receiving}
+                onChange={(event) => onInvoiceChange(event.target.files?.[0] ?? null)}
+              />
+            </label>
+            <p className="text-xs font-normal text-[var(--muted)]">{text.invoiceHint}</p>
+          </div>
+          <label className="block space-y-1.5 text-sm font-medium">
             <span>{text.receiptNotes}</span>
             <textarea
               rows={3}
@@ -841,6 +984,7 @@ function InventoryReceiptModal({
                 || !unitPrice
                 || Number(unitPrice) <= 0
                 || !purchaseTime
+                || !recordedById
               }
             >
               <PackagePlus className="size-4" />

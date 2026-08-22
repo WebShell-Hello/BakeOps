@@ -43,6 +43,7 @@ import { PageBreadcrumb } from "@/components/navigation/page-breadcrumb";
 import { useAppPreferences } from "@/components/providers/app-preferences-provider";
 import { useToast } from "@/components/providers/toast-provider";
 import { Button } from "@/components/ui/button";
+import { DateInput } from "@/components/ui/date-input";
 import { Card } from "@/components/ui/card";
 import {
   bulkDeleteScheduleEntries,
@@ -564,6 +565,8 @@ export function SchedulePage() {
                 entries={entries}
                 weekdays={text.weekdays}
                 more={text.more}
+                createLabel={text.createTitle}
+                dateLocale={dateLocale}
                 onCreate={openCreate}
                 onEdit={openEdit}
               />
@@ -583,6 +586,7 @@ export function SchedulePage() {
                 date={selectedDate}
                 entries={entries}
                 empty={text.empty}
+                createLabel={text.createTitle}
                 dateLocale={dateLocale}
                 onCreate={openCreate}
                 onEdit={openEdit}
@@ -604,6 +608,7 @@ export function SchedulePage() {
       {exportOpen ? (
         <ExportDialog
           text={text}
+          locale={locale}
           value={exportRange}
           exporting={exporting}
           error={exportError}
@@ -677,15 +682,15 @@ export function SchedulePage() {
               </Field>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <Field label={text.date}>
-                  <input
+                  <DateInput
                     required
-                    type="date"
+                    locale={locale}
                     value={form.work_date}
                     className={inputClass}
-                    onChange={(event) =>
+                    onChange={(value) =>
                       setForm((current) => ({
                         ...current,
-                        work_date: event.target.value,
+                        work_date: value,
                       }))
                     }
                   />
@@ -788,6 +793,7 @@ export function SchedulePage() {
 
 function ExportDialog({
   text,
+  locale,
   value,
   exporting,
   error,
@@ -796,6 +802,7 @@ function ExportDialog({
   onSubmit,
 }: {
   text: (typeof copy)["zh-CN"] | (typeof copy)["en-GB"];
+  locale: "zh-CN" | "en-GB";
   value: ExportRange;
   exporting: boolean;
   error: string | null;
@@ -844,26 +851,26 @@ function ExportDialog({
         <form className="space-y-4 p-5" onSubmit={onSubmit}>
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label={text.exportStart}>
-              <input
+              <DateInput
                 required
-                type="date"
+                locale={locale}
                 className={inputClass}
                 value={value.start}
                 max={value.end || undefined}
-                onChange={(event) =>
-                  onChange({ ...value, start: event.target.value })
+                onChange={(date) =>
+                  onChange({ ...value, start: date })
                 }
               />
             </Field>
             <Field label={text.exportEnd}>
-              <input
+              <DateInput
                 required
-                type="date"
+                locale={locale}
                 className={inputClass}
                 value={value.end}
                 min={value.start || undefined}
-                onChange={(event) =>
-                  onChange({ ...value, end: event.target.value })
+                onChange={(date) =>
+                  onChange({ ...value, end: date })
                 }
               />
             </Field>
@@ -1056,6 +1063,8 @@ function MonthCalendar({
   entries,
   weekdays,
   more,
+  createLabel,
+  dateLocale,
   onCreate,
   onEdit,
 }: {
@@ -1063,6 +1072,8 @@ function MonthCalendar({
   entries: ScheduleEntry[];
   weekdays: readonly string[];
   more: (count: number) => string;
+  createLabel: string;
+  dateLocale: typeof enGB;
   onCreate: (date: Date) => void;
   onEdit: (entry: ScheduleEntry) => void;
 }) {
@@ -1088,15 +1099,23 @@ function MonthCalendar({
             <div
               key={dateKey(day)}
               className={cn(
-                "min-h-28 border-r border-b border-[var(--border)] p-2",
+                "group relative min-h-28 border-r border-b border-[var(--border)] p-2 transition-colors hover:bg-[var(--primary-soft)]/35",
                 !isSameMonth(day, date) &&
                   "bg-[var(--surface-muted)]/45 text-[var(--muted)]",
               )}
             >
               <button
                 type="button"
+                className="absolute inset-0 z-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--primary-ring)]"
+                aria-label={`${createLabel}: ${format(day, "PPP", { locale: dateLocale })}`}
+                onClick={() => onCreate(day)}
+              >
+                <Plus className="absolute right-2 bottom-2 size-4 text-[var(--primary)] opacity-0 transition-opacity group-hover:opacity-60 group-focus-within:opacity-60" />
+              </button>
+              <button
+                type="button"
                 className={cn(
-                  "mb-2 grid size-7 place-items-center rounded-full text-xs hover:bg-[var(--surface-muted)]",
+                  "relative z-10 mb-2 grid size-7 place-items-center rounded-full text-xs hover:bg-[var(--surface-muted)]",
                   isToday(day) &&
                     "bg-[var(--primary-soft)] font-semibold text-[var(--primary)] ring-1 ring-inset ring-[var(--primary-border)]",
                 )}
@@ -1104,13 +1123,13 @@ function MonthCalendar({
               >
                 {format(day, "d")}
               </button>
-              <div className="flex flex-wrap gap-1">
+              <div className="pointer-events-none relative z-10 flex flex-wrap gap-1">
                 {dayEntries.slice(0, 6).map((entry) => (
                   <button
                     key={entry.id}
                     type="button"
                     title={`${entry.employee_name} ${shortTime(entry.start_time)}–${shortTime(entry.end_time)}`}
-                    className="grid size-7 place-items-center rounded-full text-[10px] font-semibold text-white shadow-sm"
+                    className="pointer-events-auto grid size-7 place-items-center rounded-full text-[10px] font-semibold text-white shadow-sm"
                     style={{
                       backgroundColor: employeeColour(entry.employee_name),
                     }}
@@ -1220,6 +1239,7 @@ function WeekCalendar({
   date,
   entries,
   empty,
+  createLabel,
   dateLocale,
   onCreate,
   onEdit,
@@ -1227,6 +1247,7 @@ function WeekCalendar({
   date: Date;
   entries: ScheduleEntry[];
   empty: string;
+  createLabel: string;
   dateLocale: typeof enGB;
   onCreate: (date: Date) => void;
   onEdit: (entry: ScheduleEntry) => void;
@@ -1244,12 +1265,20 @@ function WeekCalendar({
           return (
             <section
               key={dateKey(day)}
-              className="min-h-72 border-r border-[var(--border)] last:border-r-0"
+              className="group relative flex min-h-72 flex-col border-r border-[var(--border)] transition-colors hover:bg-[var(--primary-soft)]/25 last:border-r-0"
             >
               <button
                 type="button"
+                className="absolute inset-0 z-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--primary-ring)]"
+                aria-label={`${createLabel}: ${format(day, "PPP", { locale: dateLocale })}`}
+                onClick={() => onCreate(day)}
+              >
+                <Plus className="absolute right-3 bottom-3 size-4 text-[var(--primary)] opacity-0 transition-opacity group-hover:opacity-60 group-focus-within:opacity-60" />
+              </button>
+              <button
+                type="button"
                 className={cn(
-                  "w-full border-b border-[var(--border)] bg-[var(--surface-muted)] px-2 py-3 text-center text-xs font-medium hover:bg-[var(--primary-soft)]",
+                  "relative z-10 w-full border-b border-[var(--border)] bg-[var(--surface-muted)] px-2 py-3 text-center text-xs font-medium hover:bg-[var(--primary-soft)]",
                   isToday(day) &&
                     "border-t-2 border-t-[var(--primary)] bg-[var(--primary-soft)] font-semibold text-[var(--primary)]",
                 )}
@@ -1257,13 +1286,13 @@ function WeekCalendar({
               >
                 {format(day, "EEE d", { locale: dateLocale })}
               </button>
-              <div className="flex flex-col gap-2 p-2">
+              <div className="pointer-events-none relative z-10 flex flex-1 flex-col gap-2 p-2">
                 {dayEntries.length ? (
                   dayEntries.map((entry) => (
                     <button
                       key={entry.id}
                       type="button"
-                      className="w-full truncate rounded-lg border-l-4 bg-[var(--surface-muted)] px-2.5 py-2 text-left text-sm font-medium hover:bg-[var(--primary-soft)]"
+                      className="pointer-events-auto w-full truncate rounded-lg border-l-4 bg-[var(--surface-muted)] px-2.5 py-2 text-left text-sm font-medium hover:bg-[var(--primary-soft)]"
                       style={{
                         borderLeftColor: employeeColour(entry.employee_name),
                       }}
@@ -1452,9 +1481,9 @@ function emptyScheduleForm(date: Date, employee = ""): ScheduleForm {
   return {
     employee,
     work_date: dateKey(date),
-    start_time: "09:00",
-    end_time: "17:00",
-    break_minutes: 30,
+    start_time: "10:00",
+    end_time: "22:00",
+    break_minutes: 60,
     work_content: "",
   };
 }

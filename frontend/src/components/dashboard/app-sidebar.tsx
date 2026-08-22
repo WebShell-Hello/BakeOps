@@ -27,6 +27,7 @@ const sidebarModeSequence: Record<SidebarMode, SidebarMode> = {
 
 const OPEN_SECTIONS_STORAGE_KEY = "bakeops-sidebar-open-sections";
 const OPEN_SECTIONS_CHANGE_EVENT = "bakeops-sidebar-open-sections-change";
+const SIDEBAR_SCROLL_STORAGE_KEY = "bakeops-sidebar-scroll-top";
 
 function getOpenSectionsSnapshot() {
   return window.localStorage.getItem(OPEN_SECTIONS_STORAGE_KEY) ?? "analytics";
@@ -90,6 +91,7 @@ export function AppSidebar({
     () => new Set(openSectionsSnapshot.split(",").filter(Boolean)),
     [openSectionsSnapshot],
   );
+  const navigationRef = useRef<HTMLElement | null>(null);
   const lastProcessedRouteRef = useRef<{ pathname: string; parentKey: string | null } | null>(null);
   const sidebarModeLabels: Record<SidebarMode, string> = isEnglish
     ? { pinned: "Pinned", auto: "Auto collapse" }
@@ -105,6 +107,32 @@ export function AppSidebar({
     if (!activeParent || openSections.has(activeParent.key)) return;
     saveOpenSections(new Set([...openSections, activeParent.key]));
   }, [activeParent, openSections, pathname]);
+
+  useEffect(() => {
+    const navigation = navigationRef.current;
+    if (!navigation) return;
+
+    const storageKey = `${SIDEBAR_SCROLL_STORAGE_KEY}:${mobile ? "mobile" : "desktop"}`;
+    const savedScrollTop = Number(window.sessionStorage.getItem(storageKey));
+    if (!Number.isFinite(savedScrollTop)) return;
+
+    const frame = window.requestAnimationFrame(() => {
+      navigation.scrollTop = savedScrollTop;
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [expanded, items.length, mobile, openSectionsSnapshot, pathname]);
+
+  function saveScrollPosition() {
+    const navigation = navigationRef.current;
+    if (!navigation) return;
+    const storageKey = `${SIDEBAR_SCROLL_STORAGE_KEY}:${mobile ? "mobile" : "desktop"}`;
+    window.sessionStorage.setItem(storageKey, String(navigation.scrollTop));
+  }
+
+  function handleNavigate() {
+    saveScrollPosition();
+    onNavigate?.();
+  }
 
   function labelFor(item: NavigationTreeItem) {
     return isEnglish ? item.label_en : item.label_zh;
@@ -154,7 +182,7 @@ export function AppSidebar({
         title={!expanded ? label : undefined}
         aria-current={active ? "page" : undefined}
         className={className}
-        onClick={onNavigate}
+        onClick={handleNavigate}
       >
         {!child ? <NavigationIcon iconKey={item.icon_key} className="size-[19px]" /> : null}
         <span className={child ? undefined : cn("overflow-hidden text-left whitespace-nowrap", expanded ? "w-[120px]" : "w-0")}>
@@ -231,7 +259,12 @@ export function AppSidebar({
         ) : null}
       </div>
 
-      <nav aria-label={isEnglish ? "Main navigation" : "主导航"} className="sidebar-scroll min-h-0 flex-1 overflow-y-auto px-3 pb-4">
+      <nav
+        ref={navigationRef}
+        aria-label={isEnglish ? "Main navigation" : "主导航"}
+        className="sidebar-scroll min-h-0 flex-1 overflow-y-auto px-3 pb-4"
+        onScroll={saveScrollPosition}
+      >
         <div className="space-y-1">
           {loading && expanded ? <p className="px-4 py-3 text-xs text-[var(--muted)]">{isEnglish ? "Loading navigation..." : "正在加载导航..."}</p> : null}
           {error && expanded ? <p className="px-4 py-3 text-xs text-rose-500">{isEnglish ? "Navigation unavailable" : "导航暂时不可用"}</p> : null}

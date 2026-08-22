@@ -1,28 +1,21 @@
-from datetime import date, datetime, time, timedelta
+from datetime import date, datetime
 from decimal import Decimal
 from typing import Any
 
 from django.db.models import Count, DecimalField, ExpressionWrapper, F, Sum
-from django.db.models.functions import ExtractHour, TruncDay, TruncMonth, TruncWeek
-from django.utils import timezone
+from django.db.models.functions import TruncDay, TruncMonth, TruncWeek
 
-from bakeops.sales.models import SalesOrderLine
+from bakeops.sales.models import SalesDataRecord
 
 MONEY_ZERO = Decimal("0.00")
-NET_SALES_EXPRESSION = ExpressionWrapper(
-    F("paid_amount") - F("refund_amount"),
+STANDARD_SALES_EXPRESSION = ExpressionWrapper(
+    F("received_amount") + F("discount_amount"),
     output_field=DecimalField(max_digits=12, decimal_places=2),
 )
-
-
-def sales_lines(start: date, end: date):
-    timezone_info = timezone.get_current_timezone()
-    start_at = timezone.make_aware(datetime.combine(start, time.min), timezone_info)
-    end_at = timezone.make_aware(datetime.combine(end + timedelta(days=1), time.min), timezone_info)
-    return SalesOrderLine.objects.filter(
-        order__sold_at__gte=start_at,
-        order__sold_at__lt=end_at,
-    )
+NET_SALES_EXPRESSION = ExpressionWrapper(
+    F("received_amount") - F("refund_amount"),
+    output_field=DecimalField(max_digits=12, decimal_places=2),
+)
 
 
 def decimal_value(value: Decimal | None) -> Decimal:
@@ -35,56 +28,67 @@ def percentage(numerator: Decimal, denominator: Decimal) -> str:
     return f"{numerator / denominator * Decimal('100'):.1f}"
 
 
-def build_sales_analysis(start: date, end: date, grain: str) -> dict[str, Any]:
-    lines = sales_lines(start, end)
-    totals = lines.aggregate(
+def period_value(value: date | datetime) -> str:
+    return value.date().isoformat() if isinstance(value, datetime) else value.isoformat()
+
+
+def build_sales_analysis(
+    start: date,
+    end: date,
+    grain: str,
+    channel: str | None = None,
+) -> dict[str, Any]:
+    records = SalesDataRecord.objects.filter(sales_date__range=(start, end))
+    if channel:
+        records = records.filter(channel=channel)
+    totals = records.aggregate(
         net_sales=Sum(NET_SALES_EXPRESSION),
+        standard_sales=Sum(STANDARD_SALES_EXPRESSION),
         quantity=Sum("quantity"),
-        order_count=Count("order_id", distinct=True),
+        record_count=Count("id"),
         discount=Sum("discount_amount"),
         refunds=Sum("refund_amount"),
     )
     net_sales = decimal_value(totals["net_sales"])
-    order_count = totals["order_count"] or 0
-    average_order_value = net_sales / Decimal(order_count) if order_count else MONEY_ZERO
 
     truncation = {
-        "day": TruncDay("order__sold_at", tzinfo=timezone.get_current_timezone()),
-        "week": TruncWeek("order__sold_at", tzinfo=timezone.get_current_timezone()),
-        "month": TruncMonth("order__sold_at", tzinfo=timezone.get_current_timezone()),
+        "day": TruncDay("sales_date"),
+        "week": TruncWeek("sales_date"),
+        "month": TruncMonth("sales_date"),
     }[grain]
     trend = []
     for row in (
-        lines.annotate(period=truncation)
+        records.annotate(period=truncation)
         .values("period")
         .annotate(
             net_sales=Sum(NET_SALES_EXPRESSION),
-            standard_sales=Sum("standard_sales_amount"),
+            standard_sales=Sum(STANDARD_SALES_EXPRESSION),
             discount=Sum("discount_amount"),
             refunds=Sum("refund_amount"),
             quantity=Sum("quantity"),
-            order_count=Count("order_id", distinct=True),
+            record_count=Count("id"),
         )
         .order_by("period")
     ):
         trend.append(
             {
-                "period": row["period"].date().isoformat(),
+                "period": period_value(row["period"]),
                 "net_sales": f"{decimal_value(row['net_sales']):.2f}",
                 "standard_sales": f"{decimal_value(row['standard_sales']):.2f}",
                 "discount": f"{decimal_value(row['discount']):.2f}",
                 "refunds": f"{decimal_value(row['refunds']):.2f}",
                 "quantity": row["quantity"] or 0,
-                "order_count": row["order_count"] or 0,
+                "record_count": row["record_count"] or 0,
+                "order_count": 0,
             }
         )
 
     products = []
     product_rows = (
-        lines.values("product_id", "product_name_zh", "product_name_en")
+        records.values("product_id", "product_name_zh", "product_name_en")
         .annotate(
             quantity=Sum("quantity"),
-            standard_sales=Sum("standard_sales_amount"),
+            standard_sales=Sum(STANDARD_SALES_EXPRESSION),
             discount=Sum("discount_amount"),
             refunds=Sum("refund_amount"),
             net_sales=Sum(NET_SALES_EXPRESSION),
@@ -111,23 +115,22 @@ def build_sales_analysis(start: date, end: date, grain: str) -> dict[str, Any]:
             }
         )
 
-    hourly = []
+    channels = []
     for row in (
-        lines.annotate(hour=ExtractHour("order__sold_at", tzinfo=timezone.get_current_timezone()))
-        .values("hour")
+        records.values("channel")
         .annotate(
-            net_sales=Sum(NET_SALES_EXPRESSION),
             quantity=Sum("quantity"),
-            order_count=Count("order_id", distinct=True),
+            standard_sales=Sum(STANDARD_SALES_EXPRESSION),
+            net_sales=Sum(NET_SALES_EXPRESSION),
         )
-        .order_by("hour")
+        .order_by("channel")
     ):
-        hourly.append(
+        channels.append(
             {
-                "hour": row["hour"],
-                "net_sales": f"{decimal_value(row['net_sales']):.2f}",
+                "channel": row["channel"],
                 "quantity": row["quantity"] or 0,
-                "order_count": row["order_count"] or 0,
+                "standard_sales": f"{decimal_value(row['standard_sales']):.2f}",
+                "net_sales": f"{decimal_value(row['net_sales']):.2f}",
             }
         )
 
@@ -135,13 +138,16 @@ def build_sales_analysis(start: date, end: date, grain: str) -> dict[str, Any]:
         "range": {"start": start.isoformat(), "end": end.isoformat(), "grain": grain},
         "kpis": {
             "net_sales": f"{net_sales:.2f}",
+            "standard_sales": f"{decimal_value(totals['standard_sales']):.2f}",
             "sales_quantity": totals["quantity"] or 0,
-            "order_count": order_count,
-            "average_order_value": f"{average_order_value:.2f}",
+            "record_count": totals["record_count"] or 0,
+            "order_count": 0,
+            "average_order_value": "0.00",
             "discount_amount": f"{decimal_value(totals['discount']):.2f}",
             "refund_amount": f"{decimal_value(totals['refunds']):.2f}",
         },
         "trend": trend,
         "products": products,
-        "hourly": hourly,
+        "channels": channels,
+        "hourly": [],
     }
