@@ -12,7 +12,7 @@
     "owner_id": null,
     "owner_name": "",
     "focus_product_ids": [],
-    "reminder_rule_id": "c1000000-0000-4000-8000-000000000009",
+    "reminder_rule_id": "c2000000-0000-4000-8000-000000000001",
     "next_reminder_at": null,
     "created_at": "2026-08-22T19:27:40.393Z",
     "updated_at": "2026-08-22T19:27:40.393Z"
@@ -30,7 +30,7 @@
     "owner_id": null,
     "owner_name": "",
     "focus_product_ids": [],
-    "reminder_rule_id": "c1000000-0000-4000-8000-000000000009",
+    "reminder_rule_id": "c2000000-0000-4000-8000-000000000002",
     "next_reminder_at": null,
     "created_at": "2026-08-22T19:27:40.393Z",
     "updated_at": "2026-08-22T19:27:40.393Z"
@@ -48,7 +48,7 @@
     "owner_id": null,
     "owner_name": "",
     "focus_product_ids": [],
-    "reminder_rule_id": "c1000000-0000-4000-8000-000000000009",
+    "reminder_rule_id": "c2000000-0000-4000-8000-000000000003",
     "next_reminder_at": null,
     "created_at": "2026-08-22T19:27:40.393Z",
     "updated_at": "2026-08-22T19:27:40.393Z"

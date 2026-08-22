@@ -77,12 +77,19 @@ const activityReminderRules = activityReminderRulesData as Array<ActivityPlan["r
 const rawActivityPlans = activityPlansData as Array<Omit<ActivityPlan, "category" | "platform" | "reminder_rule"> & { reminder_rule_id: string }>;
 
 function activityDemoPlans(): ActivityPlan[] {
-  return rawActivityPlans.map((plan) => ({
-    ...plan,
-    category: activityCategories.find((item) => item.id === plan.category_id)!,
-    platform: activityPlatforms.find((item) => item.id === plan.platform_id)!,
-    reminder_rule: activityReminderRules.find((item) => item.id === plan.reminder_rule_id)!,
-  }));
+  return rawActivityPlans.map((plan) => {
+    // plan_id is the stable relationship; reminder_rule_id is retained for
+    // compatibility with older exported test-data files.
+    const reminderRule = activityReminderRules.find((item) => item.plan_id === plan.id)
+      ?? activityReminderRules.find((item) => item.id === plan.reminder_rule_id);
+    if (!reminderRule) throw new Error(`Missing reminder rule for activity plan ${plan.id}`);
+    return {
+      ...plan,
+      category: activityCategories.find((item) => item.id === plan.category_id)!,
+      platform: activityPlatforms.find((item) => item.id === plan.platform_id)!,
+      reminder_rule: reminderRule,
+    };
+  });
 }
 
 function localDateKey(): string {
@@ -357,6 +364,8 @@ export function readBundledTestResponse(path: string): unknown | undefined {
   }
 
   if (url.pathname === "/events/activity-planning/plans/") return activityDemoPlans();
+  if (url.pathname === "/events/activity-planning/categories/") return activityCategories;
+  if (url.pathname === "/events/activity-planning/platforms/") return activityPlatforms;
   if (url.pathname === "/events/activity-planning/occurrences/") return [];
   if (url.pathname === "/events/activity-planning/overview/") {
     return {

@@ -1,6 +1,8 @@
-from datetime import date, timedelta
+from datetime import date, datetime, time, timedelta
 from typing import Any
+from zoneinfo import ZoneInfo
 
+from django.db import transaction
 from django.db.models import Max, Q
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -10,6 +12,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from bakeops.employees.models import Employee
 from bakeops.events.activity_services import ensure_activity_occurrences
 from bakeops.events.models import (
     ActivityCategory,
@@ -28,8 +31,10 @@ from bakeops.events.serializers import (
     EventChecklistItemSerializer,
     HolidaySerializer,
     ActivityCategorySerializer,
+    ActivityCategoryCreateSerializer,
     ActivityPlanSerializer,
     ActivityPlatformSerializer,
+    ActivityPlatformCreateSerializer,
     ActivityReminderOccurrenceSerializer,
 )
 from bakeops.events.services import build_event_advice, event_status
@@ -174,6 +179,7 @@ def activity_plan_queryset() -> Any:
         "category",
         "platform",
         "owner",
+        "responsible_employee",
         "reminder_rule",
     ).prefetch_related("focus_products", "occurrences")
 
@@ -196,7 +202,9 @@ class ActivityPlanningOverviewApi(APIView):
         ensure_activity_occurrences(start, end)
         plans = activity_plan_queryset()
         occurrences = (
-            ActivityReminderOccurrence.objects.select_related("plan__category", "plan__platform", "plan__owner")
+            ActivityReminderOccurrence.objects.select_related(
+                "plan__category", "plan__platform", "plan__responsible_employee"
+            )
             .filter(
                 Q(scheduled_at__date__range=(start, end))
                 | Q(snoozed_until__date__range=(start, end))
@@ -214,10 +222,10 @@ class ActivityPlanningOverviewApi(APIView):
                     ActivityPlatform.objects.filter(is_active=True).select_related("category"), many=True
                 ).data,
                 "owner_options": list(
-                    request.user.__class__.objects.filter(is_active=True)
-                    .order_by("username", "email")
-                    .values("id", "username", "email", "first_name", "last_name")
-                ) if request.user.is_authenticated else [],
+                    Employee.objects.filter(status=Employee.Status.ACTIVE, deleted_at__isnull=True)
+                    .order_by("employee_number", "name")
+                    .values("id", "name", "position")
+                ),
                 "product_options": list(
                     Product.objects.filter(sale_status=Product.SaleStatus.ON_SALE)
                     .order_by("name_zh", "name_en")
@@ -248,6 +256,37 @@ class ActivityPlanListCreateApi(generics.ListCreateAPIView[ActivityPlan]):
         return activity_plan_queryset()
 
 
+class ActivityCategoryListCreateApi(APIView):
+    permission_classes = (CanManageActivityPlans,)
+
+    def get(self, request: Request) -> Response:
+        categories = ActivityCategory.objects.filter(is_active=True)
+        return Response(ActivityCategorySerializer(categories, many=True).data)
+
+    def post(self, request: Request) -> Response:
+        serializer = ActivityCategoryCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        category = serializer.save()
+        return Response(ActivityCategorySerializer(category).data, status=status.HTTP_201_CREATED)
+
+
+class ActivityPlatformListCreateApi(APIView):
+    permission_classes = (CanManageActivityPlans,)
+
+    def get(self, request: Request) -> Response:
+        platforms = ActivityPlatform.objects.filter(is_active=True).select_related("category")
+        category_id = request.query_params.get("category_id")
+        if category_id:
+            platforms = platforms.filter(category_id=category_id)
+        return Response(ActivityPlatformSerializer(platforms, many=True).data)
+
+    def post(self, request: Request) -> Response:
+        serializer = ActivityPlatformCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        platform = serializer.save()
+        return Response(ActivityPlatformSerializer(platform).data, status=status.HTTP_201_CREATED)
+
+
 class ActivityPlanDetailApi(generics.RetrieveUpdateDestroyAPIView[ActivityPlan]):
     permission_classes = (CanManageActivityPlans,)
     serializer_class = ActivityPlanSerializer
@@ -257,9 +296,12 @@ class ActivityPlanDetailApi(generics.RetrieveUpdateDestroyAPIView[ActivityPlan])
 class ActivityReminderOccurrenceDetailApi(APIView):
     permission_classes = (CanManageActivityPlans,)
 
+    @transaction.atomic
     def patch(self, request: Request, pk: object) -> Response:
         occurrence = get_object_or_404(
-            ActivityReminderOccurrence.objects.select_related("plan__category", "plan__platform", "plan__owner"),
+            ActivityReminderOccurrence.objects.select_related(
+                "plan__category", "plan__platform", "plan__responsible_employee", "rule"
+            ).select_for_update(of=("self",)),
             pk=pk,
         )
         next_status = request.data.get("status", occurrence.status)
@@ -268,10 +310,32 @@ class ActivityReminderOccurrenceDetailApi(APIView):
         occurrence.status = next_status
         occurrence.execution_notes = request.data.get("execution_notes", occurrence.execution_notes)
         occurrence.result_url = request.data.get("result_url", occurrence.result_url)
+        snooze_conflict = False
         if "snoozed_until" in request.data:
-            occurrence.snoozed_until = DateTimeField(allow_null=True).run_validation(
-                request.data.get("snoozed_until")
-            )
+            requested_snooze = DateTimeField(allow_null=True).run_validation(request.data.get("snoozed_until"))
+            if requested_snooze and next_status == ActivityReminderOccurrence.Status.PENDING:
+                rule_timezone = ZoneInfo(occurrence.rule.timezone)
+                target_date = timezone.localtime(requested_snooze, rule_timezone).date()
+                target_start = datetime.combine(target_date, time.min, tzinfo=rule_timezone)
+                target_end = target_start + timedelta(days=1)
+                conflicts = ActivityReminderOccurrence.objects.select_for_update().filter(
+                    plan_id=occurrence.plan_id,
+                ).exclude(pk=occurrence.pk).exclude(
+                    status__in=(
+                        ActivityReminderOccurrence.Status.SKIPPED,
+                        ActivityReminderOccurrence.Status.CANCELLED,
+                    )
+                ).filter(
+                    Q(scheduled_at__gte=target_start, scheduled_at__lt=target_end)
+                    | Q(snoozed_until__gte=target_start, snoozed_until__lt=target_end)
+                )
+                snooze_conflict = conflicts.exists()
+            if snooze_conflict:
+                next_status = ActivityReminderOccurrence.Status.SKIPPED
+                occurrence.status = next_status
+                occurrence.snoozed_until = None
+            else:
+                occurrence.snoozed_until = requested_snooze
         if next_status == ActivityReminderOccurrence.Status.COMPLETED:
             occurrence.completed_at = timezone.now()
             occurrence.completed_by = request.user if request.user.is_authenticated else None
@@ -280,4 +344,6 @@ class ActivityReminderOccurrenceDetailApi(APIView):
             occurrence.completed_at = None
             occurrence.completed_by = None
         occurrence.save()
-        return Response(ActivityReminderOccurrenceSerializer(occurrence).data)
+        response_data = ActivityReminderOccurrenceSerializer(occurrence).data
+        response_data["snooze_conflict"] = snooze_conflict
+        return Response(response_data)

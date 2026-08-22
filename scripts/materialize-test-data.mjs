@@ -128,7 +128,7 @@ const activityPlanSpecs = [
   ["c1000000-0000-4000-8000-000000000002", "检查 Deliveroo 门店内容", 1, 3, "DAILY", "09:30", [], []],
   ["c1000000-0000-4000-8000-000000000003", "更新门店活动海报", 2, 6, "MONTHLY", "11:00", [], [1, 15]],
 ];
-const activityReminderRules = activityPlanSpecs.map(([planId, , , , frequency, reminderTime, weekdays, monthDays]) => ({ id: `${planId.slice(0, -1)}9`, plan_id: planId, frequency, interval: 1, weekdays, month_days: monthDays, reminder_time: reminderTime, timezone: "Europe/London", is_enabled: true }));
+const activityReminderRules = activityPlanSpecs.map(([planId, , , , frequency, reminderTime, weekdays, monthDays], index) => ({ id: `c2000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`, plan_id: planId, frequency, interval: 1, weekdays, month_days: monthDays, reminder_time: reminderTime, timezone: "Europe/London", is_enabled: true }));
 const activityPlans = activityPlanSpecs.map(([id, name, categoryIndex, platformIndex], index) => ({ id, name, category_id: activityCategories[categoryIndex].id, platform_id: activityPlatforms[platformIndex].id, description: "", priority: index === 1 ? "HIGH" : "NORMAL", status: "ACTIVE", start_date: "2026-08-01", end_date: null, owner_id: null, owner_name: "", focus_product_ids: [], reminder_rule_id: activityReminderRules[index].id, next_reminder_at: null, created_at: exported.exportedAt, updated_at: exported.exportedAt }));
 
 await mkdir(outputDirectory, { recursive: true });

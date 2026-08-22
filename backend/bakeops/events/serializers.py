@@ -1,10 +1,13 @@
+import uuid
 from datetime import timedelta
 from typing import Any
 
 from django.db import transaction
+from django.db.models import Q
 from django.utils import timezone
 from rest_framework import serializers
 
+from bakeops.employees.models import Employee
 from bakeops.events.activity_services import occurrence_display_status
 from bakeops.events.models import (
     ActivityCategory,
@@ -19,7 +22,6 @@ from bakeops.events.models import (
 )
 from bakeops.events.services import event_status
 from bakeops.products.models import Product
-from bakeops.users.models import User
 
 DEFAULT_CHECKLIST = (
     ("PRODUCT_PRODUCTION", "确认重点产品", "Confirm focus products"),
@@ -225,6 +227,57 @@ class ActivityPlatformSerializer(serializers.ModelSerializer[ActivityPlatform]):
         fields = ("id", "category_id", "code", "name_zh", "name_en", "position")
 
 
+class ActivityCategoryCreateSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=100)
+
+    def validate_name(self, value: str) -> str:
+        value = value.strip()
+        if ActivityCategory.objects.filter(Q(name_zh__iexact=value) | Q(name_en__iexact=value)).exists():
+            raise serializers.ValidationError("An activity category with this name already exists.")
+        return value
+
+    def create(self, validated_data: dict[str, Any]) -> ActivityCategory:
+        name = validated_data["name"]
+        return ActivityCategory.objects.create(
+            code=f"CUSTOM_CATEGORY_{uuid.uuid4().hex.upper()}",
+            name_zh=name,
+            name_en=name,
+        )
+
+    def to_representation(self, instance: ActivityCategory) -> dict[str, Any]:
+        return ActivityCategorySerializer(instance).data
+
+
+class ActivityPlatformCreateSerializer(serializers.Serializer):
+    category_id = serializers.PrimaryKeyRelatedField(
+        source="category",
+        queryset=ActivityCategory.objects.filter(is_active=True),
+    )
+    name = serializers.CharField(max_length=100)
+
+    def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
+        category = attrs["category"]
+        name = attrs["name"].strip()
+        if ActivityPlatform.objects.filter(category=category).filter(
+            Q(name_zh__iexact=name) | Q(name_en__iexact=name)
+        ).exists():
+            raise serializers.ValidationError({"name": "An activity platform with this name already exists."})
+        attrs["name"] = name
+        return attrs
+
+    def create(self, validated_data: dict[str, Any]) -> ActivityPlatform:
+        name = validated_data["name"]
+        return ActivityPlatform.objects.create(
+            category=validated_data["category"],
+            code=f"CUSTOM_PLATFORM_{uuid.uuid4().hex.upper()}",
+            name_zh=name,
+            name_en=name,
+        )
+
+    def to_representation(self, instance: ActivityPlatform) -> dict[str, Any]:
+        return ActivityPlatformSerializer(instance).data
+
+
 class ActivityReminderRuleSerializer(serializers.ModelSerializer[ActivityReminderRule]):
     class Meta:
         model = ActivityReminderRule
@@ -267,8 +320,8 @@ class ActivityPlanSerializer(serializers.ModelSerializer[ActivityPlan]):
     category_id = serializers.PrimaryKeyRelatedField(source="category", queryset=ActivityCategory.objects.all())
     platform_id = serializers.PrimaryKeyRelatedField(source="platform", queryset=ActivityPlatform.objects.all())
     owner_id = serializers.PrimaryKeyRelatedField(
-        source="owner",
-        queryset=User.objects.filter(is_active=True),
+        source="responsible_employee",
+        queryset=Employee.objects.filter(status=Employee.Status.ACTIVE, deleted_at__isnull=True),
         allow_null=True,
         required=False,
     )
@@ -350,9 +403,7 @@ class ActivityPlanSerializer(serializers.ModelSerializer[ActivityPlan]):
         return instance
 
     def get_owner_name(self, instance: ActivityPlan) -> str:
-        if not instance.owner:
-            return ""
-        return instance.owner.get_full_name() or instance.owner.username or instance.owner.email
+        return instance.responsible_employee.name if instance.responsible_employee else ""
 
     def get_next_reminder_at(self, instance: ActivityPlan) -> str | None:
         occurrence = instance.occurrences.filter(
@@ -396,5 +447,5 @@ class ActivityReminderOccurrenceSerializer(serializers.ModelSerializer[ActivityR
         return (instance.snoozed_until or instance.scheduled_at).isoformat()
 
     def get_owner_name(self, instance: ActivityReminderOccurrence) -> str:
-        owner = instance.plan.owner
-        return owner.get_full_name() or owner.username or owner.email if owner else ""
+        employee = instance.plan.responsible_employee
+        return employee.name if employee else ""

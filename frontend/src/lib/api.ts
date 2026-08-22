@@ -1138,13 +1138,22 @@ export type ActivityReminderOccurrence = {
   execution_notes: string;
   result_url: string;
   snoozed_until: string | null;
+  snooze_conflict?: boolean;
 };
 
 export type ActivityPlanningOverview = {
   range: { start: string; end: string };
   categories: ActivityCategory[];
   platforms: ActivityPlatform[];
-  owner_options: Array<{ id: string; username: string; email: string; first_name: string; last_name: string }>;
+  owner_options: Array<{
+    id: string;
+    name: string;
+    position: string;
+    first_name?: string;
+    last_name?: string;
+    username?: string;
+    email?: string;
+  }>;
   product_options: Array<{ id: string; name_zh: string; name_en: string }>;
   plans: ActivityPlan[];
   occurrences: ActivityReminderOccurrence[];
@@ -2580,13 +2589,29 @@ export async function getActivityPlanningOverview(start: string, end: string) {
   const overview = await apiRequest<ActivityPlanningOverview>(
     `/events/activity-planning/overview/?${query}`,
   );
-  if (getDataMode() !== "TEST") return overview;
+  const normalizedOverview = {
+    ...overview,
+    owner_options: normalizeActivityOwnerOptions(overview.owner_options),
+  };
+  if (getDataMode() !== "TEST") return normalizedOverview;
 
-  const [rawPlans, overrides] = await Promise.all([
+  const [rawPlans, overrides, ownerOptions, localCategories, localPlatforms] = await Promise.all([
     apiRequest<ActivityPlan[]>("/events/activity-planning/plans/"),
     apiRequest<Partial<ActivityReminderOccurrence>[]>("/events/activity-planning/occurrences/"),
+    getEmployees("", "ACTIVE", false).then((employees) =>
+      employees.map(({ id, name, position }) => ({ id, name, position })),
+    ),
+    apiRequest<ActivityCategory[]>("/events/activity-planning/categories/"),
+    apiRequest<ActivityPlatform[]>("/events/activity-planning/platforms/"),
   ]);
-  const plans = rawPlans.map((plan) => enrichLocalActivityPlan(plan, overview));
+  const localOwnerOptions = normalizeActivityOwnerOptions(ownerOptions);
+  const localOverview = {
+    ...normalizedOverview,
+    categories: localCategories,
+    platforms: localPlatforms,
+    owner_options: localOwnerOptions,
+  };
+  const plans = rawPlans.map((plan) => enrichLocalActivityPlan(plan, localOverview));
   const overrideMap = new Map(overrides.map((item) => [item.id, item]));
   const occurrences = buildLocalActivityOccurrences(plans, start, end).map((occurrence) => {
     const override = overrideMap.get(occurrence.id);
@@ -2603,8 +2628,11 @@ export async function getActivityPlanningOverview(start: string, end: string) {
   });
   const today = localIsoDate(new Date());
   return {
-    ...overview,
+    ...normalizedOverview,
     plans,
+    categories: localCategories,
+    platforms: localPlatforms,
+    owner_options: localOwnerOptions,
     occurrences,
     kpis: {
       today_pending: occurrences.filter((item) => ["PENDING", "OVERDUE"].includes(item.display_status) && item.effective_at.slice(0, 10) === today).length,
@@ -2615,10 +2643,57 @@ export async function getActivityPlanningOverview(start: string, end: string) {
   };
 }
 
+function normalizeActivityOwnerOptions(
+  options: Array<{ id: string; name: string; position: string }>,
+): ActivityPlanningOverview["owner_options"] {
+  return options.map((item) => ({
+    ...item,
+    first_name: item.name,
+    last_name: "",
+    username: "",
+    email: "",
+  }));
+}
+
 export function createActivityPlan(input: ActivityPlanInput) {
   return apiRequest<ActivityPlan>("/events/activity-planning/plans/", {
     method: "POST",
     body: JSON.stringify(input),
+  });
+}
+
+export function createActivityCategory(name: string) {
+  const localFields = getDataMode() === "TEST" ? {
+    code: `CUSTOM_CATEGORY_${crypto.randomUUID().replaceAll("-", "").toUpperCase()}`,
+    name_zh: name,
+    name_en: name,
+    colour: "blue",
+    icon_key: "",
+    position: 0,
+  } : {};
+  return apiRequest<ActivityCategory>("/events/activity-planning/categories/", {
+    method: "POST",
+    body: JSON.stringify({
+      name,
+      ...localFields,
+    }),
+  });
+}
+
+export function createActivityPlatform(categoryId: string, name: string) {
+  const localFields = getDataMode() === "TEST" ? {
+    code: `CUSTOM_PLATFORM_${crypto.randomUUID().replaceAll("-", "").toUpperCase()}`,
+    name_zh: name,
+    name_en: name,
+    position: 0,
+  } : {};
+  return apiRequest<ActivityPlatform>("/events/activity-planning/platforms/", {
+    method: "POST",
+    body: JSON.stringify({
+      category_id: categoryId,
+      name,
+      ...localFields,
+    }),
   });
 }
 
@@ -2646,11 +2721,12 @@ export function updateActivityOccurrence(
 function enrichLocalActivityPlan(plan: ActivityPlan, overview: ActivityPlanningOverview): ActivityPlan {
   const category = overview.categories.find((item) => item.id === plan.category_id) ?? plan.category;
   const platform = overview.platforms.find((item) => item.id === plan.platform_id) ?? plan.platform;
+  const owner = overview.owner_options.find((item) => item.id === plan.owner_id);
   return {
     ...plan,
     category,
     platform,
-    owner_name: plan.owner_name ?? "",
+    owner_name: owner?.name ?? plan.owner_name ?? "",
     next_reminder_at: plan.next_reminder_at ?? null,
     reminder_rule: {
       id: plan.reminder_rule?.id ?? `${plan.id.slice(0, -1)}9`,
@@ -2673,7 +2749,7 @@ function buildLocalActivityOccurrences(plans: ActivityPlan[], start: string, end
       if (!localRuleMatches(plan, cursor)) continue;
       const scheduledAt = `${cursor}T${plan.reminder_rule.reminder_time}:00+01:00`;
       result.push({
-        id: `${plan.reminder_rule.id}-${cursor.replaceAll("-", "")}`,
+        id: `${plan.id}-${cursor.replaceAll("-", "")}`,
         plan_id: plan.id,
         plan_name: plan.name,
         platform: plan.platform,

@@ -207,6 +207,13 @@ class ActivityPlan(BaseModel):
         on_delete=models.SET_NULL,
         related_name="owned_activity_plans",
     )
+    responsible_employee = models.ForeignKey(
+        "employees.Employee",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="assigned_activity_plans",
+    )
     linked_business_event = models.ForeignKey(
         BusinessEvent,
         blank=True,

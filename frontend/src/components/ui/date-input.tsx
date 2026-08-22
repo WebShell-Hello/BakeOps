@@ -23,6 +23,7 @@ type DateInputProps = Omit<
 
 const ISO_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 const FLEXIBLE_DATE_PATTERN = /^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/;
+const COMPACT_DATE_PATTERN = /^(\d{4})(\d{2})(\d{2})$/;
 
 export function DateInput({
   value,
@@ -159,7 +160,9 @@ export function DateInput({
 export function normalizeDateInput(value: string | null | undefined) {
   const trimmed = value?.trim();
   if (!trimmed) return null;
-  const match = FLEXIBLE_DATE_PATTERN.exec(trimmed) ?? ISO_DATE_PATTERN.exec(trimmed);
+  const match = FLEXIBLE_DATE_PATTERN.exec(trimmed)
+    ?? ISO_DATE_PATTERN.exec(trimmed)
+    ?? COMPACT_DATE_PATTERN.exec(trimmed);
   if (!match) return null;
 
   const year = Number(match[1]);

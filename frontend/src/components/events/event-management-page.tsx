@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  addMonths,
   eachDayOfInterval,
   eachMonthOfInterval,
   endOfMonth,
@@ -70,6 +71,7 @@ import {
 import { cn } from "@/lib/utils";
 
 type DisplayMode = "calendar" | "list";
+type CalendarView = "month" | "year";
 type FilterType = "ALL" | "HOLIDAY" | "PROMOTION" | "KOL" | "CUSTOMER" | "PRODUCT" | "MARKETING" | "CLOSED" | "OTHER";
 type CalendarEntry =
   | { kind: "EVENT"; id: string; name: string; event: BusinessEvent }
@@ -84,6 +86,9 @@ const copy = {
     description: "统一管理节假日、经营活动和门店休息或停业安排",
     calendarMode: "日历模式",
     listMode: "列表模式",
+    calendarViews: { month: "月", year: "年" },
+    previousMonth: "上个月",
+    nextMonth: "下个月",
     previousYear: "上一年",
     nextYear: "下一年",
     upcoming: "即将到来的活动",
@@ -182,6 +187,9 @@ const copy = {
     description: "Manage holidays, commercial events and store closures in one business calendar",
     calendarMode: "Calendar",
     listMode: "List",
+    calendarViews: { month: "Month", year: "Year" },
+    previousMonth: "Previous month",
+    nextMonth: "Next month",
     previousYear: "Previous year",
     nextYear: "Next year",
     upcoming: "Upcoming events",
@@ -298,7 +306,9 @@ export function EventManagementPage({
   const text = copy[locale];
   const dateLocale = locale === "en-GB" ? enGB : zhCN;
   const [year, setYear] = useState(() => initialYear ?? new Date().getFullYear());
+  const [monthIndex, setMonthIndex] = useState(() => new Date().getMonth());
   const [mode, setMode] = useState<DisplayMode>("calendar");
+  const [calendarView, setCalendarView] = useState<CalendarView>("month");
   const [filter, setFilter] = useState<FilterType>("ALL");
   const [overview, setOverview] = useState<EventOverview | null>(null);
   const [loading, setLoading] = useState(true);
@@ -406,7 +416,22 @@ export function EventManagementPage({
 
   async function removeChecklist(itemId: string) { await deleteEventChecklistItem(itemId); if (selectedEventId) await loadDetail(selectedEventId); await load(); }
 
+  function movePeriod(direction: -1 | 1) {
+    if (mode === "list" || calendarView === "year") {
+      setYear((value) => value + direction);
+      return;
+    }
+    const next = addMonths(new Date(year, monthIndex, 1), direction);
+    setYear(next.getFullYear());
+    setMonthIndex(next.getMonth());
+  }
+
   const kpis = overview?.kpis;
+  const periodTitle = mode === "calendar" && calendarView === "month"
+    ? format(new Date(year, monthIndex, 1), locale === "en-GB" ? "MMMM yyyy" : "yyyy年M月", { locale: dateLocale })
+    : String(year);
+  const previousLabel = mode === "calendar" && calendarView === "month" ? text.previousMonth : text.previousYear;
+  const nextLabel = mode === "calendar" && calendarView === "month" ? text.nextMonth : text.nextYear;
   return (
     <DashboardShell>
       <main className="mx-auto w-full max-w-[1560px] p-4 sm:p-6 xl:p-9">
@@ -425,9 +450,14 @@ export function EventManagementPage({
         {error ? <button className="mb-4 w-full rounded-lg border border-rose-300 bg-rose-50 px-4 py-3 text-left text-sm text-rose-700" onClick={() => setError(null)}>{error}</button> : null}
 
         <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex items-center gap-2"><Button variant="outline" size="icon" aria-label={text.previousYear} onClick={() => setYear((value) => value - 1)}><ChevronLeft className="size-4" /></Button><strong className="min-w-20 text-center text-lg">{year}</strong><Button variant="outline" size="icon" aria-label={text.nextYear} onClick={() => setYear((value) => value + 1)}><ChevronRight className="size-4" /></Button></div>
-          <div className="inline-flex rounded-lg border border-[var(--border)] bg-[var(--surface-muted)] p-1">
-            {(["calendar", "list"] as DisplayMode[]).map((item) => <button key={item} type="button" className={cn("flex flex-1 items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm", mode === item ? "bg-[var(--card)] font-medium shadow-sm" : "text-[var(--muted)]")} onClick={() => setMode(item)}>{item === "calendar" ? <CalendarDays className="size-4" /> : <ListIcon className="size-4" />}{item === "calendar" ? text.calendarMode : text.listMode}</button>)}
+          <div className="flex items-center gap-2"><Button variant="outline" size="icon" aria-label={previousLabel} onClick={() => movePeriod(-1)}><ChevronLeft className="size-4" /></Button><strong className="min-w-32 text-center text-lg">{periodTitle}</strong><Button variant="outline" size="icon" aria-label={nextLabel} onClick={() => movePeriod(1)}><ChevronRight className="size-4" /></Button></div>
+          <div className="flex flex-wrap items-center gap-2">
+            {mode === "calendar" ? <div className="inline-flex rounded-lg border border-[var(--border)] bg-[var(--surface-muted)] p-1">
+              {(["month", "year"] as CalendarView[]).map((item) => <button key={item} type="button" className={cn("rounded-md px-3 py-1.5 text-sm transition-colors", calendarView === item ? "bg-[var(--card)] font-medium shadow-sm" : "text-[var(--muted)] hover:text-[var(--foreground)]")} onClick={() => setCalendarView(item)}>{text.calendarViews[item]}</button>)}
+            </div> : null}
+            <div className="inline-flex rounded-lg border border-[var(--border)] bg-[var(--surface-muted)] p-1">
+              {(["calendar", "list"] as DisplayMode[]).map((item) => <button key={item} type="button" className={cn("flex flex-1 items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm transition-colors", mode === item ? "bg-[var(--card)] font-medium shadow-sm" : "text-[var(--muted)] hover:text-[var(--foreground)]")} onClick={() => setMode(item)}>{item === "calendar" ? <CalendarDays className="size-4" /> : <ListIcon className="size-4" />}{item === "calendar" ? text.calendarMode : text.listMode}</button>)}
+            </div>
           </div>
         </div>
 
@@ -435,8 +465,10 @@ export function EventManagementPage({
           {(Object.keys(text.filters) as FilterType[]).map((item) => <button key={item} type="button" className={cn("shrink-0 rounded-full border px-3 py-1.5 text-sm", filter === item ? "border-[var(--primary)] bg-[var(--primary-soft)] text-[var(--primary)]" : "border-[var(--border)] bg-[var(--card)] text-[var(--muted)]")} onClick={() => setFilter(item)}>{text.filters[item]}</button>)}
         </div>
 
-        {loading ? <Card className="grid min-h-80 place-items-center rounded-lg text-sm text-[var(--muted)]">{text.loading}</Card> : mode === "calendar" ? (
+        {loading ? <Card className="grid min-h-80 place-items-center rounded-lg text-sm text-[var(--muted)]">{text.loading}</Card> : mode === "calendar" ? calendarView === "year" ? (
           <YearCalendar year={year} events={visibleEvents} holidays={visibleHolidays} closures={visibleClosures} locale={locale} text={text} dateLocale={dateLocale} onSelectDate={setSelectedDate} />
+        ) : (
+          <MonthCalendar month={new Date(year, monthIndex, 1)} events={visibleEvents} holidays={visibleHolidays} closures={visibleClosures} locale={locale} text={text} onSelectDate={setSelectedDate} />
         ) : <EventList entries={listEntries} locale={locale} text={text} onViewEvent={setSelectedEventId} onEditEvent={openEditEvent} onDeleteEvent={(event) => void removeEvent(event)} onCreateRelated={(holiday) => openCreateEvent(holiday.holiday_date, holiday.id)} onEditClosure={openEditClosure} onDeleteClosure={(closure) => void removeClosure(closure)} />}
       </main>
 
@@ -453,6 +485,10 @@ type LocalText = (typeof copy)[keyof typeof copy];
 function YearCalendar({ year, events, holidays, closures, locale, text, dateLocale, onSelectDate }: { year: number; events: BusinessEvent[]; holidays: CalendarHoliday[]; closures: BusinessClosure[]; locale: "zh-CN" | "en-GB"; text: LocalText; dateLocale: typeof zhCN; onSelectDate: (date: string) => void }) {
   const months = eachMonthOfInterval({ start: startOfYear(new Date(year, 0, 1)), end: endOfYear(new Date(year, 0, 1)) });
   return <div className="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">{months.map((month) => <Card key={month.toISOString()} className="overflow-hidden rounded-lg"><h2 className="border-b border-[var(--border)] px-4 py-3 text-sm font-semibold">{format(month, "MMMM", { locale: dateLocale })}</h2><div className="grid grid-cols-7 border-b border-[var(--border)] bg-[var(--surface-muted)] text-center text-[11px] text-[var(--muted)]">{text.weekdays.map((day, index) => <span key={`${day}-${index}`} className="py-1.5">{day}</span>)}</div><MonthGrid month={month} events={events} holidays={holidays} closures={closures} locale={locale} text={text} onSelectDate={onSelectDate} /></Card>)}</div>;
+}
+
+function MonthCalendar({ month, events, holidays, closures, locale, text, onSelectDate }: { month: Date; events: BusinessEvent[]; holidays: CalendarHoliday[]; closures: BusinessClosure[]; locale: "zh-CN" | "en-GB"; text: LocalText; onSelectDate: (date: string) => void }) {
+  return <Card className="overflow-hidden rounded-lg"><div className="grid grid-cols-7 border-b border-[var(--border)] bg-[var(--surface-muted)] text-center text-xs text-[var(--muted)]">{text.weekdays.map((day, index) => <span key={`${day}-${index}`} className="py-2.5">{day}</span>)}</div><MonthGrid month={month} events={events} holidays={holidays} closures={closures} locale={locale} text={text} onSelectDate={onSelectDate} /></Card>;
 }
 
 function MonthGrid({ month, events, holidays, closures, locale, text, onSelectDate }: { month: Date; events: BusinessEvent[]; holidays: CalendarHoliday[]; closures: BusinessClosure[]; locale: "zh-CN" | "en-GB"; text: LocalText; onSelectDate: (date: string) => void }) {
